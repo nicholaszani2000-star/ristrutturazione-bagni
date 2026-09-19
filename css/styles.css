@@ -482,8 +482,10 @@ section[id], [id] { scroll-margin-top: calc(var(--header-h) + var(--sp-4)); }
 }
 .ba__layer { position: absolute; inset: 0; }
 .ba__layer img, .ba__layer svg { width: 100%; height: 100%; object-fit: cover; display: block; }
-/* il livello "dopo" viene svelato muovendo la maniglia */
-.ba__after { clip-path: inset(0 calc(100% - var(--pos, 50%)) 0 0); }
+/* Il livello "dopo" sta sopra e viene ritagliato da sinistra: resta scoperto
+   solo da --pos in poi. Cosi' la meta' sinistra mostra il "prima" e la destra
+   il "dopo", come dicono le etichette. Maniglia verso sinistra = piu' "dopo". */
+.ba__after { clip-path: inset(0 0 0 var(--pos, 50%)); }
 
 .ba__handle {
   position: absolute; top: 0; bottom: 0; left: var(--pos, 50%);
@@ -523,7 +525,10 @@ section[id], [id] { scroll-margin-top: calc(var(--header-h) + var(--sp-4)); }
 
 /* Segnaposto foto: comunica cosa va caricato al suo posto */
 .photo-slot {
-  width: 100%; height: 100%; display: grid; place-items: center; gap: var(--sp-2);
+  width: 100%; height: 100%;
+  /* align-content: center tiene icona e testo attaccati: senza, le righe della
+     griglia si allargano a tutta altezza e i due elementi si allontanano. */
+  display: grid; place-items: center; align-content: center; gap: var(--sp-2);
   background:
     repeating-linear-gradient(45deg, #EDF4FA 0 12px, #F5F9FC 12px 24px);
   color: var(--muted); text-align: center; padding: var(--sp-4);
@@ -532,9 +537,11 @@ section[id], [id] { scroll-margin-top: calc(var(--header-h) + var(--sp-4)); }
 .photo-slot span { font-size: 0.75rem; line-height: 1.4; max-width: 22ch; }
 
 /* Nello slider i due segnaposto vanno spostati ai lati, altrimenti
-   si sovrappongono entrambi al centro e non si legge niente. */
-.ba__before .photo-slot { transform: translateX(-25%); }
-.ba__after  .photo-slot { transform: translateX(25%); }
+   si sovrappongono entrambi al centro e non si legge niente.
+   Si usa il padding e non transform: traslare il riquadro sposterebbe
+   anche il suo sfondo, scoprendo il livello sottostante. */
+.ba__before .photo-slot { padding-right: 50%; }
+.ba__after  .photo-slot { padding-left: 50%; }
 
 /* -----------------------------------------------------------------------------
    17. FORM
