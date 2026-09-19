@@ -1,0 +1,24 @@
+# Dipendenze
+node_modules/
+
+# Sistema operativo
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editor
+.vscode/
+.idea/
+*.swp
+
+# Netlify
+.netlify/
+
+# Variabili d'ambiente — NON committare mai chiavi o token
+.env
+.env.*
+!.env.example
+
+# File temporanei
+*.log
+tmp/
