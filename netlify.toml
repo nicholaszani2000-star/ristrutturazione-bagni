@@ -1,0 +1,54 @@
+# =============================================================================
+# NETLIFY — configurazione di pubblicazione
+# Sito statico: non c'e' niente da compilare, si pubblica la cartella così com'e'.
+# =============================================================================
+
+[build]
+  publish = "."
+  command = ""
+
+# -----------------------------------------------------------------------------
+# Intestazioni di sicurezza applicate a tutte le pagine
+# -----------------------------------------------------------------------------
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Content-Type-Options = "nosniff"
+    X-Frame-Options = "SAMEORIGIN"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "geolocation=(), microphone=(), camera=(), interest-cohort=()"
+    Strict-Transport-Security = "max-age=31536000; includeSubDomains"
+
+# -----------------------------------------------------------------------------
+# Cache: gli asset con nome fisso restano in cache un anno, l'HTML no
+# (così le modifiche ai testi si vedono subito).
+# -----------------------------------------------------------------------------
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/css/*"
+  [headers.values]
+    Cache-Control = "public, max-age=604800"
+
+[[headers]]
+  for = "/js/*"
+  [headers.values]
+    Cache-Control = "public, max-age=604800"
+
+[[headers]]
+  for = "/*.html"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+
+# -----------------------------------------------------------------------------
+# Il dominio con www rimanda a quello senza www (evita contenuti duplicati).
+# Attiva questa regola DOPO aver collegato il dominio in Netlify.
+# -----------------------------------------------------------------------------
+[[redirects]]
+  from = "https://www.easy-bagno.it/*"
+  to = "https://easy-bagno.it/:splat"
+  status = 301
+  force = true

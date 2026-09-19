@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <defs>
+    <linearGradient id="ogG" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#143A5C"/><stop offset="0.55" stop-color="#1B84DD"/><stop offset="1" stop-color="#56B4EE"/>
+    </linearGradient>
+    <linearGradient id="ogMark" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#FFFFFF"/><stop offset="1" stop-color="#CFE9FB"/>
+    </linearGradient>
+    <mask id="ogMask">
+      <rect width="1200" height="630" fill="#fff"/>
+      <rect x="93.5" y="52" width="11" height="50" rx="5.5" fill="#000"/>
+      <rect x="75" y="52" width="29.5" height="11" rx="5.5" fill="#000"/>
+      <path d="M61 102h78v6a39 39 0 0 1-78 0Z" fill="#000"/>
+    </mask>
+  </defs>
+
+  <rect width="1200" height="630" fill="url(#ogG)"/>
+  <path d="M0 470c220-60 420-60 640 0s340 50 560 0v160H0Z" fill="#FFFFFF" opacity="0.10"/>
+  <path d="M0 530c220-60 420-60 640 0s340 50 560 0v100H0Z" fill="#FFFFFF" opacity="0.14"/>
+
+  <g transform="translate(82 74) scale(1.05)">
+    <path d="M100 12 182 78v64a18 18 0 0 1-18 18H36a18 18 0 0 1-18-18V78Z"
+          fill="url(#ogMark)" mask="url(#ogMask)" stroke-linejoin="round"/>
+  </g>
+
+  <text x="280" y="152" font-family="Poppins, Verdana, sans-serif" font-size="52" font-weight="700" fill="#FFFFFF">
+    Easy-Bagno<tspan fill="#9FD4F7">.it</tspan>
+  </text>
+  <text x="280" y="192" font-family="Verdana, sans-serif" font-size="22" fill="#CFE9FB">
+    Ristrutturazione bagni · chiavi in mano
+  </text>
+
+  <text x="82" y="322" font-family="Poppins, Verdana, sans-serif" font-size="74" font-weight="700" fill="#FFFFFF">
+    Bagno completo 3×2 m
+  </text>
+  <text x="82" y="418" font-family="Poppins, Verdana, sans-serif" font-size="96" font-weight="700" fill="#FFFFFF">
+    € 9.490
+    <tspan font-size="40" font-weight="600" fill="#CFE9FB" dx="24">tutto compreso</tspan>
+  </text>
+
+  <g font-family="Verdana, sans-serif" font-size="25" fill="#FFFFFF">
+    <text x="82" y="500">Prezzo bloccato in contratto  ·  Impianti certificati</text>
+    <text x="82" y="546" fill="#CFE9FB">Gallarate e provincia di Varese  ·  Sopralluogo gratuito</text>
+  </g>
+</svg>
