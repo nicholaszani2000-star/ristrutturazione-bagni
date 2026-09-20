@@ -383,6 +383,12 @@ section[id], [id] { scroll-margin-top: calc(var(--header-h) + var(--sp-4)); }
   font-family: var(--font-display); font-weight: 600; font-size: 1.05rem; color: #fff;
 }
 .price-panel .btn { margin-top: var(--sp-5); }
+.price-panel__size-note {
+  margin-top: var(--sp-4); font-size: var(--fs-small); line-height: 1.55;
+  color: rgba(255,255,255,0.85);
+}
+.price-panel__size-note a { color: #fff; font-weight: 600; text-decoration: underline; }
+.price-panel__size-note a:hover { color: #fff; text-decoration-thickness: 2px; }
 
 /* Due colonne incluso / non incluso */
 .inclusions { display: grid; gap: var(--sp-5); grid-template-columns: 1fr; }
@@ -395,45 +401,60 @@ section[id], [id] { scroll-margin-top: calc(var(--header-h) + var(--sp-4)); }
 }
 
 /* -----------------------------------------------------------------------------
-   12. CALCOLATORE DETRAZIONE
+   12. DETRAZIONE — due scenari gia' calcolati
+   ---------------------------------------------------------------------------
+   Nessun campo da compilare: il prezzo e' fisso e i due casi si leggono
+   affiancati. Meno attrito che far fare i conti all'utente.
    -------------------------------------------------------------------------- */
-.calc { display: grid; gap: var(--sp-6); grid-template-columns: 1fr; align-items: start; }
-.calc__controls { display: grid; gap: var(--sp-5); }
+.calc-static { display: grid; gap: var(--sp-5); grid-template-columns: 1fr; }
 
-.radio-cards { display: grid; gap: var(--sp-3); }
-.radio-card {
-  display: flex; align-items: flex-start; gap: var(--sp-3);
-  padding: var(--sp-4); border: 2px solid var(--line); border-radius: var(--r-md);
-  background: #fff; cursor: pointer;
-  transition: border-color 0.2s var(--ease), background-color 0.2s var(--ease);
+.calc-card {
+  background: var(--surface); border: 1px solid var(--line);
+  border-radius: var(--r-lg); padding: var(--sp-6);
+  display: flex; flex-direction: column;
 }
-.radio-card:hover { border-color: var(--sky); background: var(--tint); }
-.radio-card input { margin-top: 0.3rem; width: 20px; height: 20px; accent-color: var(--blue); flex: none; }
-.radio-card:has(input:checked) { border-color: var(--blue); background: #F2F9FE; }
-.radio-card__title { font-family: var(--font-display); font-weight: 600; color: var(--navy); display: block; }
-.radio-card__desc { font-size: var(--fs-small); color: var(--muted); }
+.calc-card__tag {
+  font-family: var(--font-display); font-size: 0.78rem; font-weight: 600;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--muted); margin: 0 0 var(--sp-2);
+}
+.calc-card__rate {
+  font-family: var(--font-display); font-weight: 700; font-size: 1.5rem;
+  line-height: 1.15; color: var(--navy); margin: 0 0 var(--sp-5);
+}
+.calc-card__rows { margin: 0 0 var(--sp-5); }
+.calc-card__rows > div {
+  display: flex; justify-content: space-between; align-items: baseline;
+  gap: var(--sp-4); padding-block: var(--sp-3); border-top: 1px solid var(--line);
+}
+.calc-card__rows dt { margin: 0; font-size: var(--fs-small); color: var(--muted); }
+.calc-card__rows dd { margin: 0; font-family: var(--font-display); font-weight: 600; color: var(--navy); }
+.calc-card__label { font-size: var(--fs-small); color: var(--muted); margin: 0 0 var(--sp-1); }
+.calc-card__total {
+  font-family: var(--font-display); font-weight: 700; line-height: 1.05;
+  font-size: clamp(2.4rem, 1.8rem + 2.2vw, 3.3rem);
+  letter-spacing: -0.03em; color: var(--blue-700); margin: 0 0 var(--sp-2);
+}
+.calc-card__foot { font-size: var(--fs-small); color: var(--muted); margin: auto 0 0; }
 
-.field-inline { display: grid; gap: var(--sp-2); }
-.field-inline label { font-weight: 600; font-size: var(--fs-small); color: var(--navy); }
-.field-inline input {
-  padding: 0.8rem 1rem; border: 2px solid var(--line); border-radius: var(--r-md);
-  background: #fff; font-family: var(--font-display); font-weight: 600; font-size: 1.05rem;
-  color: var(--navy); width: 100%;
+/* L'abitazione principale e' il caso piu' frequente: va in evidenza */
+.calc-card--hero {
+  background: var(--grad-brand); border-color: transparent;
+  color: #fff; box-shadow: var(--sh-lg);
 }
-.field-inline input:focus { border-color: var(--blue); outline: none; }
+.calc-card--hero .calc-card__tag  { color: rgba(255,255,255,0.78); }
+.calc-card--hero .calc-card__rate { color: #fff; }
+.calc-card--hero .calc-card__rows > div { border-top-color: rgba(255,255,255,0.22); }
+.calc-card--hero .calc-card__rows dt { color: rgba(255,255,255,0.78); }
+.calc-card--hero .calc-card__rows dd,
+.calc-card--hero .calc-card__total { color: #fff; }
+.calc-card--hero .calc-card__label,
+.calc-card--hero .calc-card__foot { color: rgba(255,255,255,0.78); }
 
-.calc__result {
-  background: var(--navy); color: #fff;
-  border-radius: var(--r-lg); padding: var(--sp-6); box-shadow: var(--sh-lg);
+.calc-note {
+  max-width: 64ch; margin: var(--sp-6) auto 0; text-align: center;
+  font-size: 0.8rem; line-height: 1.6; color: var(--muted);
 }
-.calc__line { display: flex; justify-content: space-between; align-items: baseline; gap: var(--sp-4); padding-block: var(--sp-3); }
-.calc__line + .calc__line { border-top: 1px solid rgba(255,255,255,0.16); }
-.calc__line dt { color: rgba(255,255,255,0.78); font-size: var(--fs-small); margin: 0; }
-.calc__line dd { margin: 0; font-family: var(--font-display); font-weight: 600; font-size: 1.15rem; color: #fff; }
-.calc__line--total { margin-top: var(--sp-3); padding-top: var(--sp-5); border-top: 2px solid var(--sky) !important; }
-.calc__line--total dt { color: #fff; font-weight: 600; font-size: 1rem; }
-.calc__line--total dd { font-size: clamp(1.9rem, 1.4rem + 1.8vw, 2.5rem); color: var(--sky); line-height: 1.1; }
-.calc__disclaimer { margin-top: var(--sp-5); font-size: 0.78rem; color: rgba(255,255,255,0.65); line-height: 1.5; }
 
 /* -----------------------------------------------------------------------------
    13. PROCESSO E PUNTI DI FORZA
@@ -514,37 +535,7 @@ section[id], [id] { scroll-margin-top: calc(var(--header-h) + var(--sp-4)); }
 .ba__label--after  { right: var(--sp-4); background: rgba(27,132,221,0.92); }
 
 /* -----------------------------------------------------------------------------
-   16. GALLERY
-   -------------------------------------------------------------------------- */
-.gallery { display: grid; gap: var(--sp-4); grid-template-columns: repeat(2, 1fr); }
-.gallery figure {
-  margin: 0; border-radius: var(--r-md); overflow: hidden;
-  border: 1px solid var(--line); background: var(--tint); aspect-ratio: 1 / 1;
-}
-.gallery img, .gallery svg { width: 100%; height: 100%; object-fit: cover; display: block; }
-
-/* Segnaposto foto: comunica cosa va caricato al suo posto */
-.photo-slot {
-  width: 100%; height: 100%;
-  /* align-content: center tiene icona e testo attaccati: senza, le righe della
-     griglia si allargano a tutta altezza e i due elementi si allontanano. */
-  display: grid; place-items: center; align-content: center; gap: var(--sp-2);
-  background:
-    repeating-linear-gradient(45deg, #EDF4FA 0 12px, #F5F9FC 12px 24px);
-  color: var(--muted); text-align: center; padding: var(--sp-4);
-}
-.photo-slot svg { width: 34px; height: 34px; color: var(--sky); }
-.photo-slot span { font-size: 0.75rem; line-height: 1.4; max-width: 22ch; }
-
-/* Nello slider i due segnaposto vanno spostati ai lati, altrimenti
-   si sovrappongono entrambi al centro e non si legge niente.
-   Si usa il padding e non transform: traslare il riquadro sposterebbe
-   anche il suo sfondo, scoprendo il livello sottostante. */
-.ba__before .photo-slot { padding-right: 50%; }
-.ba__after  .photo-slot { padding-left: 50%; }
-
-/* -----------------------------------------------------------------------------
-   17. FORM
+   16. FORM
    -------------------------------------------------------------------------- */
 .form-card {
   background: #fff; border: 1px solid var(--line); border-radius: var(--r-lg);
@@ -657,7 +648,6 @@ a.contact-item:hover .contact-list__val { color: var(--blue-700); }
    -------------------------------------------------------------------------- */
 @media (min-width: 560px) {
   .form-grid { grid-template-columns: 1fr 1fr; }
-  .gallery { grid-template-columns: repeat(3, 1fr); }
   .grid-3 { grid-template-columns: repeat(2, 1fr); }
 }
 
@@ -665,7 +655,7 @@ a.contact-item:hover .contact-list__val { color: var(--blue-700); }
   .section { padding-block: var(--sp-9); }
   .inclusions { grid-template-columns: 1fr 1fr; gap: var(--sp-6); }
   .grid-2 { grid-template-columns: 1fr 1fr; }
-  .calc { grid-template-columns: 1fr 1fr; gap: var(--sp-7); }
+  .calc-static { grid-template-columns: 1fr 1fr; gap: var(--sp-6); }
   .footer-grid { grid-template-columns: 1.3fr 1fr 1fr; gap: var(--sp-7); }
 }
 
@@ -677,7 +667,6 @@ a.contact-item:hover .contact-list__val { color: var(--blue-700); }
      così la CTA è sempre raggiungibile. */
   .price-panel { position: sticky; top: calc(var(--header-h) + var(--sp-4)); }
   .grid-3 { grid-template-columns: repeat(3, 1fr); }
-  .gallery { grid-template-columns: repeat(4, 1fr); }
 }
 
 /* Sopra i 900px la barra fissa sparisce: ci sono già le CTA nell'header */

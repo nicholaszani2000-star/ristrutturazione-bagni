@@ -60,9 +60,6 @@
     </g>
     <g id="i-chev" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></g>
     <g id="i-arrows" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 7-5 5 5 5M15 7l5 5-5 5"/></g>
-    <g id="i-camera" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-      <path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3Z"/><circle cx="12" cy="13" r="3.2"/>
-    </g>
     <g id="i-lock" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
       <rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>
     </g>
@@ -173,8 +170,8 @@
 
     <div class="hero__media">
       <figure class="hero__figure">
-        <img src="assets/hero-bagno.svg" width="800" height="600" fetchpriority="high"
-             alt="Bagno moderno ristrutturato con doccia walk-in, mobile lavabo e termoarredo">
+        <img src="assets/dopo.svg" width="800" height="600" fetchpriority="high"
+             alt="Bagno ristrutturato con doccia walk-in in vetro, mobile lavabo sospeso e termoarredo">
       </figure>
       <div class="price-tag">
         <span class="price-tag__label">Bagno 3×2 m</span>
@@ -224,6 +221,12 @@
         <a class="btn btn--lg btn--light btn--block" href="#preventivo" data-track="cta_click" data-track-pos="offerta">
           Richiedi il preventivo gratuito
         </a>
+
+        <p class="price-panel__size-note">
+          Il tuo bagno ha una misura diversa?
+          <a href="#preventivo" data-track="cta_click" data-track-pos="offerta-misura">Mandaci la richiesta</a>:
+          dopo il sopralluogo ti diamo il prezzo esatto per la tua metratura.
+        </p>
       </div>
 
       <!-- incluso / non incluso -->
@@ -269,66 +272,43 @@
       <p class="eyebrow">Bonus ristrutturazione <span data-cfg="taxCredit.year">2026</span></p>
       <h2>Quanto ti costa davvero</h2>
       <p class="lead">
-        I lavori in bagno rientrano nel Bonus Ristrutturazioni. Una parte della spesa torna indietro
-        come detrazione IRPEF, divisa in 10 anni. Fai il conto qui sotto.
+        I lavori in bagno rientrano nel Bonus Ristrutturazioni. Una parte della spesa torna
+        indietro come detrazione IRPEF, divisa in 10 anni. Il conto è già fatto.
       </p>
     </div>
 
-    <div class="calc">
-      <div class="calc__controls">
-        <div class="field-inline">
-          <label for="calc-amount">Importo dei lavori</label>
-          <input type="text" id="calc-amount" inputmode="numeric" autocomplete="off"
-                 value="9.490" aria-describedby="calc-amount-hint">
-          <p class="field__hint" id="calc-amount-hint">Modificalo se il tuo preventivo è diverso.</p>
-        </div>
+    <!-- Due scenari gia' calcolati. Nessun campo da compilare: il prezzo e'
+         quello, e i numeri arrivano da config.js. -->
+    <div class="calc-static">
+      <article class="calc-card calc-card--hero">
+        <p class="calc-card__tag">Abitazione principale</p>
+        <p class="calc-card__rate"><span data-cfg="taxCredit.ratePrimary">50</span>% di detrazione</p>
+        <dl class="calc-card__rows">
+          <div><dt>Costo del bagno</dt><dd data-calc="spend.primary">€ 9.490</dd></div>
+          <div><dt>Ti torna indietro</dt><dd data-calc="credit.primary">€ 4.745</dd></div>
+        </dl>
+        <p class="calc-card__label">Ti costa davvero</p>
+        <p class="calc-card__total" data-calc="real.primary">€ 4.745</p>
+        <p class="calc-card__foot"><span data-calc="year.primary">€ 475</span> all'anno, per 10 anni</p>
+      </article>
 
-        <fieldset style="border:0;padding:0;margin:0">
-          <legend style="font-weight:600;font-size:var(--fs-small);color:var(--navy);padding:0;margin-bottom:var(--sp-3)">
-            Che immobile è?
-          </legend>
-          <div class="radio-cards">
-            <label class="radio-card">
-              <input type="radio" name="calc-type" value="primary" checked>
-              <span>
-                <strong class="radio-card__title">Abitazione principale</strong>
-                <span class="radio-card__desc">La casa dove vivi. Detrazione al <span data-cfg="taxCredit.ratePrimary">50</span>%.</span>
-              </span>
-            </label>
-            <label class="radio-card">
-              <input type="radio" name="calc-type" value="secondary">
-              <span>
-                <strong class="radio-card__title">Seconda casa</strong>
-                <span class="radio-card__desc">Altro immobile di proprietà. Detrazione al <span data-cfg="taxCredit.rateSecondary">36</span>%.</span>
-              </span>
-            </label>
-          </div>
-        </fieldset>
-      </div>
-
-      <dl class="calc__result" aria-live="polite">
-        <div class="calc__line">
-          <dt>Spesa dei lavori</dt>
-          <dd id="calc-spend">€ 9.490</dd>
-        </div>
-        <div class="calc__line">
-          <dt>Detrazione IRPEF (<span id="calc-rate">50</span>%)</dt>
-          <dd id="calc-credit">€ 4.745</dd>
-        </div>
-        <div class="calc__line">
-          <dt>Recuperi ogni anno, per 10 anni</dt>
-          <dd id="calc-peryear">€ 474</dd>
-        </div>
-        <div class="calc__line calc__line--total">
-          <dt>Costo reale del bagno</dt>
-          <dd id="calc-real">€ 4.745</dd>
-        </div>
-        <p class="calc__disclaimer">
-          <span data-cfg="taxCredit.note">Detrazione IRPEF ripartita in 10 quote annuali di pari importo.</span>
-          <span data-cfg="taxCredit.disclaimer">Importi indicativi: verifica sempre con il tuo commercialista o CAF.</span>
-        </p>
-      </dl>
+      <article class="calc-card">
+        <p class="calc-card__tag">Seconda casa</p>
+        <p class="calc-card__rate"><span data-cfg="taxCredit.rateSecondary">36</span>% di detrazione</p>
+        <dl class="calc-card__rows">
+          <div><dt>Costo del bagno</dt><dd data-calc="spend.secondary">€ 9.490</dd></div>
+          <div><dt>Ti torna indietro</dt><dd data-calc="credit.secondary">€ 3.416</dd></div>
+        </dl>
+        <p class="calc-card__label">Ti costa davvero</p>
+        <p class="calc-card__total" data-calc="real.secondary">€ 6.074</p>
+        <p class="calc-card__foot"><span data-calc="year.secondary">€ 342</span> all'anno, per 10 anni</p>
+      </article>
     </div>
+
+    <p class="calc-note">
+      <span data-cfg="taxCredit.note">Detrazione IRPEF ripartita in 10 quote annuali di pari importo.</span>
+      <span data-cfg="taxCredit.disclaimer">Importi indicativi: verifica sempre con il tuo commercialista o CAF.</span>
+    </p>
   </div>
 </section>
 
@@ -400,20 +380,17 @@
       <p class="lead">Trascina la maniglia per vedere la differenza. Con le frecce della tastiera funziona uguale.</p>
     </div>
 
-    <!-- SOSTITUISCI le due immagini con le foto reali dello stesso bagno,
-         scattate dallo stesso punto: prima/dopo-1.jpg -->
+    <!-- Illustrazioni, non fotografie: stessa inquadratura prima e dopo.
+         Quando hai le foto vere dello stesso bagno scattate dallo stesso punto,
+         sostituisci i due <img> qui sotto con prima-1.jpg e dopo-1.jpg. -->
     <div class="ba" id="beforeAfter" style="--pos:50%">
       <div class="ba__layer ba__before">
-        <div class="photo-slot">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-camera"/></svg>
-          <span>Foto "PRIMA" — carica <code>assets/prima-1.jpg</code></span>
-        </div>
+        <img src="assets/prima.svg" width="800" height="600" loading="lazy"
+             alt="Bagno datato prima dell'intervento: piastrelle beige, vasca con tenda e lavabo a colonna">
       </div>
       <div class="ba__layer ba__after">
-        <div class="photo-slot" style="background:repeating-linear-gradient(45deg,#E4F1FB 0 12px,#F2F9FE 12px 24px)">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-camera"/></svg>
-          <span>Foto "DOPO" — carica <code>assets/dopo-1.jpg</code></span>
-        </div>
+        <img src="assets/dopo.svg" width="800" height="600" loading="lazy"
+             alt="Lo stesso bagno dopo l'intervento: doccia walk-in, mobile lavabo sospeso e specchio tondo">
       </div>
       <span class="ba__label ba__label--before">Prima</span>
       <span class="ba__label ba__label--after">Dopo</span>
@@ -426,26 +403,6 @@
   </div>
 </section>
 
-<!-- ===========================================================================
-     7. GALLERY
-     ======================================================================== -->
-<section class="section section--tint" id="lavori">
-  <div class="wrap">
-    <div class="section-head section-head--center">
-      <p class="eyebrow">I nostri lavori</p>
-      <h2>Bagni che abbiamo consegnato</h2>
-      <p class="lead">Foto dei cantieri veri, senza ritocchi e senza immagini prese da internet.</p>
-    </div>
-
-    <!-- SOSTITUISCI ogni riquadro con una foto reale: assets/lavoro-1.jpg ... -->
-    <div class="gallery">
-      <figure><div class="photo-slot"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-camera"/></svg><span>Foto lavoro 1<br><code>assets/lavoro-1.jpg</code></span></div></figure>
-      <figure><div class="photo-slot"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-camera"/></svg><span>Foto lavoro 2<br><code>assets/lavoro-2.jpg</code></span></div></figure>
-      <figure><div class="photo-slot"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-camera"/></svg><span>Foto lavoro 3<br><code>assets/lavoro-3.jpg</code></span></div></figure>
-      <figure><div class="photo-slot"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="#i-camera"/></svg><span>Foto lavoro 4<br><code>assets/lavoro-4.jpg</code></span></div></figure>
-    </div>
-  </div>
-</section>
 
 <!-- ===========================================================================
      8. PERCHÉ NOI

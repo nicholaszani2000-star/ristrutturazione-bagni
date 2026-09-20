@@ -9,7 +9,7 @@
      2. Tracking           7. FAQ
      3. Iniezione config   8. Form e invio lead
      4. Liste dinamiche    9. Avvio
-     5. Calcolatore detrazione
+     5. Scenari detrazione
    ========================================================================== */
 (function () {
   "use strict";
@@ -313,47 +313,39 @@
   }
 
   /* ===========================================================================
-     5. CALCOLATORE DETRAZIONE
+     5. SCENARI DETRAZIONE
      ======================================================================== */
 
-  function initCalculator() {
-    var amountEl = $("#calc-amount");
+  /**
+   * Scrive i due scenari di detrazione (abitazione principale / seconda casa).
+   * Non c'e' niente da compilare: l'importo e' il prezzo fisso dell'offerta e
+   * le percentuali stanno in config.js. Serve solo a mostrare il conto gia' fatto.
+   */
+  function renderTaxCredit() {
     var tc = CFG.taxCredit;
-    if (!amountEl || !tc || tc.enabled !== true) return;
+    if (!tc || tc.enabled !== true) return;
 
-    var out = {
-      spend: $("#calc-spend"), rate: $("#calc-rate"),
-      credit: $("#calc-credit"), perYear: $("#calc-peryear"), real: $("#calc-real")
-    };
+    var spend = parseAmount(get("offer.price"));
+    if (!spend) return;
 
-    function update() {
-      var type = ($('input[name="calc-type"]:checked') || {}).value || "primary";
-      var rate = type === "primary" ? tc.ratePrimary : tc.rateSecondary;
+    // La detrazione si calcola al massimo sul tetto di spesa previsto per legge
+    var eligible = Math.min(spend, tc.maxSpend || spend);
+    var years = tc.years || 10;
 
-      var spend = parseAmount(amountEl.value);
-      // La detrazione si calcola al massimo sul tetto di spesa previsto
-      var eligible = Math.min(spend, tc.maxSpend || spend);
-      var credit = eligible * (rate / 100);
-
-      out.spend.textContent   = euro(spend);
-      out.rate.textContent    = rate;
-      out.credit.textContent  = euro(credit);
-      out.perYear.textContent = euro(credit / (tc.years || 10));
-      out.real.textContent    = euro(spend - credit);
-    }
-
-    amountEl.addEventListener("input", update);
-    // Riscrive l'importo in formato italiano quando l'utente esce dal campo
-    amountEl.addEventListener("blur", function () {
-      var n = parseAmount(amountEl.value);
-      if (n) amountEl.value = new Intl.NumberFormat("it-IT").format(n);
+    var values = {};
+    [["primary", tc.ratePrimary], ["secondary", tc.rateSecondary]].forEach(function (pair) {
+      var key = pair[0];
+      var credit = eligible * (pair[1] / 100);
+      values["spend." + key]  = euro(spend);
+      values["credit." + key] = euro(credit);
+      values["real." + key]   = euro(spend - credit);
+      values["year." + key]   = euro(credit / years);
     });
-    $$('input[name="calc-type"]').forEach(function (r) { r.addEventListener("change", update); });
 
-    // Parte dal prezzo dell'offerta
-    var price = get("offer.price");
-    if (!isPlaceholder(price)) amountEl.value = price;
-    update();
+    $$("[data-calc]").forEach(function (el) {
+      var v = values[el.getAttribute("data-calc")];
+      if (v) el.textContent = v;
+    });
   }
 
   /* ===========================================================================
@@ -650,7 +642,7 @@
     renderReviews();
     renderFormOptions();
     renderFaq();
-    initCalculator();
+    renderTaxCredit();
     initBeforeAfter();
     initForm();
     bindTrackedClicks();

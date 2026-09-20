@@ -1,0 +1,126 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" width="800" height="600" role="img" aria-labelledby="dTitle dDesc">
+  <title id="dTitle">Bagno dopo la ristrutturazione</title>
+  <desc id="dDesc">Illustrazione di un bagno moderno con doccia walk-in in vetro, mobile lavabo sospeso, specchio tondo e termoarredo.</desc>
+  <defs>
+    <linearGradient id="dBrand" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#143A5C"/><stop offset=".55" stop-color="#1B84DD"/><stop offset="1" stop-color="#56B4EE"/>
+    </linearGradient>
+    <linearGradient id="dGlass" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#7FC4F2" stop-opacity=".34"/><stop offset="1" stop-color="#1B84DD" stop-opacity=".12"/>
+    </linearGradient>
+    <linearGradient id="dCab" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#1D5183"/><stop offset="1" stop-color="#143A5C"/>
+    </linearGradient>
+    <linearGradient id="dFloor" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#DBE9F4"/><stop offset="1" stop-color="#F0F7FC"/>
+    </linearGradient>
+    <linearGradient id="dMirror" x1=".15" y1="0" x2=".7" y2="1">
+      <stop offset="0" stop-color="#E4F1FB"/><stop offset="1" stop-color="#FAFDFF"/>
+    </linearGradient>
+    <linearGradient id="dNiche" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#9ED3F5"/><stop offset="1" stop-color="#56B4EE"/>
+    </linearGradient>
+    <clipPath id="dClip"><rect width="800" height="600"/></clipPath>
+    <clipPath id="dShower"><rect x="62" y="96" width="244" height="376" rx="6"/></clipPath>
+  </defs>
+
+  <g clip-path="url(#dClip)">
+    <!-- pareti: lastre grandi, fughe appena accennate -->
+    <rect width="800" height="600" fill="#F5F9FC"/>
+    <rect x="0" y="0" width="800" height="472" fill="#FCFDFE"/>
+    <g stroke="#E6EFF6" stroke-width="2">
+      <path d="M0 176h800M0 340h800"/><path d="M340 0v472M620 0v472"/>
+    </g>
+
+    <!-- pavimento -->
+    <rect x="0" y="472" width="800" height="128" fill="url(#dFloor)"/>
+    <g stroke="#CBDFEE" stroke-width="2" opacity=".85"><path d="M0 528h800M200 472v128M480 472v128"/></g>
+    <rect x="0" y="464" width="800" height="9" fill="#E2ECF3"/>
+
+    <!-- ===== DOCCIA WALK-IN ===== -->
+    <g clip-path="url(#dShower)">
+      <rect x="62" y="96" width="244" height="376" fill="#EAF5FD"/>
+      <!-- fascia a mosaico: da' profondita' alla doccia, altrimenti
+           tutta l'area resta troppo slavata rispetto al resto -->
+      <rect x="92" y="130" width="132" height="290" fill="url(#dNiche)" opacity=".42"/>
+      <g stroke="#BEDDF3" stroke-width="2.5" opacity=".7">
+        <path d="M92 174h132M92 218h132M92 262h132M92 306h132M92 350h132M92 394h132"/>
+        <path d="M136 130v290M180 130v290"/>
+      </g>
+      <g stroke="#CFE6F7" stroke-width="2">
+        <path d="M62 166h244M62 236h244M62 306h244M62 376h244M272 96v376"/>
+      </g>
+      <!-- nicchia portaoggetti, staccata dal vetro -->
+      <rect x="210" y="250" width="58" height="76" rx="5" fill="url(#dNiche)" opacity=".5"/>
+      <rect x="210" y="250" width="58" height="76" rx="5" fill="none" stroke="#9ED3F5" stroke-width="3"/>
+      <path d="M210 288h58" stroke="#BEE2F8" stroke-width="3"/>
+      <rect x="221" y="261" width="13" height="22" rx="4" fill="#FFFFFF"/>
+      <rect x="239" y="265" width="11" height="18" rx="4" fill="#E8F5FE"/>
+    </g>
+    <rect x="62" y="96" width="244" height="376" rx="6" fill="none" stroke="#D8E8F4" stroke-width="3"/>
+
+    <!-- soffione a pioggia -->
+    <g fill="#143A5C">
+      <rect x="150" y="122" width="8" height="28" rx="4"/>
+      <rect x="106" y="146" width="96" height="12" rx="6"/>
+    </g>
+    <g stroke="#56B4EE" stroke-width="4" stroke-linecap="round" opacity=".5">
+      <path d="M124 176v58M146 176v82M168 176v66M190 176v44"/>
+    </g>
+
+    <!-- piatto doccia filo pavimento -->
+    <rect x="74" y="440" width="220" height="26" rx="8" fill="#FFFFFF" stroke="#D8E8F4" stroke-width="2.5"/>
+    <rect x="158" y="449" width="52" height="7" rx="3.5" fill="#C6D9E8"/>
+
+    <!-- vetro fisso -->
+    <rect x="284" y="112" width="24" height="356" rx="4" fill="url(#dGlass)"/>
+    <rect x="284" y="112" width="24" height="356" rx="4" fill="none" stroke="#8FC8EF" stroke-width="3"/>
+    <rect x="293" y="152" width="5" height="128" rx="2.5" fill="#FFFFFF" opacity=".7"/>
+
+    <!-- ===== MOBILE LAVABO ===== -->
+    <!-- specchio tondo retroilluminato -->
+    <circle cx="500" cy="196" r="92" fill="#EAF4FC" opacity=".55"/>
+    <circle cx="500" cy="196" r="82" fill="url(#dMirror)" stroke="url(#dBrand)" stroke-width="7"/>
+    <path d="M466 160a48 48 0 0 1 30-18" stroke="#FFFFFF" stroke-width="9" stroke-linecap="round" fill="none" opacity=".95"/>
+
+    <!-- rubinetto alto -->
+    <g fill="none" stroke="#143A5C" stroke-width="11" stroke-linecap="round">
+      <path d="M534 296v-26c0-19-34-19-34 0v14"/>
+    </g>
+    <rect x="528" y="292" width="11" height="26" rx="5.5" fill="#143A5C"/>
+
+    <!-- top e lavabo d'appoggio -->
+    <rect x="396" y="326" width="216" height="16" rx="6" fill="#FFFFFF" stroke="#DCE9F3" stroke-width="2"/>
+    <rect x="464" y="294" width="112" height="34" rx="13" fill="#FFFFFF" stroke="#DCE9F3" stroke-width="2.5"/>
+
+    <!-- base sospesa -->
+    <rect x="408" y="342" width="192" height="94" rx="10" fill="url(#dCab)"/>
+    <path d="M504 342v94" stroke="#0F2E4A" stroke-width="2.5" opacity=".55"/>
+    <rect x="440" y="384" width="44" height="7" rx="3.5" fill="#56B4EE"/>
+    <rect x="524" y="384" width="44" height="7" rx="3.5" fill="#56B4EE"/>
+    <!-- ombra di sospensione -->
+    <rect x="422" y="438" width="164" height="10" rx="5" fill="#CFE0EE" opacity=".6"/>
+
+    <!-- asciugamani piegati sul top -->
+    <rect x="422" y="302" width="34" height="22" rx="8" fill="#EAF4FC" stroke="#D3E4F1" stroke-width="2"/>
+    <path d="M439 302v22" stroke="#CFE0EE" stroke-width="2"/>
+
+    <!-- pianta, per scaldare la scena -->
+    <path d="M636 452h34l-5 34h-24Z" fill="#E4EEF6" stroke="#CBDFEE" stroke-width="2"/>
+    <g stroke="#2E7D5B" stroke-width="5" fill="none" stroke-linecap="round">
+      <path d="M653 452v-34M653 430c-12-6-16-18-14-28 10 1 19 9 20 20M653 434c11-7 15-18 13-28-10 2-18 10-19 21"/>
+    </g>
+
+    <!-- ===== TERMOARREDO =====
+         Poche barre, e l'asciugamano piu' largo della campata: se le barre
+         sbucano ai lati per tutta l'altezza, l'oggetto legge come una scala. -->
+    <g stroke="#1B84DD" stroke-width="9" stroke-linecap="round"><path d="M696 174v266M754 174v266"/></g>
+    <g stroke="#56B4EE" stroke-width="7" stroke-linecap="round">
+      <path d="M696 204h58M696 248h58M696 418h58"/>
+    </g>
+    <!-- asciugamano che scavalca la barra e ricade davanti -->
+    <path d="M688 276h74v112a12 12 0 0 1-12 12h-50a12 12 0 0 1-12-12Z" fill="#EAF4FC" stroke="#9BC9E8" stroke-width="2.5"/>
+    <path d="M688 276h74v16h-74Z" fill="#D2E7F7"/>
+    <g stroke="#C3DDF1" stroke-width="2.5"><path d="M713 292v108M737 292v108"/></g>
+  </g>
+</svg>

@@ -98,38 +98,41 @@ da te prima della pubblicazione**. Sono tutte in `js/config.js`.
 
 ## 3. Come caricare le foto
 
-Il sito ha tre punti dove vanno le tue foto reali. Ora ci sono dei riquadri
-a righe che dicono quale file caricare.
+Oggi il sito gira con **illustrazioni vettoriali**, non con fotografie:
 
-| Dove | File da mettere in `assets/` | Come sostituirlo |
-|---|---|---|
-| Prima / Dopo | `prima-1.jpg` e `dopo-1.jpg` | In `index.html` cerca `<!-- SOSTITUISCI le due immagini` |
-| Galleria lavori | `lavoro-1.jpg` … `lavoro-4.jpg` | In `index.html` cerca `<!-- SOSTITUISCI ogni riquadro` |
+| File | Dove appare |
+|---|---|
+| `assets/dopo.svg` | Immagine grande dell'hero **e** lato "Dopo" dello slider |
+| `assets/prima.svg` | Lato "Prima" dello slider |
 
-Sostituisci il blocco:
+Sono disegni, e si vede che lo sono: è voluto. Mettere render fotorealistici
+spacciandoli per lavori tuoi sarebbe pubblicità ingannevole.
+
+### Sostituirle con le tue foto
+
+Apri `index.html` e cerca `assets/prima.svg` e `assets/dopo.svg`: compaiono in
+due punti (hero e slider). Sostituisci il percorso:
 
 ```html
-<div class="photo-slot">…</div>
-```
-
-con:
-
-```html
-<img src="assets/lavoro-1.jpg" alt="Bagno ristrutturato a Gallarate"
-     width="800" height="800" loading="lazy">
+<img src="assets/dopo-1.jpg" alt="Bagno ristrutturato a Gallarate"
+     width="800" height="600" loading="lazy">
 ```
 
 **Consigli pratici**
 
-- Per il prima/dopo scatta dallo **stesso punto**, stessa altezza. È il confronto
-  che convince.
-- Ridimensiona a circa 1200px di lato lungo, formato `.jpg` o `.webp`, sotto i 250 KB.
-- Scrivi sempre l'`alt`: è quello che legge Google e chi usa uno screen reader.
-- Metti `width` e `height`: evita che la pagina "salti" mentre carica.
+- Per il prima/dopo scatta dallo **stesso punto**, stessa altezza, stessa luce.
+  È il confronto che convince più di qualsiasi testo.
+- Mantieni il formato **4:3** (es. 1200×900): è la proporzione dello slider.
+- Sotto i 250 KB per foto, in `.jpg` o `.webp`.
+- Scrivi sempre l'`alt`: lo legge Google e chi usa uno screen reader.
+- Lascia `width` e `height`: evitano che la pagina "salti" mentre carica.
 
-> Le illustrazioni del bagno (`hero-bagno.svg`) sono disegni vettoriali, non
-> fotografie. Sono lì apposta: mettere render finti spacciandoli per lavori tuoi
-> sarebbe pubblicità ingannevole. Appena hai le foto vere, usa quelle.
+### Se vuoi aggiungere una galleria di lavori
+
+La sezione galleria è stata tolta di proposito: quattro riquadri vuoti fanno
+sembrare il sito incompleto, e riempirli con foto prese da internet sarebbe
+pubblicità ingannevole. Quando hai **almeno 4 foto tue**, chiedi di
+rimetterla: si reinserisce in pochi minuti.
 
 ---
 
