@@ -1,6 +1,7 @@
 {
   "mcpServers": {
     "21st": {
+      "type": "http",
       "url": "https://21st.dev/api/mcp",
       "headers": {
         "x-api-key": "${API_KEY_21ST}"
@@ -9,6 +10,14 @@
     "tailwindcss": {
       "command": "npx",
       "args": ["-y", "tailwindcss-mcp-server"]
+    },
+    "playwright": {
+      "command": "npx",
+      "args": ["-y", "@playwright/mcp@latest"],
+      "env": {
+        "PLAYWRIGHT_BROWSERS_PATH": "/opt/pw-browsers",
+        "PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD": "1"
+      }
     }
   }
 }
