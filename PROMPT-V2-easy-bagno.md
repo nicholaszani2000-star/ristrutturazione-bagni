@@ -294,6 +294,17 @@ aiuta a fidarsi, capire l'offerta o arrivare al contatto, si taglia.
 
 ## 10. SUPABASE — schema e sicurezza
 
+> **Già fatto — non ricreare nulla.** Il progetto esiste ed è attivo:
+> - Nome: `easy-bagno` · Ref: `mwydejjaevqamsjayghk`
+> - Regione: `eu-central-1` (Francoforte — dati in UE)
+> - URL API: `https://mwydejjaevqamsjayghk.supabase.co`
+> - Tabella `public.leads` creata, RLS attiva, **zero policy** (voluto).
+>
+> Le chiavi si leggono dal pannello Supabase o via MCP: non vanno committate.
+> La `service_role` sta solo nelle env var di Vercel.
+
+Schema applicato:
+
 ```sql
 create table public.leads (
   id                 bigserial primary key,
@@ -373,9 +384,17 @@ easy-bagno-v2/
 **Claude fa da solo, senza chiedermi nulla:**
 - Scaffolding Next + Tailwind + shadcn (npm raggiungibile)
 - Tutto il codice React, R3F, GSAP
-- **Creazione del database Supabase**, schema, RLS, policy (MCP autenticato)
-- **Creazione del progetto Vercel e deploy** (MCP autenticato)
+- ~~Creazione del database Supabase~~ → **GIÀ FATTO**, vedi §10
+- **Creazione del progetto Vercel e deploy** (MCP autenticato, account vuoto)
 - Logo, favicon, immagine social, illustrazioni SVG, poster di fallback
+
+**Claude NON può fare, in nessun caso:**
+- Registrarsi a servizi o fare login: nessun browser interattivo e l'egress è
+  chiuso (verificato: Spline, Higgsfield, Replicate, OpenAI, Stability, jsDelivr
+  rispondono tutti 403).
+- Autorizzare connettori MCP: l'OAuth deve partire dall'account claude.ai del
+  titolare. Non esiste un tool per farlo da qui.
+- **Non passargli mai password in chat.** Non servono e restano nel transcript.
 
 **Serve che io gli fornisca:**
 
