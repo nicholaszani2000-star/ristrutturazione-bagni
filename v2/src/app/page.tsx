@@ -1,23 +1,20 @@
-import dynamic from "next/dynamic";
-
-/**
- * Il 3D viene caricato solo lato client e in un chunk a parte: non deve mai
- * entrare nel bundle iniziale, altrimenti ritarda la comparsa delle CTA.
- */
-const SmokeTest = dynamic(() => import("@/components/three/SmokeTest"));
+import { Header } from "@/components/sections/Header";
+import { Hero } from "@/components/sections/Hero";
+import { Offer } from "@/components/sections/Offer";
+import { BeforeAfter } from "@/components/sections/BeforeAfter";
+import { StickyCta } from "@/components/StickyCta";
 
 export default function Home() {
   return (
-    <main className="min-h-dvh bg-white p-8">
-      <h1 className="font-semibold text-3xl text-[#143A5C]">
-        Easy-Bagno v2 — verifica stack
-      </h1>
-      <p className="mt-2 text-[#5A7183]">
-        Next 16 · React 19 · Tailwind 4 · three + R3F + drei · GSAP
-      </p>
-      <div className="mt-8 h-[420px] rounded-2xl border border-[#E2ECF3] bg-[#F5F9FC]">
-        <SmokeTest />
-      </div>
-    </main>
+    <>
+      <Header />
+      {/* pb: riserva lo spazio della barra fissa mobile */}
+      <main id="contenuto" className="pb-[4.75rem] lg:pb-0">
+        <Hero />
+        <Offer />
+        <BeforeAfter />
+      </main>
+      <StickyCta />
+    </>
   );
 }

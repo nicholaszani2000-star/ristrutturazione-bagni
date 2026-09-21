@@ -1,26 +1,132 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* =============================================================================
+   DESIGN SYSTEM — Easy-Bagno.it
+   =============================================================================
+   Tailwind 4: i token si dichiarano qui in @theme, non in tailwind.config.js.
+
+   Due famiglie di colore, e non è un caso:
+
+   - BLU DEL MARCHIO (navy/blue/sky) — presi dal biglietto da visita già
+     stampato. Servono all'INTERFACCIA: bottoni, link, accenti, icone.
+   - NEUTRI CALDI (sand) — le foto dei cantieri sono microcemento taupe con
+     luce calda. Su superfici grigio-azzurre stonerebbero. I fondi delle
+     sezioni che ospitano fotografia usano questi.
+
+   La regola che tiene insieme le due: il blu è il colore dell'azione, mai
+   dell'arredamento. Accent for CTA only.
+   ========================================================================== */
+
+@theme {
+  /* --- Marchio: dal biglietto da visita --- */
+  --color-navy: #143a5c;
+  --color-blue: #1b84dd;
+  --color-blue-700: #1663b0;
+  --color-sky: #56b4ee;
+  --color-sky-soft: #e8f3fc;
+
+  /* --- Neutri caldi: fanno respirare la fotografia --- */
+  --color-sand-50: #faf8f5;
+  --color-sand-100: #f4f0ea;
+  --color-sand-200: #e6ded3;
+  --color-sand-300: #d3c7b7;
+
+  /* --- Neutri freddi: interfaccia --- */
+  --color-tint: #f5f9fc;
+  --color-ink: #1b2b3a;
+  --color-muted: #5a7183;
+  --color-line: #e2ecf3;
+
+  /* --- Servizio --- */
+  --color-success: #0f7b4f;
+  --color-success-bg: #e8f6ef;
+  --color-warn-bg: #fff6e5;
+  --color-warn-ink: #5c4210;
+  --color-whatsapp: #25d366;
+  --color-whatsapp-dark: #1da851;
+
+  /* --- Tipografia (i font arrivano da next/font, self-hosted) --- */
+  --font-display: var(--font-poppins), system-ui, sans-serif;
+  --font-sans: var(--font-inter), system-ui, sans-serif;
+
+  /* --- Scala fluida: da 375px a 1440px senza scatti --- */
+  --text-display: clamp(2rem, 1.5rem + 2.1vw, 3.4rem);
+  --text-h2: clamp(1.65rem, 1.3rem + 1.5vw, 2.6rem);
+  --text-h3: clamp(1.15rem, 1.05rem + 0.45vw, 1.45rem);
+  --text-lead: clamp(1.05rem, 0.98rem + 0.35vw, 1.28rem);
+  --text-price: clamp(2.9rem, 2rem + 4vw, 5rem);
+
+  /* --- Densità 3/10: spaziosa, da catalogo --- */
+  --spacing-section: clamp(4rem, 2.5rem + 6vw, 8rem);
+
+  /* --- Ombre: nette e discrete, coerenti con la card --- */
+  --shadow-card: 0 1px 2px rgb(20 58 92 / 0.05), 0 8px 24px rgb(20 58 92 / 0.06);
+  --shadow-lift: 0 4px 12px rgb(20 58 92 / 0.08), 0 20px 48px rgb(20 58 92 / 0.10);
+
+  --radius-card: 1.25rem;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+/* -----------------------------------------------------------------------------
+   Base
+   -------------------------------------------------------------------------- */
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    /* I link con l'ancora non devono finire sotto l'header fisso */
+    scroll-padding-top: 5.5rem;
+    -webkit-text-size-adjust: 100%;
+  }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+  body {
+    background: #fff;
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  h1, h2, h3, h4 {
+    font-family: var(--font-display);
+    color: var(--color-navy);
+    line-height: 1.12;
+    letter-spacing: -0.022em;
+    text-wrap: balance;
+  }
+
+  p { text-wrap: pretty; }
+
+  /* Focus sempre visibile da tastiera */
+  :focus-visible {
+    outline: 3px solid var(--color-blue);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+
+  /* I prezzi non devono ballare: cifre a larghezza fissa */
+  .tabular { font-variant-numeric: tabular-nums; }
+
+  /* Chi preferisce meno movimento non ne vede nessuno */
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* -----------------------------------------------------------------------------
+   Utility di progetto
+   -------------------------------------------------------------------------- */
+@utility wrap {
+  width: 100%;
+  max-width: 76rem;
+  margin-inline: auto;
+  padding-inline: 1.25rem;
+}
+
+@utility grad-brand {
+  background-image: linear-gradient(135deg, var(--color-navy) 0%, var(--color-blue) 55%, var(--color-sky) 100%);
 }
