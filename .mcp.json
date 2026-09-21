@@ -5,6 +5,10 @@
       "headers": {
         "x-api-key": "${API_KEY_21ST}"
       }
+    },
+    "tailwindcss": {
+      "command": "npx",
+      "args": ["-y", "tailwindcss-mcp-server"]
     }
   }
 }
