@@ -37,14 +37,19 @@ export function Magnetico({
     if (!fine.matches || menoMovimento.matches) return;
 
     const ctx = gsap.context(() => {
+      // quickTo riusa sempre lo stesso tween.
+      //
+      // Con gsap.to dentro pointermove se ne creava uno nuovo a ogni
+      // movimento: su un puntatore a 120 Hz sono centoventi oggetti al
+      // secondo da allocare e buttare via, e il netturbino della memoria
+      // finisce per farsi sentire proprio mentre l'utente muove il mouse.
+      const xA = gsap.quickTo(el, "x", { duration: 0.45, ease: "power3.out" });
+      const yA = gsap.quickTo(el, "y", { duration: 0.45, ease: "power3.out" });
+
       const muovi = (e: PointerEvent) => {
         const r = el.getBoundingClientRect();
-        gsap.to(el, {
-          x: (e.clientX - (r.left + r.width / 2)) * forza,
-          y: (e.clientY - (r.top + r.height / 2)) * forza,
-          duration: 0.45,
-          ease: "power3.out",
-        });
+        xA((e.clientX - (r.left + r.width / 2)) * forza);
+        yA((e.clientY - (r.top + r.height / 2)) * forza);
       };
       // elastic in uscita: il ritorno a posto e' la meta' visibile dell'effetto
       const rilascia = () =>
@@ -62,7 +67,9 @@ export function Magnetico({
   }, [forza]);
 
   return (
-    <span ref={box} className={`inline-block ${className ?? ""}`}>
+    // will-change: avvisa il browser che questo elemento si sposta, cosi'
+    // lo tiene su un piano separato invece di ridisegnarlo a ogni scatto.
+    <span ref={box} className={`inline-block will-change-transform ${className ?? ""}`}>
       {children}
     </span>
   );

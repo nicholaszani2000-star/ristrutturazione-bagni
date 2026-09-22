@@ -102,13 +102,24 @@ export function Reveal({
         );
         if (figli.length === 0) return;
 
+        // Oltre le otto voci il passo si accorcia da solo.
+        //
+        // Con un passo fisso, una lista di undici voci fa comparire l'ultima
+        // dopo quasi un secondo: chi legge ha gia' finito la prima riga e
+        // aspetta le altre. Tenendo la sequenza entro ~0,4 s l'elenco si
+        // completa mentre l'occhio lo percorre, invece di inseguirlo.
+        const passo =
+          figli.length > 8
+            ? Math.min(scaglionamento, 0.4 / figli.length)
+            : scaglionamento;
+
         gsap.from(figli, {
           opacity: 0,
           ...(effetto === "maschera"
             ? { clipPath: "inset(0 0 100% 0)", y: 0, duration: 1.05, ease: "power3.out", clearProps: "clipPath" }
             : { y: 16, duration: 0.5, ease: "power2.out" }),
           delay: ritardo,
-          stagger: scaglionamento,
+          stagger: passo,
           scrollTrigger: {
             trigger: el,
             // Scatta appena il blocco entra dal bordo inferiore.

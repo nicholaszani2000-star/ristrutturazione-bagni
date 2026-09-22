@@ -316,20 +316,25 @@ function Marcatori({
   return (
     <>
       {PUNTI.map((p, i) => (
-        <Html key={p.nome} position={[...p.punto]} center distanceFactor={7} zIndexRange={[20, 0]}>
+        // Niente distanceFactor: i marcatori mantengono la stessa misura a
+        // schermo qualunque sia la distanza della camera. Scalando con la
+        // profondita' diventavano bersagli sempre piu' piccoli proprio quando
+        // ci si allontana per guardare l'insieme — e partivano gia' sotto i
+        // 44 px consigliati per il dito.
+        <Html key={p.nome} position={[...p.punto]} center zIndexRange={[20, 0]}>
           <button
             type="button"
             onClick={() => onScegli(i)}
             aria-label={`Inquadra: ${p.nome}. ${p.dettaglio}`}
-            className={`group/p flex items-center gap-2 rounded-full border py-1 pl-1 pr-1 text-left transition-all duration-300 hover:pr-3 focus-visible:pr-3 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky ${
+            className={`group/p flex items-center gap-2 rounded-full border py-2.5 pl-2.5 pr-2.5 text-left transition-all duration-300 hover:pr-4 focus-visible:pr-4 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky ${
               fuoco === i
-                ? "border-sky/60 bg-navy/90 pr-3"
+                ? "border-sky/60 bg-navy/90 pr-4"
                 : "border-white/30 bg-navy/70 hover:bg-navy/90"
             }`}
           >
-            <span className="relative grid size-5 shrink-0 place-items-center">
-              <span className="absolute size-2 rounded-full bg-sky" />
-              <span className="absolute size-5 rounded-full border border-sky/60" />
+            <span className="relative grid size-6 shrink-0 place-items-center">
+              <span className="absolute size-2.5 rounded-full bg-sky" />
+              <span className="absolute size-6 rounded-full border border-sky/60" />
             </span>
             <span
               className={`overflow-hidden whitespace-nowrap font-display text-[11px] font-semibold text-white transition-all duration-300 group-hover/p:max-w-[14rem] group-focus-visible/p:max-w-[14rem] ${
