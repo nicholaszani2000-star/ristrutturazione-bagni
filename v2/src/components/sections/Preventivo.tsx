@@ -3,6 +3,8 @@
 import { useState } from "react";
 import { SITE } from "@/config/site";
 import { links } from "@/lib/links";
+import { traccia } from "@/lib/ga4";
+import { inviaLead } from "@/lib/supabase";
 import { Icon } from "@/components/Icon";
 import { stileBottone } from "@/components/Button";
 import { Reveal } from "@/components/Reveal";
@@ -45,8 +47,32 @@ export function Preventivo() {
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
         body: new URLSearchParams(dati as unknown as Record<string, string>).toString(),
       });
+
       setStato("ok");
       form.reset();
+      // Evento standard GA4 per un contatto acquisito: e' questo che va
+      // segnato come conversione, non la visualizzazione della pagina.
+      traccia("generate_lead", { metodo: "modulo", valore_offerta: SITE.offer.price });
+
+      // Copia in archivio, in un try separato di proposito.
+      //
+      // Netlify ha gia' preso il contatto e fatto partire la notifica: il
+      // contatto e' salvo. Se Supabase non risponde, l'utente non deve vedere
+      // un errore per una richiesta che invece e' arrivata — lo manderebbe a
+      // reinviare, o peggio ad andarsene credendo di non essere passato.
+      try {
+        await inviaLead({
+          nome: String(dati.get("nome") ?? ""),
+          telefono: String(dati.get("telefono") ?? ""),
+          email: String(dati.get("email") ?? "") || undefined,
+          comune: String(dati.get("comune") ?? "") || undefined,
+          tipo_intervento: String(dati.get("intervento") ?? "") || undefined,
+          messaggio: String(dati.get("messaggio") ?? "") || undefined,
+          consenso_marketing: false,
+        });
+      } catch {
+        // Silenzio voluto: il contatto e' gia' al sicuro su Netlify.
+      }
     } catch {
       setStato("errore");
     }

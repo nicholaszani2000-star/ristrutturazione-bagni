@@ -2,6 +2,8 @@ import type { Metadata, Viewport } from "next";
 import { Poppins, Inter } from "next/font/google";
 import { SITE } from "@/config/site";
 import { migliaia } from "@/lib/links";
+import { Analytics } from "@/components/Analytics";
+import { BannerCookie } from "@/components/BannerCookie";
 import "./globals.css";
 
 /**
@@ -61,6 +63,8 @@ export default function RootLayout({
           Vai al contenuto
         </a>
         {children}
+        <Analytics />
+        <BannerCookie />
       </body>
     </html>
   );

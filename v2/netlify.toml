@@ -1,17 +1,24 @@
-# Anteprima statica di Easy-Bagno.
+# Pubblicazione di EasyBagno.it su Netlify.
 #
-# Pubblica l'export generato da PREVIEW_EXPORT=1 (cartella out/). Serve solo a
-# far vedere la landing: la produzione andra' su hosting con server, dove
-# next/image ottimizza le foto al volo invece di servirle cosi' come sono.
+# build:netlify produce l'export statico in out/ con percorsi assoluti, che
+# sono quelli giusti per un hosting. I percorsi relativi e i font incorporati
+# appartengono a build:offline, cioe' al pacchetto che si apre con doppio clic.
 
 [build]
-  command = "PREVIEW_EXPORT=1 npm run build"
+  command = "npm run build:netlify"
   publish = "out"
 
 [build.environment]
   NODE_VERSION = "22"
 
+# Gli asset hanno l'impronta nel nome: non cambiano mai a parita' di nome.
+# L'HTML invece deve poter cambiare a ogni pubblicazione.
 [[headers]]
-  for = "/nx/static/*"
+  for = "/_next/static/*"
   [headers.values]
     Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/models/*"
+  [headers.values]
+    Cache-Control = "public, max-age=2592000"

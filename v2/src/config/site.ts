@@ -15,8 +15,8 @@ export const SITE = {
     tagline: "Ristrutturazione bagno · chiavi in mano",
     payoff: "Il tuo bagno, in buone mani.",
     claim: "Dal progetto alla realizzazione, pensiamo a tutto noi.",
-    domain: "easy-bagno.it",
-    url: "https://easy-bagno.it",
+    domain: "easybagno.it",
+    url: "https://easybagno.it",
   },
 
   zone: {
@@ -153,10 +153,23 @@ export const SITE = {
     ],
   },
 
-  /** FASE 2 — non collegare finché non ci sono gli ID veri */
   integrations: {
+    /** Stream "easybagno.it" (ID 15826734180). Parte solo dopo il consenso. */
+    ga4Id: "G-FCEM78H075",
     metaPixelId: "[META PIXEL ID]",
-    ga4Id: "[GA4 MEASUREMENT ID]",
+
+    /**
+     * Progetto "easy-bagno" (eu-central-1).
+     *
+     * La chiave e' quella PUBBLICABILE: sta nel codice del browser di
+     * proposito. Sulla tabella leads c'e' una sola policy, di solo
+     * inserimento — con questa chiave non si legge, non si modifica, non si
+     * cancella. Non e' un segreto sfuggito.
+     */
+    supabase: {
+      url: "https://mwydejjaevqamsjayghk.supabase.co",
+      publishableKey: "sb_publishable_Pc7dVMi6Y1vZEAxlA9ziaw_okChxE0i",
+    },
   },
 } as const;
 
