@@ -1,52 +1,73 @@
-EasyBagno.it — sito pronto per Netlify
+EasyBagno.it — pubblicazione
+=============================
+
+MODO CONSIGLIATO: collega il repo, poi ogni push va online da solo
+------------------------------------------------------------------
+  Netlify -> il tuo sito -> Site configuration -> Build & deploy
+  -> Link repository -> GitHub -> nicholaszani2000-star/ristrutturazione-bagni
+
+  Impostazioni:
+    Branch to deploy    claude/new-session-01gjm2
+    Base directory      v2
+    Build command       npm run build:netlify
+    Publish directory   v2/out
+
+  Da quel momento non serve piu' nessuno zip: ogni modifica spinta sul
+  branch diventa live da sola. E' il flusso che volevi.
+
+MODO RAPIDO: trascina questo zip
+---------------------------------
+  Netlify -> Add new site -> Deploy manually -> trascina.
+  Va bene per vedere subito il risultato, ma ogni aggiornamento richiede
+  di rifare il caricamento a mano.
+
+
+DOPO LA PRIMA PUBBLICAZIONE — DUE COSE
 =======================================
 
-COME PUBBLICARE
-  1. netlify.com -> "Add new site" -> "Deploy manually"
-  2. Trascina QUESTO ZIP (oppure la cartella scompattata) nel riquadro.
-     I file stanno alla radice: index.html si vede subito.
+1) NOTIFICHE DEL MODULO  (altrimenti i contatti non li vedi arrivare)
+   Site configuration -> Forms -> Form notifications
+   -> Add notification -> Email notification
+   -> la tua email, form = "preventivo"
 
-CONCEPT 3D CON IL VOSTRO MODELLO
-  La sezione "Il bagno, visto da ogni angolazione" carica il file GLB che
-  avete fornito (models/bagno-dopo-concept.glb).
-    - trascina per ruotare, pizzica o rotella per ingrandire;
-    - le frecce della tastiera girano la scena come il dito;
-    - "Ripristina vista" riporta all'inquadratura iniziale.
+2) DOMINIO
+   Lo stream GA4 e il sito sono configurati su  easybagno.it  (senza
+   trattino). Se il dominio su Register e' diverso, dimmelo: l'URL
+   canonico e l'anteprima social vanno allineati.
 
-  Le pareti fra voi e la stanza spariscono mentre girate: il guscio e'
-  disegnato solo sulle facce interne. Senza, il modello e' chiuso su
-  quattro lati e da fuori si vedrebbe solo una scatola.
 
-  Il modello e' un volume di studio: geometrie piene, colori uniformi,
-  nessuna fotografia applicata sopra. Non somigliera' a una fotografia,
-  e non e' un limite del sito. Quando avrete un GLB piu' dettagliato
-  basta sostituire il file in models/ con lo stesso nome: la scena
-  continua a funzionare senza toccare il codice.
+COSA E' GIA' COLLEGATO
+=======================
 
-IL MODULO FUNZIONA GIA'
-  Netlify riconosce da solo il modulo "preventivo" leggendo l'HTML al
-  momento della pubblicazione. Non serve nessun backend.
+GA4 — stream easybagno.it, G-FCEM78H075
+  Non parte all'apertura della pagina: lo script di Google viene
+  caricato SOLO dopo che il visitatore preme "Accetta". E' un obbligo,
+  non una scelta di stile.
+  Eventi tracciati:
+    generate_lead         preventivo inviato
+    contatto_telefono     clic su un numero
+    contatto_whatsapp     clic su WhatsApp
+  In GA4 vanno segnati come conversioni:
+    Admin -> Events -> segna "generate_lead" come key event.
 
-  Dopo la PRIMA pubblicazione, per ricevere i contatti via email:
-     Site configuration -> Forms -> Form notifications
-     -> Add notification -> Email notification
-     -> la vostra email, form = "preventivo"
+SUPABASE — progetto "easy-bagno", tabella "leads"
+  Ogni preventivo inviato finisce anche qui, con i parametri UTM della
+  visita (fonte e campagna): serve a sapere QUALE annuncio ha portato
+  il contatto, non solo che ne sono arrivati.
+  La chiave nel codice e' quella pubblicabile, ed e' pensata per essere
+  pubblica: sulla tabella c'e' una sola regola, di solo inserimento.
+  Con quella chiave non si legge, non si modifica, non si cancella.
 
-  Senza questo passaggio i contatti arrivano lo stesso, ma si vedono solo
-  dentro Netlify, in Forms. Fatelo subito: e' il punto dove si perdono i
-  primi contatti.
+NETLIFY FORMS
+  Resta attivo in parallelo: e' lui a mandarti la notifica via email, ed
+  e' la rete di sicurezza se Supabase non risponde.
 
-  Per provarlo: compilate il modulo sul sito pubblicato. In locale NON
-  funziona, ha bisogno dei server di Netlify.
 
-COSA MANCA ANCORA, COME D'ACCORDO
-  - GA4, Meta Pixel + CAPI, Supabase.
-  - Quando arriveranno GA4 e Meta servira' la finestra di consenso
-    cookie: la pagina /cookie oggi dichiara che ci sono solo cookie
-    tecnici, vero adesso ma non piu' allora.
-
-DA CONFERMARE PRIMA DI SPENDERE IN PUBBLICITA'
-  Tre frasi in pagina sono promesse commerciali sotto la vostra P.IVA:
-  - l'IVA agevolata 10% e' inclusa o esclusa dai 9.490 euro?
-  - quanti anni di garanzia?
-  - la lista di cosa NON e' compreso e' corretta?
+ANCORA DA FARE
+===============
+  - Meta Pixel + CAPI (aspetto l'ID da te)
+  - Sezioni: detrazione fiscale, processo, FAQ, perche' noi
+    (il testo e' gia' scritto in configurazione, manca il montaggio)
+  - Recensioni: servono testi VERI dei tuoi clienti
+  - Tre conferme: IVA 10% inclusa o esclusa, anni di garanzia,
+    lista di cosa non e' compreso
