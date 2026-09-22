@@ -8,7 +8,6 @@ import { Reveal } from "@/components/Reveal";
 const NAVIGA = [
   { href: "#offerta", testo: "L'offerta" },
   { href: "#prima-dopo", testo: "Prima e dopo" },
-  { href: "#progetto", testo: "Concept 3D" },
   { href: "#preventivo", testo: "Preventivo gratuito" },
 ];
 

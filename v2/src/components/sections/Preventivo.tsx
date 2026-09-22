@@ -66,7 +66,10 @@ export function Preventivo() {
           telefono: String(dati.get("telefono") ?? ""),
           email: String(dati.get("email") ?? "") || undefined,
           comune: String(dati.get("comune") ?? "") || undefined,
-          tipo_intervento: String(dati.get("intervento") ?? "") || undefined,
+          // Non si sceglie piu' nulla nel modulo: l'offerta e' una sola, e
+          // registrarla comunque serve a sapere su cosa e' arrivata la
+          // richiesta quando le offerte diventeranno piu' di una.
+          tipo_intervento: SITE.offer.title,
           messaggio: String(dati.get("messaggio") ?? "") || undefined,
           consenso_marketing: false,
         });
@@ -170,6 +173,9 @@ export function Preventivo() {
               {/* Serve all'invio via fetch: senza, il messaggio arriva senza
                   nome e viene scartato. */}
               <input type="hidden" name="form-name" value={NOME_MODULO} />
+              {/* Nell'email di Netlify comparirebbe altrimenti una richiesta
+                  senza indicazione di cosa e' stato chiesto. */}
+              <input type="hidden" name="intervento" value={SITE.offer.title} />
 
               {/* Esca per i robot: nascosta alle persone e alle tecnologie
                   assistive, quindi solo un automatismo la compila. */}
@@ -210,15 +216,6 @@ export function Preventivo() {
                   <label className={etichetta} htmlFor="comune">Comune</label>
                   <input id="comune" name="comune" autoComplete="address-level2" className={campo} placeholder="Gallarate" />
                 </div>
-              </div>
-
-              <div>
-                <label className={etichetta} htmlFor="intervento">Che intervento ti serve?</label>
-                <select id="intervento" name="intervento" className={campo} defaultValue={SITE.form.interventionTypes[0]}>
-                  {SITE.form.interventionTypes.map((t) => (
-                    <option key={t} value={t}>{t}</option>
-                  ))}
-                </select>
               </div>
 
               <div>
