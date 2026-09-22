@@ -23,7 +23,7 @@ export function StickyCta() {
         <Icon name="whatsapp" className="size-5" />
         WhatsApp
       </a>
-      <a href="#preventivo" className={`${item} !bg-blue text-white`}>
+      <a href="#preventivo" className={`${item} !bg-blue-700 text-white`}>
         <Icon name="doc" className="size-5" />
         Preventivo
       </a>

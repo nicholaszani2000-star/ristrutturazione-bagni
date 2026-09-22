@@ -130,3 +130,41 @@
 @utility grad-brand {
   background-image: linear-gradient(135deg, var(--color-navy) 0%, var(--color-blue) 55%, var(--color-sky) 100%);
 }
+
+/**
+ * Riflesso speculare sulla superficie di un pulsante.
+ *
+ * E' l'idea del pulsante "liquid metal" tradotta nel linguaggio di questo
+ * sito: la sensazione di una superficie che cattura la luce, ottenuta con un
+ * gradiente e nient'altro. Niente WebGL, niente canvas, nessuna dipendenza —
+ * il pulsante resta lo stesso elemento di prima, con una luce sopra.
+ *
+ * La posizione arriva da --mx/--my. Dove un involucro magnetico le aggiorna,
+ * la luce segue il cursore; altrove resta al centro e il riflesso e' una
+ * semplice comparsa al passaggio. Volutamente: il catalogo UI consiglia non
+ * piu' di uno o due elementi "focali" per schermata.
+ */
+@utility riflesso {
+  position: relative;
+  isolation: isolate;
+
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.35s ease;
+    background: radial-gradient(
+      14rem circle at var(--mx, 50%) var(--my, 50%),
+      rgb(255 255 255 / 0.3),
+      rgb(255 255 255 / 0) 55%
+    );
+  }
+
+  &:hover::after,
+  &:focus-visible::after {
+    opacity: 1;
+  }
+}

@@ -8,7 +8,15 @@ const base =
   "hover:-translate-y-px active:translate-y-0";
 
 const variants = {
-  primary: "border-blue bg-blue text-white hover:border-blue-700 hover:bg-blue-700 hover:shadow-card",
+  // blue-700 e non blue: bianco su #1b84dd da' 3,90:1, sotto il minimo di
+  // 4,5:1 per un testo di 17px semibold. Su #1663b0 sale a 6,09:1. E' lo
+  // stesso token che prima serviva da stato hover, quindi il marchio non
+  // cambia — cambia la leggibilita' al sole, che e' dove questi pulsanti
+  // vengono guardati davvero.
+  //
+  // Il colore ora resta fermo al passaggio del mouse: il segnale e' il
+  // riflesso che si accende, piu' l'ombra.
+  primary: "border-blue-700 bg-blue-700 text-white riflesso hover:shadow-[var(--shadow-lift)]",
   whatsapp: "border-whatsapp bg-whatsapp text-white hover:border-whatsapp-dark hover:bg-whatsapp-dark hover:shadow-card",
   ghost: "border-line bg-transparent text-navy hover:border-blue hover:bg-tint",
   light: "border-white bg-white text-navy hover:border-sand-100 hover:bg-sand-100",

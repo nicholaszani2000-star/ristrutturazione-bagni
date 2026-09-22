@@ -50,10 +50,19 @@ export function Magnetico({
         const r = el.getBoundingClientRect();
         xA((e.clientX - (r.left + r.width / 2)) * forza);
         yA((e.clientY - (r.top + r.height / 2)) * forza);
+        // Le variabili scendono per eredita' fino al pulsante interno, dove
+        // l'utility "riflesso" le usa per posizionare la luce.
+        el.style.setProperty("--mx", `${((e.clientX - r.left) / r.width) * 100}%`);
+        el.style.setProperty("--my", `${((e.clientY - r.top) / r.height) * 100}%`);
       };
       // elastic in uscita: il ritorno a posto e' la meta' visibile dell'effetto
-      const rilascia = () =>
+      const rilascia = () => {
         gsap.to(el, { x: 0, y: 0, duration: 0.7, ease: "elastic.out(1, 0.45)" });
+        // La luce torna al centro insieme al pulsante, altrimenti resterebbe
+        // ferma dove il cursore e' uscito.
+        el.style.setProperty("--mx", "50%");
+        el.style.setProperty("--my", "50%");
+      };
 
       el.addEventListener("pointermove", muovi);
       el.addEventListener("pointerleave", rilascia);
