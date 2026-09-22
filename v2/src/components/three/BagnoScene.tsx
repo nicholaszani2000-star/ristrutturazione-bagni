@@ -5,383 +5,242 @@ import {
   OrbitControls,
   Environment,
   Lightformer,
-  MeshReflectorMaterial,
   PerspectiveCamera,
+  useGLTF,
 } from "@react-three/drei";
 import { EffectComposer, Bloom, Vignette } from "@react-three/postprocessing";
-import { Suspense, useEffect, useMemo, useRef, useState, type MutableRefObject } from "react";
+import { Suspense, useEffect, useMemo, useState, type MutableRefObject } from "react";
 import * as THREE from "three";
-import { RectAreaLightUniformsLib } from "three/examples/jsm/lights/RectAreaLightUniformsLib.js";
 import gsap from "gsap";
 
 /**
- * Concept 3D di un bagno premium.
+ * Concept 3D del bagno "dopo".
  *
  * NON e' il bagno di un cliente e non e' il 3x2 m dell'offerta: e' una
  * visualizzazione di materiali, luce e atmosfera. La distinzione non e'
  * formale — la pagina porta una P.IVA reale, e mostrare un render lasciando
  * intendere che sia un cantiere eseguito sarebbe pubblicita' ingannevole. I
  * lavori veri stanno nella sezione Prima/Dopo, che resta separata.
- *
- * Tutto e' geometria e materiali calcolati a runtime: qui ogni CDN di asset e'
- * irraggiungibile, e in produzione un modello scaricato da fuori sarebbe un
- * servizio di terzi sul percorso critico. Quando arrivera' un bagno.glb bastera'
- * sostituire <Arredo />: il resto della scena non lo sa e non cambia.
  */
 
-// Le luci ad area in three.js non illuminano finche' non si caricano le loro
-// tabelle: senza questa riga la finestra e' solo un rettangolo bianco che non
-// fa luce, e la stanza resta al buio senza che nulla segnali l'errore.
-RectAreaLightUniformsLib.init();
-
-// Stanza del concept. Proporzioni da bagno lungo e stretto, come la reference.
-const L = 3.2, P = 2.2, H = 2.7;
-const x0 = -L / 2, x1 = L / 2;
-const z0 = -P / 2, z1 = P / 2;
-
-const C = {
-  bluProfondo: "#1d4a57",
-  bluPetrolio: "#276a7c",
-  fuga: "#14343d",
-  mobileScuro: "#1b2226",
-  ceramica: "#f4f6f6",
-  metalloScuro: "#2a2f33",
-  vetro: "#bfe0e6",
-  ledCaldo: "#ffcf9b",
-  luceFinestra: "#e8f4ff",
-};
+// Percorso relativo, non assoluto: cosi' il modello si trova sia sul sito
+// pubblicato sia nel pacchetto che si apre con doppio clic, dove una barra
+// iniziale punterebbe alla radice del disco.
+const MODELLO = "models/bagno-dopo-concept.glb";
 
 /**
- * Generatore pseudo-casuale con seme (mulberry32).
+ * Il modello e' Z-up, non Y-up.
  *
- * Le venature devono essere le stesse a ogni disegno. Con Math.random la
- * texture cambierebbe a ogni ricalcolo della memoizzazione: la stanza
- * cambierebbe aspetto sotto gli occhi di chi la sta guardando, e due visite
- * darebbero due bagni diversi.
+ * E' stato generato con trimesh, che mette l'alto su Z, mentre three.js usa Y.
+ * Nel file il pavimento sta a Z=0 e copre X 0..3,00 e Y 0..2,00: il 3x2 m
+ * dell'offerta, con il soffitto a 2,64 m. Senza la rotazione la stanza entra
+ * in scena coricata su un fianco, e ogni correzione di camera o di luci
+ * inseguirebbe un errore che sta a monte.
+ *
+ * Ruotando di -90 gradi attorno a X, (x, y, z) diventa (x, z, -y). L'origine
+ * resta in uno spigolo, quindi serve anche la traslazione: cosi' il centro del
+ * pavimento finisce a (0, 0, 0).
+ *
+ * Stanza risultante:  X -1,5..1,5  ·  Y 0..2,64  ·  Z -1,0..1,0
  */
-function casualeConSeme(seme: number) {
-  let a = seme >>> 0;
-  return () => {
-    a = (a + 0x6d2b79f5) >>> 0;
-    let t = Math.imul(a ^ (a >>> 15), 1 | a);
-    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
-    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
-  };
-}
+const ROTAZIONE: [number, number, number] = [-Math.PI / 2, 0, 0];
+const CENTRO: [number, number, number] = [-1.5, 0, 1.0];
+const ALTEZZA_SGUARDO = 1.05;
 
 /**
- * Grandi piastrelle effetto pietra, disegnate su una canvas.
- *
- * Una parete a tinta unita legge come cartongesso. Serve la fuga e serve la
- * venatura: senza la seconda, la pietra sembra plastica. Il rumore e' a grana
- * grossa di proposito — a grana fine, ridotto in prospettiva, sparisce.
+ * Posizione di riposo della camera: fuori dalla stanza, che ora si vede
+ * comunque dentro perche' il guscio murario e' disegnato solo sulle facce
+ * interne. Dentro non c'era spazio per orbitare: a meno di un metro dal centro
+ * la camera finisce dentro i mobili, che occupano quasi tutta la pianta.
  */
-function usePietra(base: string, fuga: string, ripetizioni: [number, number], lucida: boolean) {
-  return useMemo(() => {
-    const dim = 512;
-    const c = document.createElement("canvas");
-    c.width = c.height = dim;
-    const g = c.getContext("2d");
-    if (!g) return null;
+const POSA = new THREE.Vector3(3.1, 2.6, 3.2);
+const RAGGIO_MIN = 2.9;
+const RAGGIO_MAX = 8;
 
-    g.fillStyle = fuga;
-    g.fillRect(0, 0, dim, dim);
+function Stanza() {
+  const { scene } = useGLTF(MODELLO);
 
-    // Formato grande: due lastre per lato, non un mosaico.
-    const n = 2, lato = dim / n, fugaPx = lucida ? 3 : 5;
-    for (let y = 0; y < n; y++) {
-      for (let x = 0; x < n; x++) {
-        g.fillStyle = base;
-        g.fillRect(x * lato + fugaPx / 2, y * lato + fugaPx / 2, lato - fugaPx, lato - fugaPx);
+  // Una copia per istanza: useGLTF mette in cache la scena, e modificarla
+  // direttamente significherebbe alterare l'originale condiviso.
+  const modello = useMemo(() => {
+    const c = scene.clone(true);
+    c.traverse((o) => {
+      const m = o as THREE.Mesh;
+      if (!m.isMesh) return;
+      m.castShadow = true;
+      m.receiveShadow = true;
+
+      // Il guscio murario si vede solo da dentro.
+      //
+      // Il modello e' una stanza chiusa su quattro lati: da fuori si vedevano
+      // solo i muri esterni, e da dentro non c'e' spazio per orbitare — a
+      // meno di un metro dal centro la camera finisce dentro i mobili, che
+      // occupano quasi tutta la pianta di 3x2.
+      //
+      // Disegnando solo le facce interne, le pareti fra osservatore e stanza
+      // spariscono da sole mentre si gira: si guarda dentro da ogni lato senza
+      // dover indovinare quale muro nascondere.
+      //
+      // I materiali vanno duplicati: clone() li condivide con la scena in
+      // cache, e cambiarli qui li cambierebbe per tutti.
+      const mat = m.material as THREE.Material | THREE.Material[];
+      const guscio = (x: THREE.Material) => x.name === "Dark Stone";
+      if (Array.isArray(mat)) {
+        m.material = mat.map((x) => {
+          if (!guscio(x)) return x;
+          const y = x.clone();
+          y.side = THREE.BackSide;
+          return y;
+        });
+      } else if (guscio(mat)) {
+        const y = mat.clone();
+        y.side = THREE.BackSide;
+        m.material = y;
+        // Una parete che non si vede non puo' proiettare ombra sulla stanza.
+        m.castShadow = false;
       }
-    }
+    });
+    return c;
+  }, [scene]);
 
-    // Venature: macchie chiare e scure a bassa opacita', sempre le stesse.
-    const rnd = casualeConSeme(lucida ? 20260101 : 20260202);
-    for (let i = 0; i < 900; i++) {
-      g.fillStyle = rnd() > 0.5 ? "rgba(255,255,255,0.045)" : "rgba(0,0,0,0.055)";
-      const r = 6 + rnd() * 26;
-      g.beginPath();
-      g.ellipse(rnd() * dim, rnd() * dim, r, r * (0.3 + rnd()), rnd() * Math.PI, 0, Math.PI * 2);
-      g.fill();
-    }
-
-    const t = new THREE.CanvasTexture(c);
-    t.wrapS = t.wrapT = THREE.RepeatWrapping;
-    t.repeat.set(ripetizioni[0], ripetizioni[1]);
-    t.anisotropy = 8;
-    t.colorSpace = THREE.SRGBColorSpace;
-    return t;
-  }, [base, fuga, ripetizioni, lucida]);
+  return <primitive object={modello} rotation={ROTAZIONE} position={CENTRO} />;
 }
 
-function Pavimento({ qualitaAlta }: { qualitaAlta: boolean }) {
-  const pietra = usePietra(C.bluProfondo, C.fuga, [3, 2], true);
-  return (
-    <mesh rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
-      <planeGeometry args={[L, P]} />
-      {qualitaAlta ? (
-        // Il pavimento lucido che riflette e' meta' dell'effetto: senza,
-        // l'ambiente resta piatto. Costa, quindi su mobile si scende di
-        // risoluzione invece di rinunciarci.
-        <MeshReflectorMaterial
-          map={pietra ?? undefined}
-          color={C.bluProfondo}
-          resolution={512}
-          mixBlur={1.1}
-          mixStrength={22}
-          roughness={0.32}
-          depthScale={1.1}
-          minDepthThreshold={0.4}
-          maxDepthThreshold={1.3}
-          metalness={0.35}
-          mirror={0.45}
-        />
-      ) : (
-        <meshStandardMaterial map={pietra ?? undefined} color={C.bluProfondo} roughness={0.35} metalness={0.3} />
-      )}
-    </mesh>
-  );
-}
-
-function Pareti() {
-  const pietra = usePietra(C.bluPetrolio, C.fuga, [3, 3], false);
-  return (
-    <group>
-      <mesh position={[0, H / 2, z0]} receiveShadow>
-        <planeGeometry args={[L, H]} />
-        <meshStandardMaterial map={pietra ?? undefined} color={C.bluPetrolio} roughness={0.55} metalness={0.08} />
-      </mesh>
-      <mesh position={[x0, H / 2, 0]} rotation={[0, Math.PI / 2, 0]} receiveShadow>
-        <planeGeometry args={[P, H]} />
-        <meshStandardMaterial map={pietra ?? undefined} color={C.bluPetrolio} roughness={0.55} metalness={0.08} />
-      </mesh>
-      {/* Soffitto: chiude la scena e da' un piano su cui rimbalza la luce */}
-      <mesh position={[0, H, 0]} rotation={[Math.PI / 2, 0, 0]}>
-        <planeGeometry args={[L, P]} />
-        <meshStandardMaterial color="#b9c4c7" roughness={1} />
-      </mesh>
-    </group>
-  );
-}
-
-/** Finestra sulla parete di sinistra: e' la sorgente di luce naturale. */
-function Finestra() {
-  return (
-    <group>
-      <mesh position={[x0 + 0.012, 1.55, 0.35]} rotation={[0, Math.PI / 2, 0]}>
-        <planeGeometry args={[0.95, 1.1]} />
-        <meshBasicMaterial color={C.luceFinestra} toneMapped={false} />
-      </mesh>
-      <mesh position={[x0 + 0.02, 1.55, 0.35]} rotation={[0, Math.PI / 2, 0]}>
-        <ringGeometry args={[0.52, 0.56, 4]} />
-        <meshStandardMaterial color={C.metalloScuro} roughness={0.4} metalness={0.7} />
-      </mesh>
-      {/* La luce vera che entra: fredda, in contrasto con i LED caldi */}
-      <rectAreaLight
-        position={[x0 + 0.05, 1.55, 0.35]} rotation={[0, Math.PI / 2, 0]}
-        width={0.95} height={1.1} intensity={7} color={C.luceFinestra}
-      />
-    </group>
-  );
-}
-
-function Doccia() {
-  const cx = x1 - 0.62, cz = z0 + 0.55;
-  return (
-    <group>
-      {/* Piatto a filo pavimento */}
-      <mesh position={[cx, 0.012, cz]} receiveShadow>
-        <boxGeometry args={[1.2, 0.024, 1.1]} />
-        <meshStandardMaterial color="#1d2b30" roughness={0.45} metalness={0.2} />
-      </mesh>
-
-      {/* Lastra walk-in in vetro */}
-      <mesh position={[cx - 0.6, 1.05, cz]} rotation={[0, Math.PI / 2, 0]}>
-        <planeGeometry args={[1.1, 2.1]} />
-        <meshPhysicalMaterial
-          color={C.vetro} transparent opacity={0.16} roughness={0.03}
-          metalness={0} transmission={0.95} thickness={0.012}
-          side={THREE.DoubleSide}
-        />
-      </mesh>
-      <mesh position={[cx - 0.6, 1.05, cz - 0.55]}>
-        <boxGeometry args={[0.028, 2.1, 0.028]} />
-        <meshStandardMaterial color={C.metalloScuro} roughness={0.3} metalness={0.85} />
-      </mesh>
-
-      {/* Rain shower a soffitto */}
-      <mesh position={[cx, H - 0.06, cz]}>
-        <boxGeometry args={[0.32, 0.03, 0.32]} />
-        <meshStandardMaterial color={C.metalloScuro} roughness={0.25} metalness={0.9} />
-      </mesh>
-      <mesh position={[cx, H - 0.09, cz]}>
-        <boxGeometry args={[0.3, 0.012, 0.3]} />
-        <meshBasicMaterial color="#8fb6bf" toneMapped={false} transparent opacity={0.35} />
-      </mesh>
-
-      {/* Nicchia illuminata nella parete della doccia */}
-      <mesh position={[cx + 0.2, 1.25, z0 + 0.03]}>
-        <boxGeometry args={[0.7, 0.3, 0.06]} />
-        <meshStandardMaterial color="#0e2a32" roughness={0.6} />
-      </mesh>
-      <mesh position={[cx + 0.2, 1.25, z0 + 0.065]}>
-        <planeGeometry args={[0.68, 0.28]} />
-        <meshBasicMaterial color={C.ledCaldo} toneMapped={false} />
-      </mesh>
-      <pointLight position={[cx + 0.2, 1.25, z0 + 0.3]} intensity={2.4} distance={1.8} color={C.ledCaldo} />
-    </group>
-  );
-}
-
-function ZonaLavabo() {
-  const cx = -0.75;
-  return (
-    <group>
-      {/* Mobile sospeso scuro */}
-      <mesh position={[cx, 0.66, z0 + 0.26]} castShadow receiveShadow>
-        <boxGeometry args={[1.25, 0.44, 0.5]} />
-        <meshStandardMaterial color={C.mobileScuro} roughness={0.42} metalness={0.15} />
-      </mesh>
-      <mesh position={[cx, 0.895, z0 + 0.26]} castShadow>
-        <boxGeometry args={[1.29, 0.04, 0.54]} />
-        <meshStandardMaterial color="#20292d" roughness={0.3} metalness={0.25} />
-      </mesh>
-      {/* LED sotto il mobile: e' cio' che lo fa "galleggiare" */}
-      <mesh position={[cx, 0.437, z0 + 0.26]} rotation={[Math.PI / 2, 0, 0]}>
-        <planeGeometry args={[1.2, 0.45]} />
-        <meshBasicMaterial color={C.ledCaldo} toneMapped={false} transparent opacity={0.75} />
-      </mesh>
-      <pointLight position={[cx, 0.32, z0 + 0.3]} intensity={1.8} distance={1.6} color={C.ledCaldo} />
-
-      {/* Lavabo da appoggio */}
-      <mesh position={[cx, 0.985, z0 + 0.26]} castShadow>
-        <cylinderGeometry args={[0.21, 0.185, 0.14, 40]} />
-        <meshStandardMaterial color={C.ceramica} roughness={0.15} />
-      </mesh>
-      <mesh position={[cx, 1.11, z0 + 0.06]}>
-        <boxGeometry args={[0.028, 0.3, 0.028]} />
-        <meshStandardMaterial color={C.metalloScuro} roughness={0.25} metalness={0.9} />
-      </mesh>
-
-      {/* Specchio circolare retroilluminato */}
-      <mesh position={[cx, 1.78, z0 + 0.03]} rotation={[0, 0, 0]}>
-        <circleGeometry args={[0.44, 48]} />
-        <meshBasicMaterial color={C.ledCaldo} toneMapped={false} />
-      </mesh>
-      {/* Il disco nasce sdraiato: la rotazione va sulla mesh, non sulla
-          geometria, che non ha un orientamento proprio. */}
-      <mesh position={[cx, 1.78, z0 + 0.05]} rotation={[Math.PI / 2, 0, 0]}>
-        <cylinderGeometry args={[0.37, 0.37, 0.03, 48]} />
-        <meshStandardMaterial color="#cfdde2" metalness={0.45} roughness={0.1} envMapIntensity={1.8} />
-      </mesh>
-      <pointLight position={[cx, 1.78, z0 + 0.4]} intensity={2.6} distance={2.2} color={C.ledCaldo} />
-    </group>
-  );
-}
-
-function Sanitari() {
-  return (
-    <group>
-      <mesh position={[x0 + 0.3, 0.45, z1 - 0.42]} castShadow>
-        <boxGeometry args={[0.58, 0.34, 0.38]} />
-        <meshStandardMaterial color={C.ceramica} roughness={0.14} />
-      </mesh>
-      <mesh position={[x0 + 0.3, 0.45, z1 - 0.88]} castShadow>
-        <boxGeometry args={[0.58, 0.34, 0.38]} />
-        <meshStandardMaterial color={C.ceramica} roughness={0.14} />
-      </mesh>
-    </group>
-  );
-}
+useGLTF.preload(MODELLO);
 
 /**
- * Tutto l'arredo in un solo gruppo.
- *
- * E' il punto di sostituzione: con un bagno.glb a disposizione, questo diventa
- * <primitive object={gltf.scene} /> e nient'altro nella scena va toccato.
- */
-function Arredo() {
-  return (
-    <group>
-      <Doccia />
-      <ZonaLavabo />
-      <Sanitari />
-    </group>
-  );
-}
-
-/**
- * Regia della camera: ingresso cinematografico e parallasse allo scorrimento.
+ * Regia della camera: ingresso cinematografico, parallasse, ripristino vista.
  *
  * L'ingresso e i controlli manuali si contendono la stessa camera, quindi
  * OrbitControls resta spento finche' il volo non e' finito: lasciarli attivi
  * insieme fa scattare l'inquadratura al primo tocco.
  */
 function RegiaCamera({
-  ingresso, animato, progresso, onPronta,
+  ingresso, animato, progresso, ripristina, onPronta,
 }: {
-  ingresso: boolean; animato: boolean;
-  progresso: MutableRefObject<number>; onPronta: () => void;
+  ingresso: boolean;
+  animato: boolean;
+  progresso: MutableRefObject<number>;
+  ripristina: number;
+  onPronta: () => void;
 }) {
-  const { camera } = useThree();
-  const base = useRef(new THREE.Vector3(2.55, 1.85, 2.55));
+  const { camera, controls, invalidate } = useThree();
 
   useEffect(() => {
-    camera.lookAt(0, 1.15, 0);
+    camera.lookAt(0, ALTEZZA_SGUARDO, 0);
     if (!ingresso) {
-      camera.position.copy(base.current);
+      camera.position.copy(POSA);
       onPronta();
       return;
     }
     const t = gsap.fromTo(
       camera.position,
-      { x: 4.6, y: 0.95, z: 4.6 },
+      { x: 5.6, y: 1.6, z: 5.8 },
       {
-        x: base.current.x, y: base.current.y, z: base.current.z,
+        x: POSA.x, y: POSA.y, z: POSA.z,
         duration: 2.1, ease: "power3.out",
-        onUpdate: () => camera.lookAt(0, 1.15, 0),
+        onUpdate: () => camera.lookAt(0, ALTEZZA_SGUARDO, 0),
         onComplete: onPronta,
       },
     );
     return () => { t.kill(); };
   }, [camera, ingresso, onPronta]);
 
-  // Parallasse: il valore arriva da un ref aggiornato fuori da React, cosi'
-  // scorrere la pagina non provoca un re-render per fotogramma.
-  //
-  // La regola sull'immutabilita' e' disattivata qui, e solo qui, per un motivo
-  // preciso: in react-three-fiber la camera e' un oggetto three.js vivo,
-  // posseduto dal ciclo di rendering e non da React. Spostarla a ogni
-  // fotogramma e' il modo previsto di muoverla; farla passare per uno stato
-  // React significherebbe un re-render a 60 volte al secondo, cioe' esattamente
-  // il costo che la regola vorrebbe evitare.
+  // Ripristino vista. Parte da 0 e viene ignorato al primo render, altrimenti
+  // si sovrapporrebbe al volo d'ingresso appena montato.
+  useEffect(() => {
+    if (ripristina === 0) return;
+    const c = controls as unknown as { target: THREE.Vector3; update: () => void } | null;
+    const t = gsap.to(camera.position, {
+      x: POSA.x, y: POSA.y, z: POSA.z,
+      duration: 0.9, ease: "power2.out",
+      onUpdate: () => {
+        c?.target.set(0, ALTEZZA_SGUARDO, 0);
+        c?.update();
+        invalidate();
+      },
+    });
+    return () => { t.kill(); };
+  }, [ripristina, camera, controls, invalidate]);
+
   /* eslint-disable react-hooks/immutability */
+  // In react-three-fiber la camera e' un oggetto three.js vivo, posseduto dal
+  // ciclo di rendering e non da React. Spostarla per fotogramma e' il modo
+  // previsto di muoverla; passare da uno stato React vorrebbe dire un
+  // re-render 60 volte al secondo, cioe' il costo che la regola evita.
   useFrame(() => {
     if (!animato) return;
-    const p = progresso.current;
-    camera.position.y = base.current.y + (p - 0.5) * 0.55;
+    camera.position.y = POSA.y + (progresso.current - 0.5) * 0.5;
   });
   /* eslint-enable react-hooks/immutability */
 
   return null;
 }
 
+/**
+ * Rotazione con le frecce della tastiera.
+ *
+ * OrbitControls da solo risponde a mouse e tocco: senza questo, chi naviga da
+ * tastiera non puo' girare la scena.
+ *
+ * Il fuoco lo riceve il contenitore della sezione, reso focalizzabile in modo
+ * dichiarativo: qui ci limitiamo a leggere chi ce l'ha. I tasti agiscono solo
+ * quando l'utente e' davvero dentro la scena, altrimenti le frecce
+ * smetterebbero di scorrere la pagina.
+ */
+function ComandiTastiera({ minPolare, maxPolare }: { minPolare: number; maxPolare: number }) {
+  const { controls, gl, invalidate } = useThree();
+
+  useEffect(() => {
+    const tela = gl.domElement;
+    const c = controls as unknown as {
+      getAzimuthalAngle: () => number; setAzimuthalAngle: (v: number) => void;
+      getPolarAngle: () => number; setPolarAngle: (v: number) => void;
+      update: () => void;
+    } | null;
+    if (!c) return;
+
+    const passo = 0.14;
+    const dentroLaScena = () => {
+      const sezione = tela.closest("[data-scena-3d]");
+      return !!sezione && sezione.contains(document.activeElement);
+    };
+    const premuto = (e: KeyboardEvent) => {
+      if (!dentroLaScena()) return;
+      if (e.key === "ArrowLeft") c.setAzimuthalAngle(c.getAzimuthalAngle() - passo);
+      else if (e.key === "ArrowRight") c.setAzimuthalAngle(c.getAzimuthalAngle() + passo);
+      else if (e.key === "ArrowUp") c.setPolarAngle(Math.max(minPolare, c.getPolarAngle() - passo));
+      else if (e.key === "ArrowDown") c.setPolarAngle(Math.min(maxPolare, c.getPolarAngle() + passo));
+      else return;
+      e.preventDefault();
+      c.update();
+      invalidate();
+    };
+    window.addEventListener("keydown", premuto);
+    return () => window.removeEventListener("keydown", premuto);
+  }, [controls, gl, invalidate, minPolare, maxPolare]);
+
+  return null;
+}
+
+const MIN_POLARE = 0.55;
+const MAX_POLARE = Math.PI / 2.08;
+
 export default function BagnoScene({
-  animato, qualitaAlta, progresso,
+  animato, qualitaAlta, progresso, ripristina,
 }: {
-  animato: boolean; qualitaAlta: boolean; progresso: MutableRefObject<number>;
+  animato: boolean;
+  qualitaAlta: boolean;
+  progresso: MutableRefObject<number>;
+  ripristina: number;
 }) {
   const [pronta, setPronta] = useState(false);
 
   // La rotazione automatica costa un fotogramma continuo finche' la sezione e'
-  // a schermo. Su desktop e' un lusso accettabile; su mobile — da dove arriva
-  // l'80% del traffico — significa batteria bruciata e fotogrammi tolti alle
-  // altre animazioni della pagina, che rallentano visibilmente.
-  //
-  // Quindi sul piccolo: il volo d'ingresso si vede lo stesso, poi la scena si
-  // ferma e torna a disegnare solo quando la si tocca. Resta girabile col dito,
-  // non gira da sola.
+  // a schermo. Su desktop e' accettabile; su mobile — da dove arriva l'80% del
+  // traffico — significa batteria bruciata e fotogrammi tolti alle altre
+  // animazioni della pagina. Sul piccolo il volo d'ingresso si vede lo stesso,
+  // poi la scena si ferma e torna a disegnare solo quando la si tocca.
   const ruotaDaSola = animato && qualitaAlta;
   const disegnaSempre = animato && (ruotaDaSola || !pronta);
 
@@ -389,50 +248,66 @@ export default function BagnoScene({
     <Canvas
       shadows
       dpr={qualitaAlta ? [1, 1.75] : [1, 1.35]}
-      gl={{ antialias: true, powerPreference: "high-performance" }}
+      // Esposizione appena sotto 1: con la scena chiusa i bianchi dei
+      // sanitari arrivavano a saturazione e perdevano il volume.
+      gl={{ antialias: true, powerPreference: "high-performance", toneMappingExposure: 0.95 }}
       // "demand" disegna solo su richiesta: OrbitControls la invia a ogni
-      // trascinamento, quindi l'interazione resta fluida.
+      // trascinamento, quindi l'interazione resta fluida senza ciclo continuo.
       frameloop={disegnaSempre ? "always" : "demand"}
     >
-      <PerspectiveCamera makeDefault position={[4.6, 0.95, 4.6]} fov={52} />
-      <color attach="background" args={["#0d2228"]} />
-      <fog attach="fog" args={["#0d2228", 11, 24]} />
+      {/* Campo visivo ampio: dentro una stanza di tre metri un obiettivo
+          stretto inquadrerebbe poco piu' di una piastrella. */}
+      <PerspectiveCamera makeDefault position={[5.6, 1.6, 5.8]} fov={42} />
+      <color attach="background" args={["#14100e"]} />
 
       <Suspense fallback={null}>
-        <Pavimento qualitaAlta={qualitaAlta} />
-        <Pareti />
-        <Finestra />
-        <Arredo />
+        <Stanza />
 
         {/* Illuminazione disegnata a mano invece di una mappa HDRI scaricata:
-            i CDN di HDRI qui sono bloccati, e resterebbero comunque una
-            dipendenza esterna in produzione. */}
+            i CDN di HDRI qui sono irraggiungibili e resterebbero comunque una
+            dipendenza esterna sul percorso critico. I riflessi servono: senza
+            ambiente, lo specchio e i metalli del modello escono neri. */}
+        {/* Ambiente tenuto basso di proposito.
+            Serve ai riflessi — senza, lo specchio e i metalli del modello
+            escono neri — ma non deve illuminare: in una stanza chiusa di tre
+            metri anche una sorgente moderata lava via il colore, e la pietra
+            scura del modello (#464440) veniva fuori bianca. */}
         <Environment resolution={256} frames={1}>
-          <Lightformer intensity={3.4} position={[0, 4, 1]} scale={[6, 3, 1]} color="#dff0f5" />
-          <Lightformer intensity={2.2} position={[-4, 2, 2]} scale={[3, 3, 1]} color={C.luceFinestra} />
-          <Lightformer intensity={1.0} position={[3, 1, -2]} scale={[3, 2, 1]} color={C.ledCaldo} />
+          <Lightformer intensity={1.0} position={[0, 3, 1]} scale={[6, 3, 1]} color="#fff1dd" />
+          <Lightformer intensity={0.7} position={[-3, 1.6, 2]} scale={[3, 3, 1]} color="#dceaf6" />
+          <Lightformer intensity={0.5} position={[3, 1.2, -2]} scale={[3, 2, 1]} color="#ffc98f" />
         </Environment>
 
-        {/* La stanza si guarda da fuori, ma va illuminata da dentro: con la
-            sola luce esterna l'interno resta in ombra e si vedono solo gli
-            oggetti che emettono luce da soli. */}
-        <ambientLight intensity={0.9} />
-        <directionalLight position={[-3, 4, 2]} intensity={1.6} castShadow shadow-mapSize={[1024, 1024]} color="#eaf4ff" />
-        <pointLight position={[-0.6, H - 0.55, 0]} intensity={7} distance={5} decay={1.7} color="#f2f7fa" />
-        <pointLight position={[0.9, H - 0.55, 0.2]} intensity={5.5} distance={5} decay={1.7} color="#eef5f8" />
-        <pointLight position={[0, 1.2, z1 + 1.2]} intensity={4} distance={6} decay={1.5} color="#dceaf2" />
+        {/* Appena sopra il nero: da qui in su e' luce vera, non luce di riempimento. */}
+        <ambientLight intensity={0.22} />
+
+        {/* Faretti a soffitto, appena sotto i 2,04 m del modello. Sono loro a
+            illuminare: in un ambiente chiuso una luce direzionale esterna non
+            entra. decay 2 e' la caduta fisica corretta — con valori piu' bassi
+            la luce non si attenua allontanandosi e la stanza si appiattisce. */}
+        <pointLight
+          position={[-0.75, 2.42, -0.3]} intensity={4.4} distance={8} decay={2}
+          color="#ffeccf" castShadow shadow-mapSize={[1024, 1024]} shadow-bias={-0.001}
+        />
+        <pointLight position={[0.95, 2.42, 0.1]} intensity={3.4} distance={8} decay={2} color="#ffe3bd" />
+        {/* Luce dello specchio: piu' bassa e piu' vicina, da' il taglio caldo
+            che si vede nella fotografia di riferimento. */}
+        {/* Specchio: sta sulla parete lunga a Z = -0,92, fra X -1,17 e -0,33.
+            La luce gli va davanti, non dentro il muro. */}
+        <pointLight position={[-0.75, 1.75, -0.6]} intensity={1.8} distance={3.5} decay={2} color="#ffd6a3" />
 
         <RegiaCamera
           ingresso={animato} animato={animato} progresso={progresso}
-          onPronta={() => setPronta(true)}
+          ripristina={ripristina} onPronta={() => setPronta(true)}
         />
+        <ComandiTastiera minPolare={MIN_POLARE} maxPolare={MAX_POLARE} />
 
         {/* Atmosfera cinematografica solo dove c'e' margine: su mobile il
             composer costa piu' di quanto renda. */}
         {qualitaAlta && (
           <EffectComposer>
-            <Bloom intensity={0.42} luminanceThreshold={0.72} luminanceSmoothing={0.3} mipmapBlur />
-            <Vignette offset={0.4} darkness={0.32} />
+            <Bloom intensity={0.22} luminanceThreshold={0.9} luminanceSmoothing={0.25} mipmapBlur />
+            <Vignette offset={0.42} darkness={0.3} />
           </EffectComposer>
         )}
       </Suspense>
@@ -440,14 +315,15 @@ export default function BagnoScene({
       <OrbitControls
         makeDefault
         enabled={pronta}
-        target={[0, 1.15, 0]}
+        target={[0, ALTEZZA_SGUARDO, 0]}
         enablePan={false}
         autoRotate={pronta && ruotaDaSola}
-        autoRotateSpeed={0.42}
-        minPolarAngle={0.5}
-        maxPolarAngle={Math.PI / 2.1}
-        minDistance={2.2}
-        maxDistance={7.5}
+        autoRotateSpeed={0.4}
+        // Limiti: sotto il pavimento e troppo vicino la stanza si rompe a vista.
+        minPolarAngle={MIN_POLARE}
+        maxPolarAngle={MAX_POLARE}
+        minDistance={RAGGIO_MIN}
+        maxDistance={RAGGIO_MAX}
       />
     </Canvas>
   );

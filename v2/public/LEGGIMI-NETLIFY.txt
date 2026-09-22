@@ -1,0 +1,52 @@
+EasyBagno.it — sito pronto per Netlify
+=======================================
+
+COME PUBBLICARE
+  1. netlify.com -> "Add new site" -> "Deploy manually"
+  2. Trascina QUESTO ZIP (oppure la cartella scompattata) nel riquadro.
+     I file stanno alla radice: index.html si vede subito.
+
+CONCEPT 3D CON IL VOSTRO MODELLO
+  La sezione "Il bagno, visto da ogni angolazione" carica il file GLB che
+  avete fornito (models/bagno-dopo-concept.glb).
+    - trascina per ruotare, pizzica o rotella per ingrandire;
+    - le frecce della tastiera girano la scena come il dito;
+    - "Ripristina vista" riporta all'inquadratura iniziale.
+
+  Le pareti fra voi e la stanza spariscono mentre girate: il guscio e'
+  disegnato solo sulle facce interne. Senza, il modello e' chiuso su
+  quattro lati e da fuori si vedrebbe solo una scatola.
+
+  Il modello e' un volume di studio: geometrie piene, colori uniformi,
+  nessuna fotografia applicata sopra. Non somigliera' a una fotografia,
+  e non e' un limite del sito. Quando avrete un GLB piu' dettagliato
+  basta sostituire il file in models/ con lo stesso nome: la scena
+  continua a funzionare senza toccare il codice.
+
+IL MODULO FUNZIONA GIA'
+  Netlify riconosce da solo il modulo "preventivo" leggendo l'HTML al
+  momento della pubblicazione. Non serve nessun backend.
+
+  Dopo la PRIMA pubblicazione, per ricevere i contatti via email:
+     Site configuration -> Forms -> Form notifications
+     -> Add notification -> Email notification
+     -> la vostra email, form = "preventivo"
+
+  Senza questo passaggio i contatti arrivano lo stesso, ma si vedono solo
+  dentro Netlify, in Forms. Fatelo subito: e' il punto dove si perdono i
+  primi contatti.
+
+  Per provarlo: compilate il modulo sul sito pubblicato. In locale NON
+  funziona, ha bisogno dei server di Netlify.
+
+COSA MANCA ANCORA, COME D'ACCORDO
+  - GA4, Meta Pixel + CAPI, Supabase.
+  - Quando arriveranno GA4 e Meta servira' la finestra di consenso
+    cookie: la pagina /cookie oggi dichiara che ci sono solo cookie
+    tecnici, vero adesso ma non piu' allora.
+
+DA CONFERMARE PRIMA DI SPENDERE IN PUBBLICITA'
+  Tre frasi in pagina sono promesse commerciali sotto la vostra P.IVA:
+  - l'IVA agevolata 10% e' inclusa o esclusa dai 9.490 euro?
+  - quanti anni di garanzia?
+  - la lista di cosa NON e' compreso e' corretta?

@@ -1,7 +1,7 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import { useEffect, useRef, useState, useSyncExternalStore } from "react";
+import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from "react";
 import { Icon } from "@/components/Icon";
 import { Button } from "@/components/Button";
 import { Reveal } from "@/components/Reveal";
@@ -29,13 +29,15 @@ const BagnoScene = dynamic(() => import("@/components/three/BagnoScene"), {
   ),
 });
 
+// Presi dai materiali dichiarati dentro il modello, non scelti a parole: se
+// il GLB cambia, questo elenco va riletto da li'.
 const MATERIALI = [
-  "Grandi lastre effetto pietra",
+  "Pietra scura a grande formato",
+  "Mobile sospeso in noce",
   "Doccia walk-in in vetro",
-  "Rain shower a soffitto",
-  "Mobile sospeso scuro",
-  "Specchio circolare retroilluminato",
-  "Nicchie illuminate",
+  "Specchio circolare",
+  "Dettagli in nero opaco",
+  "Sanitari bianchi sospesi",
 ];
 
 /**
@@ -83,6 +85,10 @@ export function Progetto3D() {
 
   const [visibile, setVisibile] = useState(false);
   const [inVista, setInVista] = useState(false);
+  // Contatore invece di un booleano: ogni clic deve far ripartire il ritorno
+  // alla vista iniziale, anche quando si e' gia' a quella vista.
+  const [ripristina, setRipristina] = useState(0);
+  const ripristinaVista = useCallback(() => setRipristina((n) => n + 1), []);
 
   // Riflessi e post-produzione solo dove c'e' margine: su schermo piccolo
   // costano piu' di quanto rendano.
@@ -139,16 +145,22 @@ export function Progetto3D() {
         <p className="mb-3 text-center text-[0.72rem] font-semibold uppercase tracking-[0.18em] text-sky">
           Concept 3D
         </p>
-        <h2 className="mx-auto mb-4 max-w-[20ch] text-center text-white">
-          Immagina il tuo prossimo bagno.
+        <h2 className="mx-auto mb-4 max-w-[22ch] text-center text-white">
+          Il bagno, visto da ogni angolazione.
         </h2>
         <p className="mx-auto mb-10 max-w-[56ch] text-center text-white/70">
-          Un concept 3D per vedere materiali, luce e atmosfera prima di iniziare.
+          Esplora un concept di ristrutturazione in 3D.
         </p>
 
         <div
           ref={box}
-          className="group relative h-[clamp(20rem,58vw,34rem)] w-full overflow-hidden rounded-[var(--radius-card)] border border-white/10 bg-[#0d2228] shadow-[var(--shadow-lift)] transition-shadow duration-500 hover:shadow-[0_30px_80px_-20px_rgba(0,0,0,0.6)]"
+          // Focalizzabile: e' il contenitore che riceve il fuoco da tastiera,
+          // e da qui le frecce girano il modello.
+          tabIndex={0}
+          data-scena-3d
+          role="application"
+          aria-label="Concept 3D del bagno. Usa le frecce per ruotare la scena."
+          className="group relative h-[clamp(20rem,58vw,34rem)] w-full overflow-hidden rounded-[var(--radius-card)] border border-white/10 bg-[#0d2228] shadow-[var(--shadow-lift)] transition-shadow duration-500 hover:shadow-[0_30px_80px_-20px_rgba(0,0,0,0.6)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky"
         >
           {!webgl ? (
             // Fallback senza WebGL: niente canvas vuoto, si dice cosa c'e'
@@ -165,15 +177,31 @@ export function Progetto3D() {
               </div>
             </div>
           ) : visibile ? (
-            <BagnoScene animato={animato} qualitaAlta={qualitaAlta} progresso={progresso} />
+            <BagnoScene
+              animato={animato}
+              qualitaAlta={qualitaAlta}
+              progresso={progresso}
+              ripristina={ripristina}
+            />
           ) : (
             <div className="h-full w-full bg-[#0d2228]" />
           )}
 
           {webgl && (
-            <span className="pointer-events-none absolute right-3 top-3 rounded-full bg-black/45 px-3 py-1.5 text-[11px] font-semibold text-white/90 backdrop-blur-sm transition-opacity duration-500 group-hover:opacity-60">
-              Trascina per girare · pizzica per avvicinare
-            </span>
+            <>
+              <span className="pointer-events-none absolute left-1/2 top-3 -translate-x-1/2 whitespace-nowrap rounded-full bg-black/45 px-3 py-1.5 text-[11px] font-semibold text-white/90 backdrop-blur-sm transition-opacity duration-500 group-hover:opacity-50">
+                Trascina per ruotare · Pinza per ingrandire
+              </span>
+              {/* Unico comando sulla scena: da qualunque angolazione si
+                  finisca, si torna all'inquadratura buona senza ricaricare. */}
+              <button
+                type="button"
+                onClick={ripristinaVista}
+                className="absolute right-3 top-3 rounded-full border border-white/25 bg-black/45 px-3 py-1.5 text-[11px] font-semibold text-white/90 backdrop-blur-sm transition-colors hover:bg-black/70 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky"
+              >
+                Ripristina vista
+              </button>
+            </>
           )}
         </div>
 
@@ -186,9 +214,10 @@ export function Progetto3D() {
           ))}
         </Reveal>
 
-        <p className="mx-auto mt-8 max-w-[54ch] text-center text-sm text-white/60">
+        <p className="mx-auto mt-8 max-w-[56ch] text-center text-sm text-white/60">
           Questa è una visualizzazione di stile, non un lavoro eseguito. I nostri
-          cantieri veri sono qui sopra, nella sezione Prima e dopo.
+          cantieri veri sono qui sopra, nella sezione Prima e dopo. Con le frecce
+          della tastiera la scena gira come con il dito.
         </p>
 
         <div className="mt-6 flex justify-center">
