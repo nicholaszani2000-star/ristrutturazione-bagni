@@ -19,7 +19,7 @@
  *    che li puntano fallirebbero lo stesso, riempiendo la console di errori
  *    che non significano piu' niente.
  */
-import { readdir, readFile, writeFile, stat } from "node:fs/promises";
+import { readdir, readFile, writeFile } from "node:fs/promises";
 import { join, extname, resolve, dirname } from "node:path";
 
 const OUT = new URL("../out/", import.meta.url).pathname;

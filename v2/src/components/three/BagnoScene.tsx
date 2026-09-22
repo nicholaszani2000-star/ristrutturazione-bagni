@@ -1,272 +1,453 @@
 "use client";
 
-import { Canvas } from "@react-three/fiber";
+import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import {
   OrbitControls,
   Environment,
   Lightformer,
-  ContactShadows,
-  Html,
+  MeshReflectorMaterial,
   PerspectiveCamera,
 } from "@react-three/drei";
-import { Suspense, useMemo } from "react";
+import { EffectComposer, Bloom, Vignette } from "@react-three/postprocessing";
+import { Suspense, useEffect, useMemo, useRef, useState, type MutableRefObject } from "react";
 import * as THREE from "three";
+import { RectAreaLightUniformsLib } from "three/examples/jsm/lights/RectAreaLightUniformsLib.js";
+import gsap from "gsap";
 
 /**
- * Il bagno 3x2 m dell'offerta, in scala reale.
+ * Concept 3D di un bagno premium.
  *
- * Non e' un oggetto decorativo: e' il prodotto. Le misure sono quelle vendute
- * (3,00 x 2,00 m) e gli arredi sono le voci della lista "cosa comprende", cosi'
- * chi guarda capisce cosa riceve per 9.490 euro invece di leggerlo e basta.
+ * NON e' il bagno di un cliente e non e' il 3x2 m dell'offerta: e' una
+ * visualizzazione di materiali, luce e atmosfera. La distinzione non e'
+ * formale — la pagina porta una P.IVA reale, e mostrare un render lasciando
+ * intendere che sia un cantiere eseguito sarebbe pubblicita' ingannevole. I
+ * lavori veri stanno nella sezione Prima/Dopo, che resta separata.
  *
- * Niente texture ne' modelli esterni: tutto e' geometria e materiali calcolati
- * a runtime. Serve a tenere leggero il pacchetto, ma soprattutto perche' in
- * questo ambiente ogni CDN di asset e' irraggiungibile: un modello scaricato da
- * fuori sarebbe un punto di rottura in produzione.
+ * Tutto e' geometria e materiali calcolati a runtime: qui ogni CDN di asset e'
+ * irraggiungibile, e in produzione un modello scaricato da fuori sarebbe un
+ * servizio di terzi sul percorso critico. Quando arrivera' un bagno.glb bastera'
+ * sostituire <Arredo />: il resto della scena non lo sa e non cambia.
  */
 
-// Stanza: 3 m in larghezza, 2 m in profondita', 2,6 m di altezza.
-const L = 3, P = 2, H = 2.6;
+// Le luci ad area in three.js non illuminano finche' non si caricano le loro
+// tabelle: senza questa riga la finestra e' solo un rettangolo bianco che non
+// fa luce, e la stanza resta al buio senza che nulla segnali l'errore.
+RectAreaLightUniformsLib.init();
+
+// Stanza del concept. Proporzioni da bagno lungo e stretto, come la reference.
+const L = 3.2, P = 2.2, H = 2.7;
 const x0 = -L / 2, x1 = L / 2;
 const z0 = -P / 2, z1 = P / 2;
 
-// Palette campionata dalla foto reale del cantiere (bagno-dopo.webp), non
-// scelta a occhio: cosi' la stanza somiglia ai lavori che fate davvero.
-//
-// I valori sono schiariti rispetto ai pixel della foto. Una fotografia porta
-// dentro la propria illuminazione: riusare quei colori come colore del
-// materiale farebbe contare la luce due volte e la stanza uscirebbe cupa. La
-// tinta e la saturazione restano quelle campionate, cambia solo la luminosita'.
 const C = {
-  pavimento: "#b8a698", // dalla fascia bassa della foto, tinta 26deg
-  parete: "#d9d7d3",    // dalle pareti laterali, tinta 34deg
-  mobile: "#886d58",    // legno del mobile sospeso
-  ceramica: "#fbfbf9",
-  nero: "#23262b",
-  vetro: "#cfe3ea",
-  led: "#ffd9a8",
+  bluProfondo: "#1d4a57",
+  bluPetrolio: "#276a7c",
+  fuga: "#14343d",
+  mobileScuro: "#1b2226",
+  ceramica: "#f4f6f6",
+  metalloScuro: "#2a2f33",
+  vetro: "#bfe0e6",
+  ledCaldo: "#ffcf9b",
+  luceFinestra: "#e8f4ff",
 };
 
 /**
- * Piastrelle disegnate su una canvas al volo.
+ * Generatore pseudo-casuale con seme (mulberry32).
  *
- * Una parete a tinta unita legge come cartongesso, non come un bagno finito.
- * Serviva una fuga visibile, ma qualsiasi texture scaricata sarebbe un file in
- * piu' e una dipendenza esterna: questa la disegniamo in memoria, pesa zero e
- * non puo' non arrivare.
+ * Le venature devono essere le stesse a ogni disegno. Con Math.random la
+ * texture cambierebbe a ogni ricalcolo della memoizzazione: la stanza
+ * cambierebbe aspetto sotto gli occhi di chi la sta guardando, e due visite
+ * darebbero due bagni diversi.
  */
-function usaPiastrelle(piastrella: string, fuga: string, ripetizioni: [number, number]) {
+function casualeConSeme(seme: number) {
+  let a = seme >>> 0;
+  return () => {
+    a = (a + 0x6d2b79f5) >>> 0;
+    let t = Math.imul(a ^ (a >>> 15), 1 | a);
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
+
+/**
+ * Grandi piastrelle effetto pietra, disegnate su una canvas.
+ *
+ * Una parete a tinta unita legge come cartongesso. Serve la fuga e serve la
+ * venatura: senza la seconda, la pietra sembra plastica. Il rumore e' a grana
+ * grossa di proposito — a grana fine, ridotto in prospettiva, sparisce.
+ */
+function usePietra(base: string, fuga: string, ripetizioni: [number, number], lucida: boolean) {
   return useMemo(() => {
+    const dim = 512;
     const c = document.createElement("canvas");
-    c.width = c.height = 256;
+    c.width = c.height = dim;
     const g = c.getContext("2d");
     if (!g) return null;
+
     g.fillStyle = fuga;
-    g.fillRect(0, 0, 256, 256);
-    g.fillStyle = piastrella;
-    const n = 4, lato = 256 / n, fugaPx = 5;
+    g.fillRect(0, 0, dim, dim);
+
+    // Formato grande: due lastre per lato, non un mosaico.
+    const n = 2, lato = dim / n, fugaPx = lucida ? 3 : 5;
     for (let y = 0; y < n; y++) {
       for (let x = 0; x < n; x++) {
+        g.fillStyle = base;
         g.fillRect(x * lato + fugaPx / 2, y * lato + fugaPx / 2, lato - fugaPx, lato - fugaPx);
       }
     }
+
+    // Venature: macchie chiare e scure a bassa opacita', sempre le stesse.
+    const rnd = casualeConSeme(lucida ? 20260101 : 20260202);
+    for (let i = 0; i < 900; i++) {
+      g.fillStyle = rnd() > 0.5 ? "rgba(255,255,255,0.045)" : "rgba(0,0,0,0.055)";
+      const r = 6 + rnd() * 26;
+      g.beginPath();
+      g.ellipse(rnd() * dim, rnd() * dim, r, r * (0.3 + rnd()), rnd() * Math.PI, 0, Math.PI * 2);
+      g.fill();
+    }
+
     const t = new THREE.CanvasTexture(c);
     t.wrapS = t.wrapT = THREE.RepeatWrapping;
     t.repeat.set(ripetizioni[0], ripetizioni[1]);
-    t.anisotropy = 4;
+    t.anisotropy = 8;
     t.colorSpace = THREE.SRGBColorSpace;
     return t;
-  }, [piastrella, fuga, ripetizioni]);
+  }, [base, fuga, ripetizioni, lucida]);
 }
 
-function Materiale({ colore, ruvidita = 0.75, metallo = 0 }: {
-  colore: string; ruvidita?: number; metallo?: number;
-}) {
-  return <meshStandardMaterial color={colore} roughness={ruvidita} metalness={metallo} />;
-}
-
-/** Scatola posizionata per centro, con dimensioni in metri. */
-function Box({ pos, dim, colore, ruvidita, metallo }: {
-  pos: [number, number, number]; dim: [number, number, number];
-  colore: string; ruvidita?: number; metallo?: number;
-}) {
+function Pavimento({ qualitaAlta }: { qualitaAlta: boolean }) {
+  const pietra = usePietra(C.bluProfondo, C.fuga, [3, 2], true);
   return (
-    <mesh position={pos} castShadow receiveShadow>
-      <boxGeometry args={dim} />
-      <Materiale colore={colore} ruvidita={ruvidita} metallo={metallo} />
+    <mesh rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
+      <planeGeometry args={[L, P]} />
+      {qualitaAlta ? (
+        // Il pavimento lucido che riflette e' meta' dell'effetto: senza,
+        // l'ambiente resta piatto. Costa, quindi su mobile si scende di
+        // risoluzione invece di rinunciarci.
+        <MeshReflectorMaterial
+          map={pietra ?? undefined}
+          color={C.bluProfondo}
+          resolution={512}
+          mixBlur={1.1}
+          mixStrength={22}
+          roughness={0.32}
+          depthScale={1.1}
+          minDepthThreshold={0.4}
+          maxDepthThreshold={1.3}
+          metalness={0.35}
+          mirror={0.45}
+        />
+      ) : (
+        <meshStandardMaterial map={pietra ?? undefined} color={C.bluProfondo} roughness={0.35} metalness={0.3} />
+      )}
     </mesh>
   );
 }
 
-function Stanza() {
-  const pavimento = usaPiastrelle("#b8a698", "#a3907f", [6, 4]);
-  const parete = usaPiastrelle("#d9d7d3", "#c4c0b9", [6, 5]);
-
+function Pareti() {
+  const pietra = usePietra(C.bluPetrolio, C.fuga, [3, 3], false);
   return (
     <group>
-      {/* Pavimento in microcemento */}
-      <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0, 0]} receiveShadow>
-        <planeGeometry args={[L, P]} />
-        <meshStandardMaterial map={pavimento} color={C.pavimento} roughness={0.85} />
-      </mesh>
-
-      {/* Solo due pareti: le altre restano aperte, altrimenti la stanza non si
-          puo' guardare da fuori. E' la vista "casa di bambola". */}
       <mesh position={[0, H / 2, z0]} receiveShadow>
         <planeGeometry args={[L, H]} />
-        <meshStandardMaterial map={parete} color={C.parete} roughness={0.8} />
+        <meshStandardMaterial map={pietra ?? undefined} color={C.bluPetrolio} roughness={0.55} metalness={0.08} />
       </mesh>
       <mesh position={[x0, H / 2, 0]} rotation={[0, Math.PI / 2, 0]} receiveShadow>
         <planeGeometry args={[P, H]} />
-        <meshStandardMaterial map={parete} color={C.parete} roughness={0.8} />
+        <meshStandardMaterial map={pietra ?? undefined} color={C.bluPetrolio} roughness={0.55} metalness={0.08} />
       </mesh>
+      {/* Soffitto: chiude la scena e da' un piano su cui rimbalza la luce */}
+      <mesh position={[0, H, 0]} rotation={[Math.PI / 2, 0, 0]}>
+        <planeGeometry args={[L, P]} />
+        <meshStandardMaterial color="#b9c4c7" roughness={1} />
+      </mesh>
+    </group>
+  );
+}
+
+/** Finestra sulla parete di sinistra: e' la sorgente di luce naturale. */
+function Finestra() {
+  return (
+    <group>
+      <mesh position={[x0 + 0.012, 1.55, 0.35]} rotation={[0, Math.PI / 2, 0]}>
+        <planeGeometry args={[0.95, 1.1]} />
+        <meshBasicMaterial color={C.luceFinestra} toneMapped={false} />
+      </mesh>
+      <mesh position={[x0 + 0.02, 1.55, 0.35]} rotation={[0, Math.PI / 2, 0]}>
+        <ringGeometry args={[0.52, 0.56, 4]} />
+        <meshStandardMaterial color={C.metalloScuro} roughness={0.4} metalness={0.7} />
+      </mesh>
+      {/* La luce vera che entra: fredda, in contrasto con i LED caldi */}
+      <rectAreaLight
+        position={[x0 + 0.05, 1.55, 0.35]} rotation={[0, Math.PI / 2, 0]}
+        width={0.95} height={1.1} intensity={7} color={C.luceFinestra}
+      />
     </group>
   );
 }
 
 function Doccia() {
-  // Piatto doccia 90x90 nell'angolo, con profilo nero e lastra in vetro.
-  const cx = x1 - 0.45, cz = z0 + 0.45;
+  const cx = x1 - 0.62, cz = z0 + 0.55;
   return (
     <group>
-      <Box pos={[cx, 0.03, cz]} dim={[0.9, 0.06, 0.9]} colore={C.ceramica} ruvidita={0.4} />
-      {/* Lastra fissa: trasparente, e' quello che rende leggibile una doccia */}
-      <mesh position={[cx - 0.45, 1.0, cz]} rotation={[0, Math.PI / 2, 0]}>
-        <planeGeometry args={[0.9, 1.9]} />
+      {/* Piatto a filo pavimento */}
+      <mesh position={[cx, 0.012, cz]} receiveShadow>
+        <boxGeometry args={[1.2, 0.024, 1.1]} />
+        <meshStandardMaterial color="#1d2b30" roughness={0.45} metalness={0.2} />
+      </mesh>
+
+      {/* Lastra walk-in in vetro */}
+      <mesh position={[cx - 0.6, 1.05, cz]} rotation={[0, Math.PI / 2, 0]}>
+        <planeGeometry args={[1.1, 2.1]} />
         <meshPhysicalMaterial
-          color={C.vetro} transparent opacity={0.22} roughness={0.05}
-          metalness={0} transmission={0.9} thickness={0.01}
+          color={C.vetro} transparent opacity={0.16} roughness={0.03}
+          metalness={0} transmission={0.95} thickness={0.012}
           side={THREE.DoubleSide}
         />
       </mesh>
-      <Box pos={[cx - 0.45, 1.95, cz]} dim={[0.03, 0.03, 0.9]} colore={C.nero} ruvidita={0.35} metallo={0.8} />
-      {/* Soffione a parete */}
-      <Box pos={[cx, 2.05, z0 + 0.06]} dim={[0.22, 0.02, 0.22]} colore={C.nero} ruvidita={0.3} metallo={0.9} />
+      <mesh position={[cx - 0.6, 1.05, cz - 0.55]}>
+        <boxGeometry args={[0.028, 2.1, 0.028]} />
+        <meshStandardMaterial color={C.metalloScuro} roughness={0.3} metalness={0.85} />
+      </mesh>
+
+      {/* Rain shower a soffitto */}
+      <mesh position={[cx, H - 0.06, cz]}>
+        <boxGeometry args={[0.32, 0.03, 0.32]} />
+        <meshStandardMaterial color={C.metalloScuro} roughness={0.25} metalness={0.9} />
+      </mesh>
+      <mesh position={[cx, H - 0.09, cz]}>
+        <boxGeometry args={[0.3, 0.012, 0.3]} />
+        <meshBasicMaterial color="#8fb6bf" toneMapped={false} transparent opacity={0.35} />
+      </mesh>
+
+      {/* Nicchia illuminata nella parete della doccia */}
+      <mesh position={[cx + 0.2, 1.25, z0 + 0.03]}>
+        <boxGeometry args={[0.7, 0.3, 0.06]} />
+        <meshStandardMaterial color="#0e2a32" roughness={0.6} />
+      </mesh>
+      <mesh position={[cx + 0.2, 1.25, z0 + 0.065]}>
+        <planeGeometry args={[0.68, 0.28]} />
+        <meshBasicMaterial color={C.ledCaldo} toneMapped={false} />
+      </mesh>
+      <pointLight position={[cx + 0.2, 1.25, z0 + 0.3]} intensity={2.4} distance={1.8} color={C.ledCaldo} />
     </group>
   );
 }
 
-function MobileESpecchio() {
-  const cx = -0.55;
+function ZonaLavabo() {
+  const cx = -0.75;
   return (
     <group>
-      {/* Mobile sospeso: si vede il pavimento sotto, e' quello che lo fa
-          sembrare piu' grande di quanto sia */}
-      <Box pos={[cx, 0.72, z0 + 0.24]} dim={[1.0, 0.42, 0.46]} colore={C.mobile} ruvidita={0.6} />
-      <Box pos={[cx, 0.95, z0 + 0.24]} dim={[1.04, 0.05, 0.5]} colore={C.ceramica} ruvidita={0.25} />
+      {/* Mobile sospeso scuro */}
+      <mesh position={[cx, 0.66, z0 + 0.26]} castShadow receiveShadow>
+        <boxGeometry args={[1.25, 0.44, 0.5]} />
+        <meshStandardMaterial color={C.mobileScuro} roughness={0.42} metalness={0.15} />
+      </mesh>
+      <mesh position={[cx, 0.895, z0 + 0.26]} castShadow>
+        <boxGeometry args={[1.29, 0.04, 0.54]} />
+        <meshStandardMaterial color="#20292d" roughness={0.3} metalness={0.25} />
+      </mesh>
+      {/* LED sotto il mobile: e' cio' che lo fa "galleggiare" */}
+      <mesh position={[cx, 0.437, z0 + 0.26]} rotation={[Math.PI / 2, 0, 0]}>
+        <planeGeometry args={[1.2, 0.45]} />
+        <meshBasicMaterial color={C.ledCaldo} toneMapped={false} transparent opacity={0.75} />
+      </mesh>
+      <pointLight position={[cx, 0.32, z0 + 0.3]} intensity={1.8} distance={1.6} color={C.ledCaldo} />
+
       {/* Lavabo da appoggio */}
-      <mesh position={[cx, 1.04, z0 + 0.24]} castShadow>
-        <cylinderGeometry args={[0.19, 0.16, 0.13, 32]} />
-        <Materiale colore={C.ceramica} ruvidita={0.2} />
+      <mesh position={[cx, 0.985, z0 + 0.26]} castShadow>
+        <cylinderGeometry args={[0.21, 0.185, 0.14, 40]} />
+        <meshStandardMaterial color={C.ceramica} roughness={0.15} />
       </mesh>
-      {/* Miscelatore */}
-      <Box pos={[cx, 1.14, z0 + 0.06]} dim={[0.03, 0.26, 0.03]} colore={C.nero} ruvidita={0.3} metallo={0.9} />
-      {/* Alone caldo dietro lo specchio: e' la retroilluminazione, e deve
-          essere piu' grande dello specchio per vedersi come alone. */}
-      <mesh position={[cx, 1.68, z0 + 0.004]}>
-        <planeGeometry args={[1.12, 0.92]} />
-        <meshBasicMaterial color={C.led} toneMapped={false} transparent opacity={0.85} />
+      <mesh position={[cx, 1.11, z0 + 0.06]}>
+        <boxGeometry args={[0.028, 0.3, 0.028]} />
+        <meshStandardMaterial color={C.metalloScuro} roughness={0.25} metalness={0.9} />
       </mesh>
 
-      {/* Specchio. Con metalness quasi 1 e ruvidita' quasi 0 riflette solo
-          l'ambiente, che qui e' scuro: veniva fuori un rettangolo nero, uguale
-          a uno schermo spento. Meno metallo e piu' colore di base: legge come
-          vetro anche senza una stanza intera da riflettere. */}
-      <mesh position={[cx, 1.68, z0 + 0.025]} castShadow>
-        <boxGeometry args={[0.9, 0.7, 0.03]} />
-        <meshStandardMaterial
-          color="#dbe6ec" metalness={0.4} roughness={0.12} envMapIntensity={1.6}
-        />
+      {/* Specchio circolare retroilluminato */}
+      <mesh position={[cx, 1.78, z0 + 0.03]} rotation={[0, 0, 0]}>
+        <circleGeometry args={[0.44, 48]} />
+        <meshBasicMaterial color={C.ledCaldo} toneMapped={false} />
       </mesh>
-
-      {/* Luce vera, non solo un colore: accende il piano sottostante. */}
-      <pointLight position={[cx, 1.68, z0 + 0.35]} intensity={2.2} distance={2.4} color={C.led} />
+      {/* Il disco nasce sdraiato: la rotazione va sulla mesh, non sulla
+          geometria, che non ha un orientamento proprio. */}
+      <mesh position={[cx, 1.78, z0 + 0.05]} rotation={[Math.PI / 2, 0, 0]}>
+        <cylinderGeometry args={[0.37, 0.37, 0.03, 48]} />
+        <meshStandardMaterial color="#cfdde2" metalness={0.45} roughness={0.1} envMapIntensity={1.8} />
+      </mesh>
+      <pointLight position={[cx, 1.78, z0 + 0.4]} intensity={2.6} distance={2.2} color={C.ledCaldo} />
     </group>
   );
 }
 
-function SanitariETermoarredo() {
+function Sanitari() {
   return (
     <group>
-      {/* WC e bidet sospesi sulla parete di sinistra */}
-      <Box pos={[x0 + 0.28, 0.42, 0.3]} dim={[0.54, 0.36, 0.36]} colore={C.ceramica} ruvidita={0.2} />
-      <Box pos={[x0 + 0.28, 0.42, 0.78]} dim={[0.54, 0.36, 0.36]} colore={C.ceramica} ruvidita={0.2} />
-      {/* Termoarredo: e' nella lista di cosa comprende, quindi si vede */}
-      {Array.from({ length: 7 }, (_, i) => (
-        <Box key={i} pos={[x0 + 0.05, 1.15 + i * 0.13, -0.45]}
-             dim={[0.05, 0.04, 0.5]} colore={C.ceramica} ruvidita={0.4} />
-      ))}
+      <mesh position={[x0 + 0.3, 0.45, z1 - 0.42]} castShadow>
+        <boxGeometry args={[0.58, 0.34, 0.38]} />
+        <meshStandardMaterial color={C.ceramica} roughness={0.14} />
+      </mesh>
+      <mesh position={[x0 + 0.3, 0.45, z1 - 0.88]} castShadow>
+        <boxGeometry args={[0.58, 0.34, 0.38]} />
+        <meshStandardMaterial color={C.ceramica} roughness={0.14} />
+      </mesh>
     </group>
   );
 }
 
-function Quote() {
-  // Le misure sono l'argomento di vendita: il prezzo vale per questa metratura.
-  const stile =
-    "whitespace-nowrap rounded-full bg-navy/90 px-2.5 py-1 text-[11px] font-semibold text-white shadow-lg";
+/**
+ * Tutto l'arredo in un solo gruppo.
+ *
+ * E' il punto di sostituzione: con un bagno.glb a disposizione, questo diventa
+ * <primitive object={gltf.scene} /> e nient'altro nella scena va toccato.
+ */
+function Arredo() {
   return (
-    <>
-      {/* Alzate da terra: appoggiate sul pavimento finivano sopra il
-          suggerimento "trascina per girare" e si leggevano male entrambe. */}
-      <Html position={[-0.35, 0.55, z1 + 0.05]} center distanceFactor={6}>
-        <span className={stile}>3,00 m ↔</span>
-      </Html>
-      <Html position={[x1 + 0.05, 0.55, 0.45]} center distanceFactor={6}>
-        <span className={stile}>2,00 m ↔</span>
-      </Html>
-    </>
+    <group>
+      <Doccia />
+      <ZonaLavabo />
+      <Sanitari />
+    </group>
   );
 }
 
-export default function BagnoScene({ animato }: { animato: boolean }) {
+/**
+ * Regia della camera: ingresso cinematografico e parallasse allo scorrimento.
+ *
+ * L'ingresso e i controlli manuali si contendono la stessa camera, quindi
+ * OrbitControls resta spento finche' il volo non e' finito: lasciarli attivi
+ * insieme fa scattare l'inquadratura al primo tocco.
+ */
+function RegiaCamera({
+  ingresso, animato, progresso, onPronta,
+}: {
+  ingresso: boolean; animato: boolean;
+  progresso: MutableRefObject<number>; onPronta: () => void;
+}) {
+  const { camera } = useThree();
+  const base = useRef(new THREE.Vector3(2.55, 1.85, 2.55));
+
+  useEffect(() => {
+    camera.lookAt(0, 1.15, 0);
+    if (!ingresso) {
+      camera.position.copy(base.current);
+      onPronta();
+      return;
+    }
+    const t = gsap.fromTo(
+      camera.position,
+      { x: 4.6, y: 0.95, z: 4.6 },
+      {
+        x: base.current.x, y: base.current.y, z: base.current.z,
+        duration: 2.1, ease: "power3.out",
+        onUpdate: () => camera.lookAt(0, 1.15, 0),
+        onComplete: onPronta,
+      },
+    );
+    return () => { t.kill(); };
+  }, [camera, ingresso, onPronta]);
+
+  // Parallasse: il valore arriva da un ref aggiornato fuori da React, cosi'
+  // scorrere la pagina non provoca un re-render per fotogramma.
+  //
+  // La regola sull'immutabilita' e' disattivata qui, e solo qui, per un motivo
+  // preciso: in react-three-fiber la camera e' un oggetto three.js vivo,
+  // posseduto dal ciclo di rendering e non da React. Spostarla a ogni
+  // fotogramma e' il modo previsto di muoverla; farla passare per uno stato
+  // React significherebbe un re-render a 60 volte al secondo, cioe' esattamente
+  // il costo che la regola vorrebbe evitare.
+  /* eslint-disable react-hooks/immutability */
+  useFrame(() => {
+    if (!animato) return;
+    const p = progresso.current;
+    camera.position.y = base.current.y + (p - 0.5) * 0.55;
+  });
+  /* eslint-enable react-hooks/immutability */
+
+  return null;
+}
+
+export default function BagnoScene({
+  animato, qualitaAlta, progresso,
+}: {
+  animato: boolean; qualitaAlta: boolean; progresso: MutableRefObject<number>;
+}) {
+  const [pronta, setPronta] = useState(false);
+
+  // La rotazione automatica costa un fotogramma continuo finche' la sezione e'
+  // a schermo. Su desktop e' un lusso accettabile; su mobile — da dove arriva
+  // l'80% del traffico — significa batteria bruciata e fotogrammi tolti alle
+  // altre animazioni della pagina, che rallentano visibilmente.
+  //
+  // Quindi sul piccolo: il volo d'ingresso si vede lo stesso, poi la scena si
+  // ferma e torna a disegnare solo quando la si tocca. Resta girabile col dito,
+  // non gira da sola.
+  const ruotaDaSola = animato && qualitaAlta;
+  const disegnaSempre = animato && (ruotaDaSola || !pronta);
+
   return (
     <Canvas
       shadows
-      // Tetto a 1.75: oltre non si vede la differenza e su mobile si paga cara.
-      dpr={[1, 1.75]}
+      dpr={qualitaAlta ? [1, 1.75] : [1, 1.35]}
       gl={{ antialias: true, powerPreference: "high-performance" }}
-      // Ferma il ciclo di rendering quando la sezione non e' a schermo: senza
-      // questo il 3D continuerebbe a consumare batteria per tutta la pagina.
-      frameloop={animato ? "always" : "demand"}
+      // "demand" disegna solo su richiesta: OrbitControls la invia a ogni
+      // trascinamento, quindi l'interazione resta fluida.
+      frameloop={disegnaSempre ? "always" : "demand"}
     >
-      <PerspectiveCamera makeDefault position={[3.4, 2.6, 3.4]} fov={38} />
-      <color attach="background" args={["#efe9e1"]} />
+      <PerspectiveCamera makeDefault position={[4.6, 0.95, 4.6]} fov={52} />
+      <color attach="background" args={["#0d2228"]} />
+      <fog attach="fog" args={["#0d2228", 11, 24]} />
 
       <Suspense fallback={null}>
-        <Stanza />
-        <Doccia />
-        <MobileESpecchio />
-        <SanitariETermoarredo />
-        <Quote />
+        <Pavimento qualitaAlta={qualitaAlta} />
+        <Pareti />
+        <Finestra />
+        <Arredo />
 
-        {/* Luci disegnate a mano invece di una mappa HDRI scaricata: i CDN di
-            HDRI qui sono bloccati, e in produzione sarebbero comunque un
-            servizio di terzi sul percorso critico. */}
+        {/* Illuminazione disegnata a mano invece di una mappa HDRI scaricata:
+            i CDN di HDRI qui sono bloccati, e resterebbero comunque una
+            dipendenza esterna in produzione. */}
         <Environment resolution={256} frames={1}>
-          <Lightformer intensity={2.6} position={[0, 4, 1]} scale={[6, 3, 1]} color="#fff6ea" />
-          <Lightformer intensity={1.1} position={[-3, 2, 3]} scale={[3, 3, 1]} color="#dceaf6" />
-          <Lightformer intensity={0.8} position={[3, 1, -2]} scale={[3, 2, 1]} color="#ffd9a8" />
+          <Lightformer intensity={3.4} position={[0, 4, 1]} scale={[6, 3, 1]} color="#dff0f5" />
+          <Lightformer intensity={2.2} position={[-4, 2, 2]} scale={[3, 3, 1]} color={C.luceFinestra} />
+          <Lightformer intensity={1.0} position={[3, 1, -2]} scale={[3, 2, 1]} color={C.ledCaldo} />
         </Environment>
 
-        <directionalLight
-          position={[3.5, 5, 2.5]} intensity={1.5} castShadow
-          shadow-mapSize={[1024, 1024]}
+        {/* La stanza si guarda da fuori, ma va illuminata da dentro: con la
+            sola luce esterna l'interno resta in ombra e si vedono solo gli
+            oggetti che emettono luce da soli. */}
+        <ambientLight intensity={0.9} />
+        <directionalLight position={[-3, 4, 2]} intensity={1.6} castShadow shadow-mapSize={[1024, 1024]} color="#eaf4ff" />
+        <pointLight position={[-0.6, H - 0.55, 0]} intensity={7} distance={5} decay={1.7} color="#f2f7fa" />
+        <pointLight position={[0.9, H - 0.55, 0.2]} intensity={5.5} distance={5} decay={1.7} color="#eef5f8" />
+        <pointLight position={[0, 1.2, z1 + 1.2]} intensity={4} distance={6} decay={1.5} color="#dceaf2" />
+
+        <RegiaCamera
+          ingresso={animato} animato={animato} progresso={progresso}
+          onPronta={() => setPronta(true)}
         />
-        <ambientLight intensity={0.5} />
-        <ContactShadows position={[0, 0.001, 0]} opacity={0.35} scale={8} blur={2.4} far={3} />
+
+        {/* Atmosfera cinematografica solo dove c'e' margine: su mobile il
+            composer costa piu' di quanto renda. */}
+        {qualitaAlta && (
+          <EffectComposer>
+            <Bloom intensity={0.42} luminanceThreshold={0.72} luminanceSmoothing={0.3} mipmapBlur />
+            <Vignette offset={0.4} darkness={0.32} />
+          </EffectComposer>
+        )}
       </Suspense>
 
       <OrbitControls
         makeDefault
-        target={[0, 1.05, 0]}
+        enabled={pronta}
+        target={[0, 1.15, 0]}
         enablePan={false}
-        autoRotate={animato}
-        autoRotateSpeed={0.55}
-        // Limiti: sotto il pavimento e troppo vicino la stanza si rompe a vista.
-        minPolarAngle={0.35}
-        maxPolarAngle={Math.PI / 2.15}
-        minDistance={3.2}
-        maxDistance={8}
+        autoRotate={pronta && ruotaDaSola}
+        autoRotateSpeed={0.42}
+        minPolarAngle={0.5}
+        maxPolarAngle={Math.PI / 2.1}
+        minDistance={2.2}
+        maxDistance={7.5}
       />
     </Canvas>
   );

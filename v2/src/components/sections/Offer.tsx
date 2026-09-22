@@ -1,7 +1,7 @@
 import { Button } from "@/components/Button";
 import { Icon } from "@/components/Icon";
 import { SITE } from "@/config/site";
-import { euro } from "@/lib/links";
+
 import { Contatore } from "@/components/Contatore";
 import { Reveal } from "@/components/Reveal";
 
