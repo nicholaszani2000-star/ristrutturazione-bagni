@@ -50,7 +50,14 @@ export async function inviaLead(lead: Lead) {
       "Content-Type": "application/json",
       apikey: publishableKey,
       Authorization: `Bearer ${publishableKey}`,
-      // Non ci serve la riga inserita indietro: meno dati sul filo.
+      // NON TOGLIERE.
+      //
+      // Non e' un'ottimizzazione: e' l'intestazione che tiene in piedi
+      // l'inserimento. Senza, PostgREST aggiunge un RETURNING per restituire
+      // la riga appena scritta — e RETURNING ha bisogno del permesso di
+      // LETTURA, che al ruolo anonimo abbiamo tolto apposta. Il risultato
+      // sarebbe "new row violates row-level security policy" su ogni
+      // contatto: verificato, non ipotizzato.
       Prefer: "return=minimal",
     },
     body: JSON.stringify({ ...lead, ...provenienza() }),
