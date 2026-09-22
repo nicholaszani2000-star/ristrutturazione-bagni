@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "build:preview": "PREVIEW_EXPORT=1 next build && node scripts/preview-relative.mjs"
   },
   "dependencies": {
     "@react-three/drei": "^10.7.8",

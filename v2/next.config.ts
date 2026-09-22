@@ -16,6 +16,10 @@ const nextConfig: NextConfig = {
   ...(isPreviewExport && {
     output: "export",
     images: { unoptimized: true },
+    // Percorsi relativi: cosi' la cartella esportata si apre con un doppio clic
+    // su index.html, senza dover far girare un server. Con i percorsi assoluti
+    // di default il browser cercherebbe /_next/ nella radice del disco.
+    assetPrefix: ".",
   }),
 };
 
