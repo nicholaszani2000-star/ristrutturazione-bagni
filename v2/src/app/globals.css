@@ -23,6 +23,10 @@
   --color-blue: #1b84dd;
   --color-blue-700: #1663b0;
   --color-sky: #56b4ee;
+  /* Schiarita di sky per i testi minuti su fondo scuro: #56b4ee su navy
+     arriva a 4.36:1, sotto il minimo di 4.5:1 per il testo piccolo. Stessa
+     tinta, luminosita' alzata quanto basta. */
+  --color-sky-200: #8ecdf5;
   --color-sky-soft: #e8f3fc;
 
   /* --- Neutri caldi: fanno respirare la fotografia --- */
@@ -144,6 +148,23 @@
  * semplice comparsa al passaggio. Volutamente: il catalogo UI consiglia non
  * piu' di uno o due elementi "focali" per schermata.
  */
+/* Comparsa dello shader dell'hero. La tela WebGL arriva dopo la fotografia,
+   e senza una dissolvenza il passaggio si vede come uno scatto. "both" tiene
+   l'opacita' a zero anche prima che l'animazione parta, cosi' non c'e' un
+   fotogramma a piena opacita' prima del ritardo. */
+@keyframes comparsa {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@utility comparsa {
+  animation: comparsa 1.1s ease-out both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .comparsa { animation-duration: 0.01ms; }
+}
+
 @utility riflesso {
   position: relative;
   isolation: isolate;

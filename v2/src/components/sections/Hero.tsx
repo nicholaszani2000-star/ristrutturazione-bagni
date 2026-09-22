@@ -6,6 +6,7 @@ import { links, euro } from "@/lib/links";
 import { Reveal } from "@/components/Reveal";
 import { Parallasse } from "@/components/Parallasse";
 import { Magnetico } from "@/components/Magnetico";
+import { SfondoWarp } from "@/components/SfondoWarp";
 
 const PUNTI = [
   { icon: "tiles", titolo: "Materiali di qualità", testo: "e resistenti" },
@@ -38,11 +39,27 @@ export function Hero() {
         </Parallasse>
       </div>
 
-      {/* Velatura: senza, il testo bianco sulla foto non raggiunge il contrasto
-          minimo di leggibilita'. Piu' fitta a sinistra, dove sta il testo. */}
+      {/* Lo shader del marchio, sopra la fotografia e sotto la velatura.
+          La maschera lo fa svanire verso destra sugli schermi larghi e verso
+          il basso su quelli stretti: da una parte il colore dell'azienda
+          dietro al testo, dall'altra il bagno vero che resta in vista. E' il
+          lavoro finito a vendere, non il fondale — quindi il fondale si
+          ritira dove c'e' la fotografia invece di coprirla. */}
+      <SfondoWarp className="comparsa pointer-events-none absolute inset-0 -z-[15] [mask-image:linear-gradient(to_bottom,#000_0%,#000_46%,transparent_88%)] lg:[mask-image:linear-gradient(105deg,#000_0%,#000_40%,transparent_80%)]" />
+
+      {/* Velatura: senza, il testo chiaro sul fondale non raggiunge il
+          contrasto minimo di leggibilita'.
+
+          Due profili, perche' due impaginazioni. Da lg in su il testo sta a
+          sinistra e la fotografia a destra, quindi la velatura corre in
+          orizzontale e si dirada dove non c'e' niente da leggere. Sotto lg il
+          testo occupa tutta la larghezza e si sviluppa in verticale: la stessa
+          sfumatura orizzontale lasciava la parte bassa del paragrafo su un
+          fondale chiaro, ed era li' che il contrasto scendeva a 2.68:1 —
+          misurato, non stimato, e sbagliato gia' prima di questo shader. */}
       <div
         aria-hidden
-        className="absolute inset-0 -z-10 bg-[linear-gradient(100deg,rgba(9,20,28,0.94)_0%,rgba(9,20,28,0.82)_38%,rgba(9,20,28,0.45)_66%,rgba(9,20,28,0.3)_100%)]"
+        className="absolute inset-0 -z-10 bg-[linear-gradient(180deg,rgba(9,20,28,0.78)_0%,rgba(9,20,28,0.76)_58%,rgba(9,20,28,0.55)_100%)] lg:bg-[linear-gradient(100deg,rgba(9,20,28,0.94)_0%,rgba(9,20,28,0.82)_38%,rgba(9,20,28,0.45)_66%,rgba(9,20,28,0.3)_100%)]"
       />
 
       <div className="wrap flex min-h-[max(38rem,88svh)] flex-col justify-center py-20 lg:py-24">
@@ -52,7 +69,7 @@ export function Hero() {
               fa entrare occhiello, titolo e sottotitolo in quest'ordine, che e'
               anche l'ordine in cui si leggono. */}
           <Reveal effetto="ingresso" scaglionamento={0.12} ritardo={0.15}>
-            <p className="mb-5 text-[0.7rem] font-semibold uppercase tracking-[0.3em] text-sky">
+            <p className="mb-5 text-[0.7rem] font-semibold uppercase tracking-[0.3em] text-sky-200">
               Ristrutturazione bagno
             </p>
 

@@ -11,6 +11,7 @@
     "build:offline": "PREVIEW_EXPORT=1 OFFLINE=1 next build && node scripts/preview-relative.mjs"
   },
   "dependencies": {
+    "@paper-design/shaders-react": "^0.0.81",
     "@react-three/drei": "^10.7.8",
     "@react-three/fiber": "^9.7.0",
     "@react-three/postprocessing": "^3.1.1",
