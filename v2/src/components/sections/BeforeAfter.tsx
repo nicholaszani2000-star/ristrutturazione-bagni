@@ -54,7 +54,7 @@ export function BeforeAfter() {
 
         <div
           ref={boxRef}
-          className="relative mx-auto aspect-[3/4] max-w-2xl touch-pan-y select-none overflow-hidden rounded-[var(--radius-card)] border border-sand-200 shadow-[var(--shadow-lift)]"
+          className="relative mx-auto aspect-[7/9] max-w-2xl touch-pan-y select-none overflow-hidden rounded-[var(--radius-card)] border border-sand-200 shadow-[var(--shadow-lift)]"
           onPointerDown={(e) => {
             dragging.current = true;
             moveTo(e.clientX);
@@ -67,8 +67,8 @@ export function BeforeAfter() {
           <Image
             src="/images/bagno-prima.webp"
             alt="Il bagno prima dell'intervento: piastrelle beige, box doccia datato, sanitari e mobile originali"
-            width={1200}
-            height={2030}
+            width={728}
+            height={924}
             sizes="(min-width: 768px) 42rem, 100vw"
             className="absolute inset-0 size-full object-cover"
           />
@@ -80,8 +80,8 @@ export function BeforeAfter() {
             <Image
               src="/images/bagno-dopo.webp"
               alt="Lo stesso bagno dopo l'intervento: microcemento, specchio retroilluminato, doccia walk-in e mobile sospeso"
-              width={1200}
-              height={2036}
+              width={728}
+              height={924}
               sizes="(min-width: 768px) 42rem, 100vw"
               className="absolute inset-0 size-full object-cover"
             />
