@@ -2,6 +2,7 @@ import { Header } from "@/components/sections/Header";
 import { Hero } from "@/components/sections/Hero";
 import { Offer } from "@/components/sections/Offer";
 import { BeforeAfter } from "@/components/sections/BeforeAfter";
+import { Progetto3D } from "@/components/sections/Progetto3D";
 import { StickyCta } from "@/components/StickyCta";
 
 export default function Home() {
@@ -13,6 +14,7 @@ export default function Home() {
         <Hero />
         <Offer />
         <BeforeAfter />
+        <Progetto3D />
       </main>
       <StickyCta />
     </>

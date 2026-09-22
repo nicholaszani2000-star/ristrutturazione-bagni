@@ -3,6 +3,7 @@ import { Button } from "@/components/Button";
 import { Icon } from "@/components/Icon";
 import { SITE } from "@/config/site";
 import { links, euro } from "@/lib/links";
+import { Reveal } from "@/components/Reveal";
 
 const TRUST = [
   "Chiavi in mano",
@@ -49,14 +50,14 @@ export function Hero() {
             </Button>
           </div>
 
-          <ul className="mt-8 flex flex-wrap gap-x-6 gap-y-3 border-t border-line pt-6">
+          <Reveal as="ul" className="mt-8 flex flex-wrap gap-x-6 gap-y-3 border-t border-line pt-6">
             {TRUST.map((t) => (
               <li key={t} className="flex items-center gap-2 text-sm font-medium text-navy">
                 <Icon name="check" className="size-[18px] shrink-0 text-blue" />
                 {t}
               </li>
             ))}
-          </ul>
+          </Reveal>
         </div>
 
         {/* --- Colonna foto: un lavoro vero, non un render --- */}

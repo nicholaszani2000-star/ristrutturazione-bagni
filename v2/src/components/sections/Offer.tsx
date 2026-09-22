@@ -2,6 +2,8 @@ import { Button } from "@/components/Button";
 import { Icon } from "@/components/Icon";
 import { SITE } from "@/config/site";
 import { euro } from "@/lib/links";
+import { Contatore } from "@/components/Contatore";
+import { Reveal } from "@/components/Reveal";
 
 export function Offer() {
   return (
@@ -31,7 +33,7 @@ export function Offer() {
             <p className="mt-1 text-sm text-white/80">{SITE.offer.size}</p>
 
             <p className="tabular mt-5 font-display text-[length:var(--text-price)] font-bold leading-none tracking-[-0.03em]">
-              {euro(SITE.offer.price)}
+              <Contatore valore={SITE.offer.price} />
             </p>
             <p className="mt-2 text-sm text-white/85">{SITE.offer.vatNote}</p>
 
@@ -61,14 +63,14 @@ export function Offer() {
                 </span>
                 Cosa comprende
               </h3>
-              <ul className="grid gap-3">
+              <Reveal as="ul" className="grid gap-3">
                 {SITE.offer.included.map((item) => (
                   <li key={item} className="grid grid-cols-[22px_1fr] items-start gap-3 text-sm leading-relaxed">
                     <Icon name="check" className="mt-0.5 size-[22px] text-success" />
                     <span>{item}</span>
                   </li>
                 ))}
-              </ul>
+              </Reveal>
             </div>
 
             <div>
@@ -78,14 +80,14 @@ export function Offer() {
                 </span>
                 Cosa non comprende
               </h3>
-              <ul className="grid gap-3">
+              <Reveal as="ul" className="grid gap-3">
                 {SITE.offer.excluded.map((item) => (
                   <li key={item} className="grid grid-cols-[22px_1fr] items-start gap-3 text-sm leading-relaxed text-muted">
                     <Icon name="minus" className="mt-0.5 size-[22px]" />
                     <span>{item}</span>
                   </li>
                 ))}
-              </ul>
+              </Reveal>
 
               <p className="mt-6 rounded-r-lg border-l-4 border-[#E0A93A] bg-warn-bg px-5 py-4 text-sm leading-relaxed text-warn-ink">
                 {SITE.offer.surprisesNote}
