@@ -5,6 +5,7 @@ import { SITE } from "@/config/site";
 import { links } from "@/lib/links";
 import { Icon } from "@/components/Icon";
 import { stileBottone } from "@/components/Button";
+import { Reveal } from "@/components/Reveal";
 
 /**
  * Modulo preventivo — la destinazione di ogni invito all'azione della pagina.
@@ -71,7 +72,7 @@ export function Preventivo() {
             stima al telefono.
           </p>
 
-          <ul className="mt-8 grid gap-4">
+          <Reveal as="ul" className="mt-8 grid gap-4">
             {[
               { i: "clock", t: "Risposta entro 1 giorno lavorativo" },
               { i: "survey", t: "Sopralluogo gratuito, nessun impegno" },
@@ -85,7 +86,7 @@ export function Preventivo() {
                 {r.t}
               </li>
             ))}
-          </ul>
+          </Reveal>
 
           <div className="mt-8 rounded-2xl border border-line bg-white p-5">
             <p className="mb-3 text-sm font-semibold text-navy">Preferisci parlarne subito?</p>
@@ -107,6 +108,9 @@ export function Preventivo() {
           </div>
         </div>
 
+        {/* Maschera: la card del modulo e' l'elemento piu' grande della
+            sezione, e si scopre invece di scivolare dentro. */}
+        <Reveal effetto="maschera">
         <div className="rounded-[var(--radius-card)] border border-line bg-white p-6 shadow-[var(--shadow-lift)] sm:p-8">
           {stato === "ok" ? (
             <div className="py-10 text-center">
@@ -232,6 +236,7 @@ export function Preventivo() {
             </form>
           )}
         </div>
+        </Reveal>
       </div>
     </section>
   );

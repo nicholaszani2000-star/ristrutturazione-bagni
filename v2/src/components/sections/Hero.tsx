@@ -4,6 +4,8 @@ import { Icon } from "@/components/Icon";
 import { SITE } from "@/config/site";
 import { links, euro } from "@/lib/links";
 import { Reveal } from "@/components/Reveal";
+import { Parallasse } from "@/components/Parallasse";
+import { Magnetico } from "@/components/Magnetico";
 
 const PUNTI = [
   { icon: "tiles", titolo: "Materiali di qualità", testo: "e resistenti" },
@@ -18,14 +20,23 @@ export function Hero() {
           priority perche' e' l'elemento piu' grande della prima schermata:
           caricarlo tardi vorrebbe dire mostrare un rettangolo scuro proprio
           nel momento in cui si decide se restare. */}
-      <Image
-        src="/images/bagno-dopo.webp"
-        alt=""
-        fill
-        priority
-        sizes="100vw"
-        className="-z-20 object-cover object-center"
-      />
+      {/* Lo spazio per la parallasse arriva da una scala del 10%, non da un
+          contenitore piu' alto. Alzando il contenitore cambiava il ritaglio
+          della fotografia, e l'inquadratura non e' una cosa da modificare per
+          far posto a un effetto: con la scala la composizione resta centrata
+          dov'era, e l'eccedenza viene tagliata dal riquadro esterno. */}
+      <div aria-hidden className="absolute inset-0 -z-20 overflow-hidden">
+        <Parallasse ampiezza={40} className="absolute inset-0">
+          <Image
+            src="/images/bagno-dopo.webp"
+            alt=""
+            fill
+            priority
+            sizes="100vw"
+            className="scale-110 object-cover object-center"
+          />
+        </Parallasse>
+      </div>
 
       {/* Velatura: senza, il testo bianco sulla foto non raggiunge il contrasto
           minimo di leggibilita'. Piu' fitta a sinistra, dove sta il testo. */}
@@ -36,34 +47,42 @@ export function Hero() {
 
       <div className="wrap flex min-h-[max(38rem,88svh)] flex-col justify-center py-20 lg:py-24">
         <div className="max-w-[46rem]">
-          <p className="mb-5 text-[0.7rem] font-semibold uppercase tracking-[0.3em] text-sky">
-            Ristrutturazione bagno
-          </p>
+          {/* Ingresso invece di comparsa allo scorrimento: qui siamo sopra la
+              piega, e uno scroll trigger non scatterebbe mai. Lo scaglionamento
+              fa entrare occhiello, titolo e sottotitolo in quest'ordine, che e'
+              anche l'ordine in cui si leggono. */}
+          <Reveal effetto="ingresso" scaglionamento={0.12} ritardo={0.15}>
+            <p className="mb-5 text-[0.7rem] font-semibold uppercase tracking-[0.3em] text-sky">
+              Ristrutturazione bagno
+            </p>
 
-          <h1 className="mb-6 text-[length:var(--text-display)] text-white">
-            Il tuo bagno,
-            <br />
-            una nuova{" "}
-            <span className="bg-gradient-to-r from-sky to-blue bg-clip-text text-transparent">
-              esperienza.
-            </span>
-          </h1>
+            <h1 className="mb-6 text-[length:var(--text-display)] text-white">
+              Il tuo bagno,
+              <br />
+              una nuova{" "}
+              <span className="bg-gradient-to-r from-sky to-blue bg-clip-text text-transparent">
+                esperienza.
+              </span>
+            </h1>
 
-          <p className="max-w-[46ch] text-[length:var(--text-lead)] leading-relaxed text-white/75">
+            <p className="max-w-[46ch] text-[length:var(--text-lead)] leading-relaxed text-white/75">
             Chiavi in mano a <strong className="font-semibold text-white">{SITE.zone.long}</strong>:
             demolizione, impianti, piastrelle e sanitari. Un unico interlocutore,
             un unico prezzo — {euro(SITE.offer.price)} per il bagno 3×2 m,
-            scritto per intero prima di iniziare.
-          </p>
+              scritto per intero prima di iniziare.
+            </p>
+          </Reveal>
 
           {/* Tre modi di rispondere: modulo per chi valuta, WhatsApp per chi
               scrive, telefono per chi ha fretta. Toglierne due per pulizia
               grafica vorrebbe dire perdere chi non usa il terzo. */}
           <div className="mt-9 flex flex-wrap gap-3">
-            <Button href="#preventivo" size="lg" className="max-sm:w-full">
-              Richiedi preventivo gratuito
-              <Icon name="chevron" className="size-4 -rotate-90" />
-            </Button>
+            <Magnetico className="max-sm:w-full">
+              <Button href="#preventivo" size="lg" className="max-sm:w-full">
+                Richiedi preventivo gratuito
+                <Icon name="chevron" className="size-4 -rotate-90" />
+              </Button>
+            </Magnetico>
             <Button href={links.whatsapp} variant="whatsapp" size="lg" target="_blank" rel="noopener" className="max-sm:w-full">
               <Icon name="whatsapp" className="size-5" />
               WhatsApp

@@ -7,6 +7,7 @@ import {
   Lightformer,
   PerspectiveCamera,
   useGLTF,
+  Html,
 } from "@react-three/drei";
 import { EffectComposer, Bloom, Vignette } from "@react-three/postprocessing";
 import { Suspense, useEffect, useMemo, useState, type MutableRefObject } from "react";
@@ -56,6 +57,40 @@ const ALTEZZA_SGUARDO = 1.05;
 const POSA = new THREE.Vector3(3.1, 2.6, 3.2);
 const RAGGIO_MIN = 2.9;
 const RAGGIO_MAX = 8;
+
+/**
+ * Punti d'interesse.
+ *
+ * Le posizioni non sono scelte a occhio: vengono dagli ingombri dichiarati nel
+ * GLB, riportati nel sistema di three con la stessa trasformazione applicata al
+ * modello (x-1,5 · y=z · z=1-y). Lo specchio, per esempio, nel file occupa
+ * X 0,33..1,17 e Z 1,21..2,05, che qui diventa X -1,17..-0,33 e altezza
+ * 1,21..2,05.
+ *
+ * Ogni punto porta anche la posa da cui si guarda. Le distanze stanno dentro i
+ * limiti dell'orbita (2,9..8): una posa piu' vicina verrebbe respinta dai
+ * controlli e l'inquadratura finirebbe altrove.
+ */
+const PUNTI = [
+  {
+    nome: "Mobile e lavabo",
+    dettaglio: "Sospeso, con lavabo da appoggio e miscelatore nero",
+    punto: [-0.75, 0.95, 0.1] as const,
+    camera: [-2.0, 1.8, 3.2] as const,
+  },
+  {
+    nome: "Specchio circolare",
+    dettaglio: "Retroilluminato, sopra il piano del lavabo",
+    punto: [-0.75, 1.6, 0.08] as const,
+    camera: [-1.8, 2.3, 3.0] as const,
+  },
+  {
+    nome: "Doccia walk-in",
+    dettaglio: "Lastra in vetro, piatto a filo pavimento",
+    punto: [0.95, 1.2, -0.02] as const,
+    camera: [3.6, 2.1, 2.6] as const,
+  },
+] as const;
 
 function Stanza() {
   const { scene } = useGLTF(MODELLO);
@@ -116,12 +151,13 @@ useGLTF.preload(MODELLO);
  * insieme fa scattare l'inquadratura al primo tocco.
  */
 function RegiaCamera({
-  ingresso, animato, progresso, ripristina, onPronta,
+  ingresso, animato, progresso, ripristina, fuoco, onPronta,
 }: {
   ingresso: boolean;
   animato: boolean;
   progresso: MutableRefObject<number>;
   ripristina: number;
+  fuoco: number | null;
   onPronta: () => void;
 }) {
   const { camera, controls, invalidate } = useThree();
@@ -163,13 +199,49 @@ function RegiaCamera({
     return () => { t.kill(); };
   }, [ripristina, camera, controls, invalidate]);
 
+  // Avvicinamento a un punto d'interesse.
+  //
+  // Si muovono insieme la camera e il bersaglio dell'orbita: spostare solo la
+  // prima lascerebbe l'inquadratura puntata al centro della stanza, e il
+  // dettaglio finirebbe di sbieco ai margini. Il bersaglio viene interpolato
+  // attraverso un oggetto di appoggio perche' e' un Vector3 dei controlli, non
+  // una proprieta' che GSAP possa animare direttamente.
+  useEffect(() => {
+    if (fuoco === null) return;
+    const p = PUNTI[fuoco];
+    const c = controls as unknown as { target: THREE.Vector3; update: () => void } | null;
+    if (!c) return;
+
+    const da = c.target.clone();
+    const stato = { t: 0 };
+    const verso = new THREE.Vector3(...p.punto);
+
+    const t = gsap.timeline();
+    t.to(camera.position, {
+      x: p.camera[0], y: p.camera[1], z: p.camera[2],
+      duration: 1.25, ease: "power3.inOut",
+    }, 0);
+    t.to(stato, {
+      t: 1, duration: 1.25, ease: "power3.inOut",
+      onUpdate: () => {
+        c.target.lerpVectors(da, verso, stato.t);
+        c.update();
+        invalidate();
+      },
+    }, 0);
+
+    return () => { t.kill(); };
+  }, [fuoco, camera, controls, invalidate]);
+
   /* eslint-disable react-hooks/immutability */
   // In react-three-fiber la camera e' un oggetto three.js vivo, posseduto dal
   // ciclo di rendering e non da React. Spostarla per fotogramma e' il modo
   // previsto di muoverla; passare da uno stato React vorrebbe dire un
   // re-render 60 volte al secondo, cioe' il costo che la regola evita.
   useFrame(() => {
-    if (!animato) return;
+    // Con un dettaglio a fuoco la parallasse tace: altrimenti correggerebbe
+    // l'altezza a ogni fotogramma e combatterebbe contro l'avvicinamento.
+    if (!animato || fuoco !== null) return;
     camera.position.y = POSA.y + (progresso.current - 0.5) * 0.5;
   });
   /* eslint-enable react-hooks/immutability */
@@ -223,6 +295,56 @@ function ComandiTastiera({ minPolare, maxPolare }: { minPolare: number; maxPolar
   return null;
 }
 
+/**
+ * Marcatori dei punti d'interesse.
+ *
+ * Restano un punto finche' non li si avvicina: aperti tutti e tre in
+ * permanenza coprirebbero il modello che dovrebbero far guardare. L'etichetta
+ * compare al passaggio del mouse, al fuoco da tastiera e quando il punto e'
+ * quello inquadrato.
+ *
+ * Sono elementi HTML veri dentro la scena, non testo disegnato in 3D: cosi'
+ * ereditano i caratteri e i colori del sito, sono leggibili a qualunque
+ * distanza e restano raggiungibili da tastiera.
+ */
+function Marcatori({
+  fuoco, onScegli,
+}: {
+  fuoco: number | null;
+  onScegli: (i: number) => void;
+}) {
+  return (
+    <>
+      {PUNTI.map((p, i) => (
+        <Html key={p.nome} position={[...p.punto]} center distanceFactor={7} zIndexRange={[20, 0]}>
+          <button
+            type="button"
+            onClick={() => onScegli(i)}
+            aria-label={`Inquadra: ${p.nome}. ${p.dettaglio}`}
+            className={`group/p flex items-center gap-2 rounded-full border py-1 pl-1 pr-1 text-left transition-all duration-300 hover:pr-3 focus-visible:pr-3 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky ${
+              fuoco === i
+                ? "border-sky/60 bg-navy/90 pr-3"
+                : "border-white/30 bg-navy/70 hover:bg-navy/90"
+            }`}
+          >
+            <span className="relative grid size-5 shrink-0 place-items-center">
+              <span className="absolute size-2 rounded-full bg-sky" />
+              <span className="absolute size-5 rounded-full border border-sky/60" />
+            </span>
+            <span
+              className={`overflow-hidden whitespace-nowrap font-display text-[11px] font-semibold text-white transition-all duration-300 group-hover/p:max-w-[14rem] group-focus-visible/p:max-w-[14rem] ${
+                fuoco === i ? "max-w-[14rem]" : "max-w-0"
+              }`}
+            >
+              {p.nome}
+            </span>
+          </button>
+        </Html>
+      ))}
+    </>
+  );
+}
+
 const MIN_POLARE = 0.55;
 const MAX_POLARE = Math.PI / 2.08;
 
@@ -235,6 +357,13 @@ export default function BagnoScene({
   ripristina: number;
 }) {
   const [pronta, setPronta] = useState(false);
+
+  // Il punto a fuoco porta con se' la generazione di "ripristina" in cui e'
+  // stato scelto. Quando l'utente ripristina la vista, quella generazione
+  // avanza e il punto decade da solo: nessuno stato da azzerare dentro un
+  // effetto, quindi nessun render a catena.
+  const [scelta, setScelta] = useState<{ i: number; gen: number } | null>(null);
+  const fuoco = scelta && scelta.gen === ripristina ? scelta.i : null;
 
   // La rotazione automatica costa un fotogramma continuo finche' la sezione e'
   // a schermo. Su desktop e' accettabile; su mobile — da dove arriva l'80% del
@@ -298,8 +427,11 @@ export default function BagnoScene({
 
         <RegiaCamera
           ingresso={animato} animato={animato} progresso={progresso}
-          ripristina={ripristina} onPronta={() => setPronta(true)}
+          ripristina={ripristina} fuoco={fuoco} onPronta={() => setPronta(true)}
         />
+        {pronta && (
+          <Marcatori fuoco={fuoco} onScegli={(i) => setScelta({ i, gen: ripristina })} />
+        )}
         <ComandiTastiera minPolare={MIN_POLARE} maxPolare={MAX_POLARE} />
 
         {/* Atmosfera cinematografica solo dove c'e' margine: su mobile il
@@ -317,7 +449,7 @@ export default function BagnoScene({
         enabled={pronta}
         target={[0, ALTEZZA_SGUARDO, 0]}
         enablePan={false}
-        autoRotate={pronta && ruotaDaSola}
+        autoRotate={pronta && ruotaDaSola && fuoco === null}
         autoRotateSpeed={0.4}
         // Limiti: sotto il pavimento e troppo vicino la stanza si rompe a vista.
         minPolarAngle={MIN_POLARE}

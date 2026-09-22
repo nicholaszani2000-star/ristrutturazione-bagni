@@ -3,6 +3,7 @@ import { Logo } from "@/components/Logo";
 import { Icon } from "@/components/Icon";
 import { SITE } from "@/config/site";
 import { links } from "@/lib/links";
+import { Reveal } from "@/components/Reveal";
 
 const NAVIGA = [
   { href: "#offerta", testo: "L'offerta" },
@@ -15,7 +16,7 @@ export function Footer() {
   const L = SITE.legal;
   return (
     <footer className="bg-navy pb-28 pt-16 text-white/70 lg:pb-16">
-      <div className="wrap grid gap-10 sm:grid-cols-2 lg:grid-cols-[1.4fr_1fr_1.2fr]">
+      <Reveal className="wrap grid gap-10 sm:grid-cols-2 lg:grid-cols-[1.4fr_1fr_1.2fr]">
         <div>
           <Logo tono="chiaro" />
           <p className="mt-4 max-w-[36ch] text-sm leading-relaxed">
@@ -74,7 +75,7 @@ export function Footer() {
             </li>
           </ul>
         </div>
-      </div>
+      </Reveal>
 
       {/* Dati societari: obbligatori su un sito che vende, e sono anche il
           segnale piu' economico che dietro c'e' un'azienda vera. */}

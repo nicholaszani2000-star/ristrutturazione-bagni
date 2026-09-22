@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { useCallback, useRef, useState } from "react";
 import { Icon } from "@/components/Icon";
+import { Reveal } from "@/components/Reveal";
 
 /**
  * Confronto prima/dopo su una foto vera, stessa inquadratura.
@@ -52,6 +53,10 @@ export function BeforeAfter() {
           </p>
         </div>
 
+        {/* Maschera invece di scivolata: il riquadro e' grande, e farlo
+            entrare per intero risulterebbe pesante. Qui si scopre dal basso,
+            come una tenda che si alza sulla fotografia. */}
+        <Reveal effetto="maschera">
         <div
           ref={boxRef}
           className="relative mx-auto aspect-[7/9] max-w-2xl touch-pan-y select-none overflow-hidden rounded-[var(--radius-card)] border border-sand-200 shadow-[var(--shadow-lift)]"
@@ -112,6 +117,7 @@ export function BeforeAfter() {
             </span>
           </button>
         </div>
+        </Reveal>
       </div>
     </section>
   );
