@@ -12,14 +12,26 @@ import type { NextConfig } from "next";
  */
 const isPreviewExport = process.env.PREVIEW_EXPORT === "1";
 
+/**
+ * I percorsi relativi servono solo al pacchetto che si apre con doppio clic.
+ *
+ * Con assetPrefix "." una pagina in sottocartella, come /privacy, cerchera' gli
+ * asset in /privacy/_next/ e non li trovera'. Su un hosting vero i percorsi
+ * assoluti sono quelli corretti, quindi la scorciatoia resta confinata alla
+ * build offline, che ha una pagina sola.
+ */
+const isOffline = process.env.OFFLINE === "1";
+
 const nextConfig: NextConfig = {
   ...(isPreviewExport && {
     output: "export",
     images: { unoptimized: true },
-    // Percorsi relativi: cosi' la cartella esportata si apre con un doppio clic
-    // su index.html, senza dover far girare un server. Con i percorsi assoluti
-    // di default il browser cercherebbe /_next/ nella radice del disco.
-    assetPrefix: ".",
+    // Genera privacy/index.html invece di privacy.html. Netlify saprebbe
+    // mappare anche il secondo, ma la cartella con index.html la serve
+    // qualunque hosting e qualunque server locale: una dipendenza in meno dal
+    // comportamento di una piattaforma specifica.
+    trailingSlash: true,
+    ...(isOffline && { assetPrefix: "." }),
   }),
 };
 

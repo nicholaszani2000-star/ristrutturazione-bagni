@@ -11,8 +11,8 @@ export const isPlaceholder = (v: string) =>
 
 export const SITE = {
   brand: {
-    name: "Easy-Bagno.it",
-    tagline: "Ristrutturazione bagni · chiavi in mano",
+    name: "EasyBagno.it",
+    tagline: "Ristrutturazione bagno · chiavi in mano",
     payoff: "Il tuo bagno, in buone mani.",
     claim: "Dal progetto alla realizzazione, pensiamo a tutto noi.",
     domain: "easy-bagno.it",

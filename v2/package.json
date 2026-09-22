@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "build:preview": "PREVIEW_EXPORT=1 next build && node scripts/preview-relative.mjs"
+    "build:netlify": "PREVIEW_EXPORT=1 next build",
+    "build:offline": "PREVIEW_EXPORT=1 OFFLINE=1 next build && node scripts/preview-relative.mjs"
   },
   "dependencies": {
     "@react-three/drei": "^10.7.8",

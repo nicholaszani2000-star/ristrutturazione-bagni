@@ -5,96 +5,114 @@ import { SITE } from "@/config/site";
 import { links, euro } from "@/lib/links";
 import { Reveal } from "@/components/Reveal";
 
-const TRUST = [
-  "Chiavi in mano",
-  "Sopralluogo gratuito",
-  "Prezzo bloccato in contratto",
-  "Impianti certificati",
-];
+const PUNTI = [
+  { icon: "tiles", titolo: "Materiali di qualità", testo: "e resistenti" },
+  { icon: "design", titolo: "Soluzioni su misura", testo: "per ogni spazio" },
+  { icon: "cert", titolo: "Assistenza dedicata", testo: "dal progetto alla consegna" },
+] as const;
 
 export function Hero() {
   return (
-    <section id="top" className="relative overflow-hidden bg-sand-50 pt-14 lg:pt-20">
-      <div className="wrap grid items-center gap-12 lg:grid-cols-[1.05fr_0.95fr] lg:gap-16">
-        {/* --- Colonna testo: il percorso di conversione --- */}
-        <div>
-          <p className="mb-3 font-display text-[clamp(1rem,0.95rem+0.4vw,1.25rem)] font-semibold text-blue-700">
-            {SITE.brand.payoff}
+    <section id="top" className="relative isolate min-h-[max(38rem,88svh)] overflow-hidden bg-navy">
+      {/* Fondale: il lavoro vero dell'azienda, non uno stock.
+          priority perche' e' l'elemento piu' grande della prima schermata:
+          caricarlo tardi vorrebbe dire mostrare un rettangolo scuro proprio
+          nel momento in cui si decide se restare. */}
+      <Image
+        src="/images/bagno-dopo.webp"
+        alt=""
+        fill
+        priority
+        sizes="100vw"
+        className="-z-20 object-cover object-center"
+      />
+
+      {/* Velatura: senza, il testo bianco sulla foto non raggiunge il contrasto
+          minimo di leggibilita'. Piu' fitta a sinistra, dove sta il testo. */}
+      <div
+        aria-hidden
+        className="absolute inset-0 -z-10 bg-[linear-gradient(100deg,rgba(9,20,28,0.94)_0%,rgba(9,20,28,0.82)_38%,rgba(9,20,28,0.45)_66%,rgba(9,20,28,0.3)_100%)]"
+      />
+
+      <div className="wrap flex min-h-[max(38rem,88svh)] flex-col justify-center py-20 lg:py-24">
+        <div className="max-w-[46rem]">
+          <p className="mb-5 text-[0.7rem] font-semibold uppercase tracking-[0.3em] text-sky">
+            Ristrutturazione bagno
           </p>
 
-          <h1 className="mb-5 text-[length:var(--text-display)]">
-            Ristruttura il tuo bagno.
+          <h1 className="mb-6 text-[length:var(--text-display)] text-white">
+            Il tuo bagno,
             <br />
-            <span className="grad-brand bg-clip-text text-transparent">
-              Pensiamo noi a tutto.
+            una nuova{" "}
+            <span className="bg-gradient-to-r from-sky to-blue bg-clip-text text-transparent">
+              esperienza.
             </span>
           </h1>
 
-          <p className="max-w-[54ch] text-[length:var(--text-lead)] leading-relaxed text-muted">
-            Bagno completo chiavi in mano a <strong className="text-ink">{SITE.zone.long}</strong>:
+          <p className="max-w-[46ch] text-[length:var(--text-lead)] leading-relaxed text-white/75">
+            Chiavi in mano a <strong className="font-semibold text-white">{SITE.zone.long}</strong>:
             demolizione, impianti, piastrelle e sanitari. Un unico interlocutore,
-            un unico prezzo, scritto per intero prima di iniziare.
+            un unico prezzo — {euro(SITE.offer.price)} per il bagno 3×2 m,
+            scritto per intero prima di iniziare.
           </p>
 
-          <div className="mt-8 flex flex-wrap gap-3">
+          {/* Tre modi di rispondere: modulo per chi valuta, WhatsApp per chi
+              scrive, telefono per chi ha fretta. Toglierne due per pulizia
+              grafica vorrebbe dire perdere chi non usa il terzo. */}
+          <div className="mt-9 flex flex-wrap gap-3">
             <Button href="#preventivo" size="lg" className="max-sm:w-full">
               Richiedi preventivo gratuito
+              <Icon name="chevron" className="size-4 -rotate-90" />
             </Button>
             <Button href={links.whatsapp} variant="whatsapp" size="lg" target="_blank" rel="noopener" className="max-sm:w-full">
               <Icon name="whatsapp" className="size-5" />
               WhatsApp
             </Button>
-            <Button href={links.tel} variant="ghost" size="lg" className="max-sm:w-full">
+            <Button href={links.tel} variant="light" size="lg" className="max-sm:w-full">
               <Icon name="phone" className="size-5" />
-              Chiama ora
+              {SITE.contact.phoneDisplay}
             </Button>
           </div>
 
-          <Reveal as="ul" className="mt-8 flex flex-wrap gap-x-6 gap-y-3 border-t border-line pt-6">
-            {TRUST.map((t) => (
-              <li key={t} className="flex items-center gap-2 text-sm font-medium text-navy">
-                <Icon name="check" className="size-[18px] shrink-0 text-blue" />
-                {t}
+          <Reveal as="ul" className="mt-12 grid gap-5 border-t border-white/15 pt-7 sm:grid-cols-3">
+            {PUNTI.map((p) => (
+              <li key={p.titolo} className="flex items-start gap-3">
+                <span className="mt-0.5 grid size-9 shrink-0 place-items-center rounded-lg border border-white/20 bg-white/5">
+                  <Icon name={p.icon} className="size-[18px] text-sky" />
+                </span>
+                <span className="text-sm leading-snug text-white/80">
+                  <strong className="block font-semibold text-white">{p.titolo}</strong>
+                  {p.testo}
+                </span>
               </li>
             ))}
           </Reveal>
         </div>
-
-        {/* --- Colonna foto: un lavoro vero, non un render --- */}
-        <div className="relative">
-          <figure className="overflow-hidden rounded-[var(--radius-card)] border border-sand-200 shadow-[var(--shadow-lift)]">
-            <Image
-              src="/images/bagno-dopo.webp"
-              alt="Bagno ristrutturato da Easy-Bagno: microcemento, doccia walk-in con profilo nero, mobile sospeso e specchio retroilluminato"
-              width={1200}
-              height={2036}
-              priority
-              sizes="(min-width: 1024px) 45vw, 100vw"
-              className="h-[clamp(22rem,55vw,34rem)] w-full object-cover object-center"
-            />
-          </figure>
-
-          {/* Etichetta prezzo: il numero è l'amo, sta sulla foto */}
-          <div className="absolute -bottom-6 right-4 rounded-2xl border border-sand-200 bg-white p-5 shadow-[var(--shadow-lift)] sm:right-6">
-            <span className="block text-[0.72rem] font-semibold uppercase tracking-wider text-muted">
-              {SITE.offer.title}
-            </span>
-            <span className="tabular block font-display text-[1.9rem] font-bold leading-tight text-navy">
-              {euro(SITE.offer.price)}
-            </span>
-            <span className="block text-xs font-semibold text-blue-700">
-              tutto compreso
-            </span>
-          </div>
-        </div>
       </div>
 
-      {/* Onda di chiusura, come sul biglietto da visita */}
-      <div aria-hidden className="mt-16 lg:mt-20">
-        <svg viewBox="0 0 1440 90" preserveAspectRatio="none" className="block h-[clamp(2.5rem,5vw,5rem)] w-full">
-          <path fill="#fff" d="M0 44c180-40 360-40 540 0s360 40 540 0 300-30 360-18V90H0Z" />
-        </svg>
-      </div>
+      {/* Scorciatoia al prima/dopo: chi arriva da un annuncio vuole vedere un
+          lavoro finito prima di leggere qualsiasi cosa. */}
+      <a
+        href="#prima-dopo"
+        className="absolute bottom-6 right-5 hidden items-center gap-3 rounded-full border border-white/20 bg-black/35 py-2 pl-3 pr-4 text-xs font-semibold text-white backdrop-blur-sm transition-colors hover:bg-black/55 lg:inline-flex"
+      >
+        <span className="relative size-9 overflow-hidden rounded-full border border-white/30">
+          <Image src="/images/bagno-prima.webp" alt="" fill sizes="36px" className="object-cover" />
+        </span>
+        <Icon name="arrows" className="size-3.5 text-sky" />
+        <span className="relative size-9 overflow-hidden rounded-full border border-white/30">
+          <Image src="/images/bagno-dopo.webp" alt="" fill sizes="36px" className="object-cover" />
+        </span>
+        Prima / Dopo
+      </a>
+
+      <span
+        aria-hidden
+        className="pointer-events-none absolute bottom-5 left-1/2 hidden -translate-x-1/2 flex-col items-center gap-1 text-[0.6rem] font-semibold uppercase tracking-[0.25em] text-white/50 lg:flex"
+      >
+        Scorri
+        <Icon name="chevron" className="size-4 animate-bounce" />
+      </span>
     </section>
   );
 }

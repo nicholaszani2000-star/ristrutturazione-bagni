@@ -19,6 +19,21 @@ const sizes = {
   lg: "min-h-14 px-8 text-[1.06rem]",
 } as const;
 
+/**
+ * Le stesse classi, disponibili fuori dal componente.
+ *
+ * Il modulo ha bisogno di un <button type="submit">, che non e' un link: senza
+ * questa funzione le classi andrebbero ricopiate a mano, e la prima modifica
+ * al bottone lascerebbe indietro l'invio del modulo.
+ */
+export function stileBottone(
+  variant: keyof typeof variants = "primary",
+  size: keyof typeof sizes = "md",
+  extra = "",
+) {
+  return `${base} ${variants[variant]} ${sizes[size]} ${extra}`;
+}
+
 type Props = ComponentProps<typeof Link> & {
   variant?: keyof typeof variants;
   size?: keyof typeof sizes;
