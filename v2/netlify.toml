@@ -1,0 +1,17 @@
+# Anteprima statica di Easy-Bagno.
+#
+# Pubblica l'export generato da PREVIEW_EXPORT=1 (cartella out/). Serve solo a
+# far vedere la landing: la produzione andra' su hosting con server, dove
+# next/image ottimizza le foto al volo invece di servirle cosi' come sono.
+
+[build]
+  command = "PREVIEW_EXPORT=1 npm run build"
+  publish = "out"
+
+[build.environment]
+  NODE_VERSION = "22"
+
+[[headers]]
+  for = "/nx/static/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
