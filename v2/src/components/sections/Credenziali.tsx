@@ -1,6 +1,7 @@
 import { Icon } from "@/components/Icon";
 import { SITE } from "@/config/site";
 import { Reveal } from "@/components/Reveal";
+import { IntestazioneSezione } from "@/components/IntestazioneSezione";
 
 /**
  * Prova sociale, senza recensioni inventate.
@@ -52,16 +53,14 @@ export function Credenziali() {
       <div aria-hidden className="velo-acqua -z-10" />
 
       <div className="wrap">
-        <div className="mx-auto mb-14 max-w-[62ch] text-center">
-          <p className="mb-3 font-display text-[0.78rem] font-semibold uppercase tracking-[0.12em] text-blue-700">
-            Chi siamo
-          </p>
-          <h2 className="text-[length:var(--text-h2)]">Un&apos;impresa che puoi verificare</h2>
-          <p className="mt-4 text-[length:var(--text-lead)] leading-relaxed text-muted">
-            Prima di far demolire un bagno vale la pena sapere a chi si apre la porta. Questi sono i
-            dati con cui puoi controllarci, e le carte che ti restano in mano a lavori finiti.
-          </p>
-        </div>
+        <IntestazioneSezione
+          occhiello="Chi siamo"
+          titolo="Un'impresa"
+          accento="che puoi verificare."
+          testo="Prima di far demolire un bagno vale la pena sapere a chi si apre la porta. Questi sono i dati con cui puoi controllarci, e le carte che ti restano in mano a lavori finiti."
+          centrata
+          className="mb-14"
+        />
 
         <Reveal className="grid gap-6 lg:grid-cols-[0.92fr_1.08fr]">
           {/* --- visura --- */}

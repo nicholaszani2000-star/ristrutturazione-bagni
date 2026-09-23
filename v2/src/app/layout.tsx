@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Poppins, Inter } from "next/font/google";
+import { Poppins, Inter, Caveat } from "next/font/google";
 import { SITE } from "@/config/site";
 import { migliaia } from "@/lib/links";
 import { Analytics } from "@/components/Analytics";
@@ -22,6 +22,19 @@ const inter = Inter({
   subsets: ["latin"],
   weight: ["400", "500", "600"],
   variable: "--font-inter",
+  display: "swap",
+});
+
+/**
+ * Una sola firma manoscritta, sulla fotografia dell'hero. Un peso solo e il
+ * sottoinsieme latino: sono una ventina di KB per un dettaglio che compare una
+ * volta, e serve a rompere la geometria di tutto il resto — senza, la pagina
+ * e' corretta ma non ha nessun momento umano.
+ */
+const caveat = Caveat({
+  subsets: ["latin"],
+  weight: ["600"],
+  variable: "--font-mano",
   display: "swap",
 });
 
@@ -54,7 +67,7 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="it" className={`${poppins.variable} ${inter.variable}`}>
+    <html lang="it" className={`${poppins.variable} ${inter.variable} ${caveat.variable}`}>
       <body>
         <a
           href="#contenuto"

@@ -57,6 +57,7 @@
   /* --- Tipografia (i font arrivano da next/font, self-hosted) --- */
   --font-display: var(--font-poppins), system-ui, sans-serif;
   --font-sans: var(--font-inter), system-ui, sans-serif;
+  --font-scritto: var(--font-mano), cursive;
 
   /* --- Scala fluida: da 375px a 1440px senza scatti --- */
   --text-display: clamp(2.05rem, 1.5rem + 2.3vw, 3.6rem);
@@ -256,6 +257,33 @@
     height: 1px;
     pointer-events: none;
     background: linear-gradient(90deg, transparent, rgb(255 255 255 / 0.9), transparent);
+  }
+}
+
+/** Lo stesso riflesso, ma scuro: su una superficie bianca una luce bianca
+ *  non esiste. Qui la "luce" e' un'ombra del marchio che passa. */
+@utility riflesso-scuro {
+  position: relative;
+  isolation: isolate;
+
+  &::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.35s ease;
+    background: radial-gradient(
+      14rem circle at var(--mx, 50%) var(--my, 50%),
+      rgb(27 132 221 / 0.16),
+      rgb(27 132 221 / 0) 55%
+    );
+  }
+
+  &:hover::after,
+  &:focus-visible::after {
+    opacity: 1;
   }
 }
 

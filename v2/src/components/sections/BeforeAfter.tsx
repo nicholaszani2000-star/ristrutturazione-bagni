@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useCallback, useRef, useState } from "react";
 import { Icon } from "@/components/Icon";
 import { Reveal } from "@/components/Reveal";
+import { IntestazioneSezione } from "@/components/IntestazioneSezione";
 
 /**
  * Confronto prima/dopo su una foto vera, stessa inquadratura.
@@ -41,17 +42,18 @@ export function BeforeAfter() {
 
   return (
     <section id="prima-dopo" className="bg-surface py-[length:var(--spacing-section)]">
-      <div className="wrap">
-        <div className="mx-auto mb-12 max-w-[60ch] text-center">
-          <p className="mb-3 font-display text-[0.78rem] font-semibold uppercase tracking-[0.12em] text-blue-700">
-            Prima e dopo
+      <div className="wrap grid items-center gap-y-10 lg:grid-cols-[minmax(0,0.78fr)_minmax(0,1.22fr)] lg:gap-x-16">
+        <IntestazioneSezione
+          occhiello="I nostri lavori"
+          titolo="Lo stesso bagno,"
+          accento="due mondi."
+          testo="Un lavoro vero, fotografato dallo stesso punto. Trascina la maniglia per vedere la differenza — con le frecce della tastiera funziona uguale."
+        >
+          <p className="mt-6 rounded-2xl border border-line bg-white p-5 text-sm leading-relaxed text-muted shadow-[var(--shadow-card)]">
+            È l&apos;unico intervento che abbiamo fotografato prima e dopo dallo stesso punto.
+            Gli altri cantieri li mostriamo dal vivo durante il sopralluogo.
           </p>
-          <h2 className="text-[length:var(--text-h2)]">Lo stesso bagno, due mondi</h2>
-          <p className="mt-4 text-[length:var(--text-lead)] leading-relaxed text-muted">
-            Un lavoro vero, fotografato dallo stesso punto. Trascina la maniglia
-            per vedere la differenza — con le frecce della tastiera funziona uguale.
-          </p>
-        </div>
+        </IntestazioneSezione>
 
         {/* Maschera invece di scivolata: il riquadro e' grande, e farlo
             entrare per intero risulterebbe pesante. Qui si scopre dal basso,
@@ -59,7 +61,7 @@ export function BeforeAfter() {
         <Reveal effetto="maschera">
         <div
           ref={boxRef}
-          className="relative mx-auto aspect-[7/9] max-w-2xl touch-pan-y select-none overflow-hidden rounded-[var(--radius-card)] border border-line shadow-[var(--shadow-lift)]"
+          className="relative aspect-[7/9] sm:aspect-[4/3] lg:aspect-[7/6] touch-pan-y select-none overflow-hidden rounded-[var(--radius-card)] border border-line shadow-[var(--shadow-lift)]"
           onPointerDown={(e) => {
             dragging.current = true;
             moveTo(e.clientX);

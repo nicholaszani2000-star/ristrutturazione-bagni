@@ -4,23 +4,20 @@ import { SITE } from "@/config/site";
 
 import { Contatore } from "@/components/Contatore";
 import { Reveal } from "@/components/Reveal";
+import { IntestazioneSezione } from "@/components/IntestazioneSezione";
 
 export function Offer() {
   return (
     <section id="offerta" className="bg-white py-[length:var(--spacing-section)]">
       <div className="wrap">
-        <div className="mx-auto mb-14 max-w-[62ch] text-center">
-          <p className="mb-3 font-display text-[0.78rem] font-semibold uppercase tracking-[0.12em] text-blue-700">
-            L&apos;offerta
-          </p>
-          <h2 className="text-[length:var(--text-h2)]">
-            Il prezzo per intero, prima di iniziare
-          </h2>
-          <p className="mt-4 text-[length:var(--text-lead)] leading-relaxed text-muted">
-            In giro leggi &laquo;a partire da&raquo;. Poi arriva il conto e sale del 20–30%.
-            Noi facciamo il contrario: ti diciamo subito quanto costa e cosa comprende.
-          </p>
-        </div>
+        <IntestazioneSezione
+          occhiello="L'offerta"
+          titolo="Il prezzo per intero,"
+          accento="prima di iniziare."
+          testo="In giro leggi «a partire da». Poi arriva il conto e sale del 20–30%. Noi facciamo il contrario: ti diciamo subito quanto costa e cosa comprende."
+          centrata
+          className="mb-14"
+        />
 
         <div className="grid items-start gap-8 lg:grid-cols-[0.85fr_1.15fr] lg:gap-14">
           {/* --- Pannello prezzo: resta in vista mentre si scorre l'elenco --- */}

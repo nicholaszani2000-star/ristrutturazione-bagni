@@ -4,6 +4,7 @@ import { SITE } from "@/config/site";
 import { euro, euroCent } from "@/lib/links";
 import { Reveal } from "@/components/Reveal";
 import { Onda } from "@/components/Onda";
+import { IntestazioneSezione } from "@/components/IntestazioneSezione";
 
 /**
  * Sta subito dopo il prezzo, e non e' un caso: e' il punto in cui 9.490 €
@@ -44,22 +45,16 @@ export function Detrazione() {
         <Onda colore="fill-surface" variante="mossa" />
       </div>
 
-      <div className="wrap relative pt-[clamp(1rem,2vw,2rem)] pb-[clamp(1.5rem,3vw,3rem)]">
-        <div className="mx-auto mb-12 max-w-[62ch] text-center">
-          <p className="mb-3 font-display text-[0.78rem] font-semibold uppercase tracking-[0.12em] text-sky-200">
-            Detrazione fiscale {SITE.taxCredit.year}
-          </p>
-          <h2 className="text-[length:var(--text-h2)] text-white">
-            Metà della spesa torna indietro
-          </h2>
-          {/* "Torna indietro", non "sconto": la detrazione non abbassa la
-              fattura, si recupera dalle tasse in dieci anni. Scriverlo come
-              uno sconto sarebbe piu' efficace e sarebbe falso. */}
-          <p className="mt-4 text-[length:var(--text-lead)] leading-relaxed text-white/75">
-            Non è uno sconto sul prezzo: è una detrazione IRPEF che recuperi in{" "}
-            {years} anni, una quota all&apos;anno, presentando la fattura dei lavori.
-          </p>
-        </div>
+      <div className="wrap relative pt-[clamp(0.5rem,1.5vw,1.5rem)]">
+        <IntestazioneSezione
+          occhiello={`Detrazione fiscale ${SITE.taxCredit.year}`}
+          titolo="Metà della spesa"
+          accento="torna indietro."
+          testo={`Non è uno sconto sul prezzo: è una detrazione IRPEF che recuperi in ${years} anni, una quota all'anno, presentando la fattura dei lavori.`}
+          centrata
+          chiaro
+          className="mb-12"
+        />
 
         <Reveal className="grid items-stretch gap-6 lg:grid-cols-[1.15fr_0.85fr]">
           {/* --- Il conto, in chiaro --- */}

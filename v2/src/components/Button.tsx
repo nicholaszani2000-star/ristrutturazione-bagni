@@ -39,9 +39,11 @@ const variants = {
     "border-line bg-white text-navy shadow-[0_1px_2px_rgb(20_58_92/0.04)] " +
     "hover:border-sky hover:bg-surface hover:shadow-[var(--shadow-card)]",
 
+  // Su fondo blu o navy. Bianco pieno, non un contorno traslucido: su quel
+  // fondo un contorno e' un invito che si vede solo se lo cerchi.
   secondaryDark:
-    "border-white/25 bg-white/10 text-white backdrop-blur-sm " +
-    "hover:border-white/45 hover:bg-white/18",
+    "border-white bg-white text-navy shadow-[var(--shadow-card)] riflesso-scuro " +
+    "hover:shadow-[var(--shadow-lift)]",
 
   whatsapp:
     "border-whatsapp bg-whatsapp text-white shadow-[var(--shadow-card)] " +

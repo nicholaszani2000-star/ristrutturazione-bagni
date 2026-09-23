@@ -23,12 +23,12 @@ type Props = {
 
 const PROFILI = {
   calma: {
-    dietro: "M0,52 C260,104 520,12 760,44 C1000,76 1220,108 1440,64 L1440,120 L0,120 Z",
-    avanti: "M0,74 C240,116 500,34 748,66 C996,98 1216,124 1440,86 L1440,120 L0,120 Z",
+    dietro: "M0,78 C300,104 600,58 900,76 C1140,90 1290,102 1440,84 L1440,120 L0,120 Z",
+    avanti: "M0,94 C280,116 580,76 880,92 C1120,105 1300,118 1440,100 L1440,120 L0,120 Z",
   },
   mossa: {
-    dietro: "M0,36 C200,100 392,4 636,46 C880,88 1128,10 1440,52 L1440,120 L0,120 Z",
-    avanti: "M0,62 C186,118 396,30 644,72 C892,114 1140,40 1440,78 L1440,120 L0,120 Z",
+    dietro: "M0,70 C240,102 470,56 720,74 C970,92 1210,60 1440,82 L1440,120 L0,120 Z",
+    avanti: "M0,88 C230,114 480,74 736,92 C992,110 1220,82 1440,98 L1440,120 L0,120 Z",
   },
 } as const;
 
@@ -43,7 +43,7 @@ export function Onda({ colore, variante = "calma", className = "" }: Props) {
       // lati su schermo largo o di scappare fuori su telefono.
       viewBox="0 0 1440 120"
       preserveAspectRatio="none"
-      className={`pointer-events-none block h-[clamp(2.5rem,5vw,5rem)] w-full ${className}`}
+      className={`pointer-events-none block h-[clamp(1.5rem,2.6vw,2.75rem)] w-full ${className}`}
     >
       <path d={dietro} className={colore} opacity="0.45" />
       <path d={avanti} className={colore} />

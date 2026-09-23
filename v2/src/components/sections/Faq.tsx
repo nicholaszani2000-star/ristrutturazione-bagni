@@ -2,6 +2,7 @@ import { Icon } from "@/components/Icon";
 import { SITE, isPlaceholder } from "@/config/site";
 import { links } from "@/lib/links";
 import { Reveal } from "@/components/Reveal";
+import { IntestazioneSezione } from "@/components/IntestazioneSezione";
 
 /**
  * Le domande con la risposta ancora fra parentesi quadre non compaiono: e'
@@ -42,12 +43,13 @@ export function Faq() {
       />
 
       <div className="wrap">
-        <div className="mx-auto mb-12 max-w-[62ch] text-center">
-          <p className="mb-3 font-display text-[0.78rem] font-semibold uppercase tracking-[0.12em] text-blue-700">
-            Domande frequenti
-          </p>
-          <h2 className="text-[length:var(--text-h2)]">Le risposte che servono prima di firmare</h2>
-        </div>
+        <IntestazioneSezione
+          occhiello="Domande frequenti"
+          titolo="Le risposte che servono"
+          accento="prima di firmare."
+          centrata
+          className="mb-12"
+        />
 
         {/* details/summary invece di un accordion in JavaScript: si apre anche
             se lo script non parte, lo legge uno screen reader senza aiuti, e
