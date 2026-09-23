@@ -25,8 +25,11 @@ function provenienza() {
   if (typeof window === "undefined") return {};
   const p = new URLSearchParams(window.location.search);
   return {
-    fonte: p.get("utm_source") ?? document.referrer ?? undefined,
-    campagna: p.get("utm_campaign") ?? undefined,
+    // "||" e non "??": chi apre il sito digitando l'indirizzo ha un
+    // referrer vuoto, "", che per "??" e' un valore valido. Finiva in
+    // archivio una fonte vuota invece di nessuna fonte.
+    fonte: p.get("utm_source") || document.referrer || undefined,
+    campagna: p.get("utm_campaign") || undefined,
     pagina: window.location.pathname,
   };
 }
