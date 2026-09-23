@@ -10,6 +10,10 @@
 
 [build.environment]
   NODE_VERSION = "22"
+  # Gia' impostata dal comando di build, ma la ripeto qui perche' la vedano
+  # anche i plugin che Netlify aggiunge da solo ai progetti Next.js: devono
+  # sapere che questo e' un sito statico e non cercare un server.
+  PREVIEW_EXPORT = "1"
 
 # Intestazioni e reindirizzamenti stanno in public/_headers e
 # public/_redirects: sono gli unici che Netlify legge anche quando il sito
