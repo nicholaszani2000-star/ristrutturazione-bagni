@@ -40,6 +40,33 @@ function provenienza() {
   };
 }
 
+/**
+ * Iscrizione alla lista per lo sconto.
+ *
+ * Tabella separata dai contatti, e non e' pignoleria: un preventivo e
+ * un'iscrizione a una lista hanno basi giuridiche diverse e tempi di
+ * conservazione diversi. Tenerli nella stessa tabella vuol dire non poter piu'
+ * cancellare gli uni senza toccare gli altri il giorno in cui qualcuno chiede
+ * la cancellazione.
+ */
+export async function inviaIscrizione(email: string) {
+  const { url, publishableKey } = SITE.integrations.supabase;
+  if (!url || url.startsWith("[")) return;
+
+  const r = await fetch(`${url}/rest/v1/iscrizioni`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      apikey: publishableKey,
+      Authorization: `Bearer ${publishableKey}`,
+      Prefer: "return=minimal",
+    },
+    body: JSON.stringify({ email, consenso_marketing: true, ...provenienza() }),
+  });
+
+  if (!r.ok) throw new Error(`Supabase ha risposto ${r.status}`);
+}
+
 export async function inviaLead(lead: Lead) {
   const { url, publishableKey } = SITE.integrations.supabase;
   if (!url || url.startsWith("[")) return;

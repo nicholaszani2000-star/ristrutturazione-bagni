@@ -96,14 +96,14 @@ export function Preventivo() {
           </p>
           <h2 className="mb-4 max-w-[18ch]">Dicci com&apos;è il tuo bagno oggi.</h2>
           <p className="max-w-[52ch] text-muted">
-            Ti richiamiamo entro un giorno lavorativo. Il sopralluogo è gratuito
-            e senza impegno: alla fine hai un prezzo scritto per intero, non una
-            stima al telefono.
+            Il sopralluogo è gratuito e senza impegno: alla fine hai un prezzo
+            scritto per intero, non una stima al telefono. Scrivi tu, quando ti
+            è comodo.
           </p>
 
           <Reveal as="ul" className="mt-8 grid gap-4">
             {[
-              { i: "clock", t: "Risposta entro 1 giorno lavorativo" },
+              { i: "clock", t: "Scegli tu il canale: modulo, email o WhatsApp" },
               { i: "survey", t: "Sopralluogo gratuito, nessun impegno" },
               { i: "receipt", t: "Prezzo bloccato in contratto prima di iniziare" },
               { i: "lock", t: "I tuoi dati restano a noi, nessun call center" },
@@ -148,8 +148,8 @@ export function Preventivo() {
               </span>
               <h3 className="mb-2 font-display text-xl font-bold text-navy">Richiesta ricevuta.</h3>
               <p className="mx-auto max-w-[36ch] text-sm text-muted">
-                Ti richiamiamo entro un giorno lavorativo. Se hai fretta, scrivici
-                su WhatsApp: rispondiamo prima.
+                Ti rispondiamo ai recapiti che ci hai lasciato. Se hai fretta,
+                scrivici su WhatsApp: da lì rispondiamo prima.
               </p>
               <a
                 href={links.whatsapp}
@@ -254,7 +254,7 @@ export function Preventivo() {
               </button>
 
               <p className="text-center text-xs text-muted">
-                Nessun costo, nessun impegno. Ti ricontattiamo solo noi.
+                Nessun costo, nessun impegno. I tuoi dati non escono da qui.
               </p>
             </form>
           )}

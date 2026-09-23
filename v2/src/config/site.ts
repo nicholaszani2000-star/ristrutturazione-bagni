@@ -165,6 +165,23 @@ export const SITE = {
     { icon: "receipt", title: "Fattura per la detrazione", text: "Prepariamo la documentazione corretta per portare i lavori in detrazione." },
   ],
 
+  /**
+   * Sconto per chi lascia l'indirizzo email.
+   *
+   * ⚠️ DA CONFERMARE COL TITOLARE PRIMA DI PUBBLICARE: percentuale, su cosa si
+   * applica e per quanto vale. Non è una frase di marketing, è un impegno
+   * commerciale: chi si iscrive deve poterlo usare davvero, e le condizioni
+   * scritte qui sono quelle che l'impresa dovrà rispettare. Se cambiano, si
+   * cambiano qui e cambiano ovunque nella pagina.
+   */
+  promo: {
+    percentuale: 5,
+    suCosa: "sul preventivo del bagno completo",
+    validita: "60 giorni dall'iscrizione",
+    condizioni:
+      "Lo sconto si applica al preventivo firmato dopo il sopralluogo e non è cumulabile con altre promozioni in corso.",
+  },
+
   /** SOLO recensioni vere. Finché è vuoto, la sezione non si renderizza. */
   reviews: [] as { name: string; city: string; rating: number; text: string }[],
 

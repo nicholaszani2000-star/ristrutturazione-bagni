@@ -6,8 +6,25 @@ export const links = {
   whatsapp: `https://wa.me/${SITE.contact.whatsapp}?text=${encodeURIComponent(
     SITE.contact.whatsappMessage,
   )}`,
+  /**
+   * Il corpo e' precompilato con le tre cose che servono per rispondere con un
+   * prezzo invece che con "dipende". Chi apre la posta trova la traccia gia'
+   * pronta: e' la differenza fra un'email scritta e una rimandata.
+   */
   mail: `mailto:${SITE.contact.email}?subject=${encodeURIComponent(
     "Richiesta preventivo ristrutturazione bagno",
+  )}&body=${encodeURIComponent(
+    [
+      "Buongiorno,",
+      "vorrei un preventivo per il mio bagno.",
+      "",
+      "Comune: ",
+      "Misure indicative del bagno: ",
+      "Cosa vorrei rifare: ",
+      "Quando vorrei iniziare: ",
+      "",
+      "Grazie.",
+    ].join("\n"),
   )}`,
 } as const;
 

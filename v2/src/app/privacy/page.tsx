@@ -105,6 +105,22 @@ export default function Privacy() {
       </div>
 
       <div>
+        <h2>Iscrizione alla lista per lo sconto</h2>
+        <p>
+          Se lasci il tuo indirizzo email nel riquadro dedicato allo sconto del{" "}
+          {SITE.promo.percentuale}%, lo trattiamo per una finalità distinta da quella della
+          richiesta di preventivo: inviarti l&apos;offerta e nostre comunicazioni commerciali. La
+          base giuridica è il tuo consenso (art. 6.1.a GDPR), che raccogliamo con una spunta
+          separata e non precompilata, e che puoi revocare in qualsiasi momento senza dover
+          spiegare il motivo — scrivendo a{" "}
+          <a href={`mailto:${SITE.contact.email}`}>{SITE.contact.email}</a> o usando il link di
+          disiscrizione presente in ogni messaggio. Conserviamo l&apos;indirizzo finché non
+          revochi il consenso. La revoca non toglie validità a quanto inviato prima, e non fa
+          decadere uno sconto già applicato a un preventivo.
+        </p>
+      </div>
+
+      <div>
         <h2>Conferimento dei dati</h2>
         <p>
           Nome e telefono sono necessari per ricontattarti: senza, non possiamo
