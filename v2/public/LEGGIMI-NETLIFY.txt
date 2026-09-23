@@ -1,5 +1,9 @@
-EasyBagno.it — pubblicazione
-=============================
+EasyBagno.it — come si pubblica e cosa c'e' dentro
+===================================================
+
+
+1. PUBBLICARE
+==============
 
 MODO CONSIGLIATO: collega il repo, poi ogni push va online da solo
 ------------------------------------------------------------------
@@ -13,61 +17,122 @@ MODO CONSIGLIATO: collega il repo, poi ogni push va online da solo
     Publish directory   v2/out
 
   Da quel momento non serve piu' nessuno zip: ogni modifica spinta sul
-  branch diventa live da sola. E' il flusso che volevi.
+  branch diventa live da sola.
 
-MODO RAPIDO: trascina questo zip
----------------------------------
-  Netlify -> Add new site -> Deploy manually -> trascina.
-  Va bene per vedere subito il risultato, ma ogni aggiornamento richiede
-  di rifare il caricamento a mano.
+MODO RAPIDO: trascina lo zip "final-boss"
+------------------------------------------
+  Netlify -> Add new site -> Deploy manually -> trascina la cartella.
+  Va bene per partire subito, ma ogni aggiornamento va ricaricato a mano.
 
 
-DOPO LA PRIMA PUBBLICAZIONE — DUE COSE
-=======================================
+2. DUE COSE DA FARE SUBITO DOPO LA PRIMA PUBBLICAZIONE
+=======================================================
 
-1) NOTIFICHE DEL MODULO  (altrimenti i contatti non li vedi arrivare)
+1) NOTIFICHE DEL MODULO SCONTO
    Site configuration -> Forms -> Form notifications
    -> Add notification -> Email notification
-   -> la tua email, form = "preventivo"
+   -> la tua email, form = "sconto"
+
+   Senza questo passaggio le iscrizioni arrivano lo stesso (finiscono in
+   Supabase e nella scheda Forms di Netlify), ma non ricevi l'avviso.
 
 2) DOMINIO
-   Lo stream GA4 e il sito sono configurati su  easybagno.it  (senza
-   trattino). Se il dominio su Register e' diverso, dimmelo: l'URL
-   canonico e l'anteprima social vanno allineati.
+   Lo stream GA4 e l'URL canonico del sito sono impostati su
+   easybagno.it (senza trattino). Se il dominio registrato e' diverso,
+   dimmelo: vanno allineati anche i metadati per l'anteprima social.
 
 
-COSA E' GIA' COLLEGATO
-=======================
+3. COSA E' COLLEGATO
+=====================
 
-GA4 — stream easybagno.it, G-FCEM78H075
+GA4 — stream easybagno.it, ID G-FCEM78H075
   Non parte all'apertura della pagina: lo script di Google viene
-  caricato SOLO dopo che il visitatore preme "Accetta". E' un obbligo,
-  non una scelta di stile.
-  Eventi tracciati:
-    generate_lead         preventivo inviato
-    contatto_telefono     clic su un numero
-    contatto_whatsapp     clic su WhatsApp
-  In GA4 vanno segnati come conversioni:
-    Admin -> Events -> segna "generate_lead" come key event.
+  scaricato SOLO dopo che il visitatore preme "Accetta" nella fascia
+  dei cookie. E' un obbligo di legge, non una scelta di stile.
 
-SUPABASE — progetto "easy-bagno", tabella "leads"
-  Ogni preventivo inviato finisce anche qui, con i parametri UTM della
-  visita (fonte e campagna): serve a sapere QUALE annuncio ha portato
-  il contatto, non solo che ne sono arrivati.
-  La chiave nel codice e' quella pubblicabile, ed e' pensata per essere
-  pubblica: sulla tabella c'e' una sola regola, di solo inserimento.
-  Con quella chiave non si legge, non si modifica, non si cancella.
+  Eventi inviati:
+    generate_lead         email lasciata per lo sconto
+    iscrizione_sconto     lo stesso gesto, con il valore dello sconto
+    contatto_telefono     clic su un numero di telefono
+    contatto_whatsapp     clic su WhatsApp
+    contatto_email        clic su "Apri la posta e scrivi"
+
+  DA FARE IN GA4: Admin -> Events -> segna "generate_lead" come key
+  event, altrimenti le campagne non hanno una conversione su cui
+  ottimizzare.
+
+META PIXEL — ID 1640497950773690
+  Stessa regola di GA4: parte solo dopo il consenso.
+
+  Eventi inviati:
+    PageView    all'accettazione dei cookie
+    Contact     clic su telefono, WhatsApp o email
+    Lead        email lasciata per lo sconto, con valore in euro
+
+  ABBINAMENTO AVANZATO. Quando qualcuno lascia l'email per lo sconto,
+  l'indirizzo viene passato a Meta cifrato in SHA-256 — mai in chiaro.
+  Serve a due cose concrete per le campagne:
+    - retargeting mirato su chi ha gia' mostrato interesse;
+    - pubblici simili (lookalike) costruiti su contatti veri.
+  In Gestione eventi la colonna "Corrispondenza avanzata" si accende da
+  sola dopo le prime iscrizioni.
+
+  NOTA: il frammento che mi hai mandato conteneva anche un <noscript>
+  con un'immagine di tracciamento. L'ho tolto di proposito: quello parte
+  al caricamento della pagina SEMPRE, senza passare dal consenso, e
+  rende inutile la fascia dei cookie. Chi naviga con JavaScript spento
+  non viene misurato, ed e' corretto cosi'.
+
+  NON C'E' LA CAPI (Conversions API). Richiede un endpoint sul server
+  che invii gli eventi da server a server: questo sito e' HTML statico e
+  un server non ce l'ha. Se la vuoi, serve una funzione serverless su
+  Netlify: e' mezza giornata di lavoro, si fa quando vuoi.
+
+SUPABASE — progetto "easy-bagno", tabella "iscrizioni"
+  Ogni email lasciata per lo sconto viene salvata qui, insieme a fonte e
+  campagna lette dai parametri UTM dell'indirizzo: serve a sapere QUALE
+  annuncio ha portato l'iscritto, non solo che ne sono arrivati.
+
+  La chiave nel codice e' quella PUBBLICABILE, ed e' pensata per stare
+  nel browser. Sulla tabella c'e' una sola regola: inserimento, e solo
+  con il consenso marketing spuntato. Con quella chiave non si legge,
+  non si modifica, non si cancella. Verificato riga per riga.
+
+  Per leggere gli iscritti: Supabase -> Table editor -> iscrizioni.
+  Per esportarli: il bottone "Export" -> CSV. Quel CSV si carica in Meta
+  come pubblico personalizzato.
 
 NETLIFY FORMS
-  Resta attivo in parallelo: e' lui a mandarti la notifica via email, ed
-  e' la rete di sicurezza se Supabase non risponde.
+  Resta attivo in parallelo a Supabase. I due invii partono insieme e
+  basta che ne arrivi uno: se Supabase non risponde l'iscrizione non si
+  perde, e viceversa.
 
 
-ANCORA DA FARE
-===============
-  - Meta Pixel + CAPI (aspetto l'ID da te)
-  - Sezioni: detrazione fiscale, processo, FAQ, perche' noi
-    (il testo e' gia' scritto in configurazione, manca il montaggio)
-  - Recensioni: servono testi VERI dei tuoi clienti
-  - Tre conferme: IVA 10% inclusa o esclusa, anni di garanzia,
-    lista di cosa non e' compreso
+4. LA CHIAVE SEGRETA CHE MI HAI MANDATO
+========================================
+  Mi hai passato in chat anche la "secret key" di Supabase
+  (sb_secret_...). NON l'ho messa nel sito, e non va messa: su un sito
+  statico tutto il codice e' leggibile da chiunque, e quella chiave
+  scavalca ogni regola di sicurezza del database.
+
+  Avendola scritta in chat, RUOTALA:
+  Supabase -> Project Settings -> API Keys -> Secret keys -> Rotate.
+  Il sito non usa quella chiave, quindi ruotarla non rompe niente.
+
+
+5. QUELLO CHE MANCA E DIPENDE DA TE
+====================================
+  - IVA: in pagina c'e' scritto "IVA agevolata 10% inclusa". Conferma
+    col commercialista prima di spingere gli annunci: un prezzo
+    dichiarato male e' contestabile.
+  - GARANZIA: nelle FAQ manca la risposta su quanti anni di garanzia
+    dai su opere e materiali. Finche' manca, la domanda non viene
+    mostrata.
+  - COSA NON E' COMPRESO: la lista in configurazione va confermata. E'
+    quella che ti protegge dalle contestazioni sul prezzo fisso.
+  - CONDIZIONI DELLO SCONTO 5%: validita' e cumulabilita' sono scritte
+    da me in modo prudente. Rileggile.
+  - RECENSIONI: non ne ho inventate nessuna. Quando hai i testi veri dei
+    tuoi clienti, si aggiunge la sezione.
+  - FOTO: ci sono un prima/dopo e una foto d'ambiente. Piu' cantieri
+    veri mandi, piu' la pagina convince.

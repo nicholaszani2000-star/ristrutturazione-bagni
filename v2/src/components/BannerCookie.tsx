@@ -23,13 +23,14 @@ export function BannerCookie() {
   return (
     <div
       role="dialog"
-      aria-label="Consenso ai cookie di misurazione"
+      aria-label="Consenso ai cookie di misurazione e pubblicità"
       className="fixed inset-x-0 bottom-[4.75rem] z-[120] px-4 pb-4 lg:bottom-0 lg:px-6 lg:pb-6"
     >
       <div className="wrap flex max-w-3xl flex-col gap-4 rounded-[var(--radius-card)] border border-line bg-white p-5 shadow-[var(--shadow-lift)] sm:flex-row sm:items-center sm:gap-6">
         <p className="text-sm leading-relaxed text-muted">
-          Usiamo cookie di misurazione per capire quali pagine funzionano. Senza il
-          tuo consenso non ne installiamo nessuno, e il sito funziona lo stesso.{" "}
+          Usiamo cookie di Google e Meta per misurare le visite e mostrarti i
+          nostri annunci su Facebook e Instagram. Senza il tuo consenso non ne
+          installiamo nessuno, e il sito funziona lo stesso.{" "}
           <Link href="/cookie" className="font-semibold text-blue-700 underline underline-offset-2">
             Dettagli
           </Link>

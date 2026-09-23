@@ -25,7 +25,7 @@ export function RevocaConsenso() {
   return (
     <div className="rounded-2xl border border-line bg-surface p-5">
       <p className="mb-3 text-sm text-ink">
-        Al momento <strong>{scelto}</strong> i cookie di misurazione.
+        Al momento <strong>{scelto}</strong> i cookie di misurazione e pubblicità.
       </p>
       <button
         type="button"

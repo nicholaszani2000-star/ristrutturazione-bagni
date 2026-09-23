@@ -51,8 +51,13 @@
   --color-avviso-bg: #eef6fd;
   --color-avviso-bordo: #1b84dd;
   --color-avviso-ink: #21445e;
-  --color-whatsapp: #25d366;
-  --color-whatsapp-dark: #1da851;
+  /* Il verde di WhatsApp, abbassato quel tanto che basta a leggerlo.
+     Sul #25d366 originale il testo bianco sta a 1,98:1 — misurato sui pixel,
+     non calcolato: illeggibile al sole, fuori norma ovunque. Qui siamo a
+     4,82:1 restando lo stesso verde riconoscibile. Il colore pieno resta
+     nell'alone al passaggio del mouse, dove non deve reggere nessun testo. */
+  --color-whatsapp: #0f8347;
+  --color-whatsapp-dark: #0c6435;
 
   /* --- Tipografia (i font arrivano da next/font, self-hosted) --- */
   --font-display: var(--font-poppins), system-ui, sans-serif;
@@ -146,10 +151,9 @@
 /**
  * Riflesso speculare sulla superficie di un pulsante.
  *
- * E' l'idea del pulsante "liquid metal" tradotta nel linguaggio di questo
- * sito: la sensazione di una superficie che cattura la luce, ottenuta con un
- * gradiente e nient'altro. Niente WebGL, niente canvas, nessuna dipendenza —
- * il pulsante resta lo stesso elemento di prima, con una luce sopra.
+ * La sensazione di una superficie che cattura la luce, ottenuta con un
+ * gradiente e nient'altro: nessuna tela, nessuna dipendenza, nessun secondo
+ * elemento sotto. Il pulsante resta quello di prima, con una luce sopra.
  *
  * La posizione arriva da --mx/--my. Dove un involucro magnetico le aggiorna,
  * la luce segue il cursore; altrove resta al centro e il riflesso e' una

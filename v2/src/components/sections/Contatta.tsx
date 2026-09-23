@@ -4,6 +4,7 @@ import { useState } from "react";
 import { SITE } from "@/config/site";
 import { links, euro, euroCent } from "@/lib/links";
 import { traccia } from "@/lib/ga4";
+import { tracciaMeta, riconosci } from "@/lib/meta";
 import { inviaIscrizione } from "@/lib/supabase";
 import { Icon } from "@/components/Icon";
 import { stileBottone } from "@/components/Button";
@@ -33,35 +34,57 @@ export function Contatta() {
   async function iscrivi(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const form = e.currentTarget;
+    const dati = new FormData(form);
+    const email = String(dati.get("email") ?? "").trim();
+    if (!email) return;
+
     setStato("invio");
-    try {
-      const dati = new FormData(form);
-      await fetch("/", {
+
+    // Due destinazioni, nessuna delle due padrona dell'altra.
+    //
+    // Prima era in fila: Netlify, e solo se andava bene Supabase. Bastava un
+    // errore di rete sulla prima per perdere l'iscrizione anche nella seconda,
+    // e chi si era iscritto vedeva "riprova" con l'indirizzo gia' valido in
+    // mano. Ora partono insieme e basta che ne arrivi una: l'archivio e la
+    // casella di Netlify servono a due cose diverse, e nessuna delle due e'
+    // il presupposto dell'altra.
+    const esiti = await Promise.allSettled([
+      inviaIscrizione(email),
+      fetch("/", {
         method: "POST",
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
         body: new URLSearchParams(dati as unknown as Record<string, string>).toString(),
-      });
+      }).then((r) => {
+        if (!r.ok) throw new Error(`Netlify ha risposto ${r.status}`);
+      }),
+    ]);
 
-      setStato("ok");
-      form.reset();
-      // Due eventi, uno per scopo: "generate_lead" e' l'evento standard che
-      // va segnato come conversione in GA4 — ed e' questo il momento in cui la
-      // pagina acquisisce davvero un contatto, ora che il modulo non c'e' piu'.
-      // L'altro serve a distinguere questa iscrizione dagli altri contatti.
-      traccia("generate_lead", { metodo: "sconto-email", valore_offerta: SITE.offer.price });
-      traccia("iscrizione_sconto", { valore_sconto: risparmio });
-
-      // Copia in archivio, in un try a parte: Netlify ha gia' l'iscrizione, e
-      // un errore qui non deve far credere a chi si e' iscritto di non
-      // esserci riuscito.
-      try {
-        await inviaIscrizione(String(dati.get("email") ?? ""));
-      } catch {
-        /* silenzio voluto */
-      }
-    } catch {
+    if (esiti.every((x) => x.status === "rejected")) {
       setStato("errore");
+      return;
     }
+
+    setStato("ok");
+    form.reset();
+
+    // Due eventi, uno per scopo: "generate_lead" e' l'evento standard che va
+    // segnato come conversione in GA4 — ed e' questo il momento in cui la
+    // pagina acquisisce davvero un contatto, ora che il modulo non c'e' piu'.
+    // L'altro serve a distinguere questa iscrizione dagli altri contatti.
+    traccia("generate_lead", { metodo: "sconto-email", valore_offerta: SITE.offer.price });
+    traccia("iscrizione_sconto", { valore_sconto: risparmio });
+
+    // Meta. Prima l'abbinamento, poi l'evento: cosi' il Lead arriva gia'
+    // collegato a quel contatto, ed e' quello che permette i pubblici simili e
+    // il retargeting mirato. L'indirizzo parte cifrato in SHA-256, mai in
+    // chiaro, e solo se il pixel e' stato avviato — cioe' se i cookie di
+    // misurazione sono stati accettati.
+    await riconosci(SITE.integrations.metaPixelId, email);
+    tracciaMeta("Lead", {
+      content_name: "Sconto email",
+      currency: "EUR",
+      value: risparmio,
+    });
   }
 
   const campo =
@@ -156,7 +179,7 @@ export function Contatta() {
               <span className="mb-3 grid size-11 place-items-center rounded-full bg-white/20">
                 <Icon name="check" className="size-6" />
               </span>
-              <p className="font-display text-lg font-semibold">Fatto. Hai diritto al 5%.</p>
+              <p className="font-display text-lg font-semibold">Fatto. Hai diritto al {SITE.promo.percentuale}%.</p>
               <p className="mt-2 text-sm leading-relaxed text-white/85">
                 Tienilo da parte e scrivici quando vuoi: lo applichiamo al preventivo.
               </p>
@@ -212,7 +235,7 @@ export function Contatta() {
                   Acconsento a ricevere l&apos;offerta e comunicazioni commerciali da{" "}
                   {SITE.legal.company}. Posso disiscrivermi quando voglio.{" "}
                   <a
-                    href="/privacy"
+                    href="/privacy/"
                     className="font-semibold text-white underline underline-offset-2"
                   >
                     Informativa privacy

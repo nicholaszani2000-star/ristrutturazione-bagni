@@ -31,22 +31,40 @@ export default function Cookie() {
       </div>
 
       <div>
-        <h2>Cookie di misurazione — solo se acconsenti</h2>
+        <h2>Cookie di misurazione e pubblicità — solo se acconsenti</h2>
         <p>
           Usiamo <strong>Google Analytics 4</strong> per capire quante persone
           visitano il sito, da dove arrivano e quali pagine leggono. Ci serve a
           sapere se la pubblicità che paghiamo porta richieste vere.
         </p>
         <p>
+          Usiamo anche il <strong>Meta Pixel</strong> (Facebook e Instagram) per
+          misurare i risultati delle campagne e per mostrare annunci a chi ha
+          già visitato il sito. Se lasci il tuo indirizzo nel riquadro dello
+          sconto, lo trasmettiamo a Meta <strong>cifrato</strong> con SHA-256, mai
+          in chiaro: serve a riconoscere quel contatto senza consegnare a nessuno
+          la nostra rubrica. È la funzione che Meta chiama{" "}
+          <em>abbinamento avanzato</em>.
+        </p>
+        <p>
           <strong>Non partono da soli.</strong> Finché non premi «Accetta» nella
-          fascia in fondo alla pagina, lo script di Google non viene nemmeno
-          scaricato e nessun cookie di misurazione viene scritto. Se premi
+          fascia in fondo alla pagina, né lo script di Google né quello di Meta
+          vengono scaricati e nessun cookie di misurazione viene scritto. Se premi
           «Rifiuta», non succede nulla e il sito funziona identico.
         </p>
         <p>
           I cookie installati da Google Analytics in caso di consenso sono{" "}
           <code>_ga</code> e <code>_ga_&lt;ID&gt;</code>, con durata di due anni.
           Il titolare del trattamento per questi dati è Google Ireland Limited.
+        </p>
+        <p>
+          Quelli installati dal Meta Pixel sono <code>_fbp</code> e, se arrivi da
+          un annuncio, <code>_fbc</code>: durano tre mesi. Il titolare del
+          trattamento per questi dati è Meta Platforms Ireland Limited.
+        </p>
+        <p>
+          Né Google né Meta ricevono mai il tuo nome, il tuo numero di telefono
+          o il testo dei messaggi che ci scrivi.
         </p>
       </div>
 
@@ -58,9 +76,9 @@ export default function Cookie() {
       <div>
         <h2>Cosa non c&apos;è</h2>
         <p>
-          Non sono attivi cookie di profilazione pubblicitaria né strumenti di
-          remarketing. Quando lo saranno, questa pagina verrà aggiornata prima che
-          entrino in funzione.
+          Non vendiamo né cediamo i tuoi dati a terzi diversi da quelli elencati
+          qui sopra, e non ci sono cookie di altri operatori pubblicitari oltre a
+          Google e Meta.
         </p>
       </div>
 

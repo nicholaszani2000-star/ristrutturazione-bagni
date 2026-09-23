@@ -30,9 +30,15 @@ export default function Privacy() {
         <h2>Quali dati raccogliamo</h2>
         <ul>
           <li>
-            <strong>Dati che ci invii tu</strong> con il modulo di richiesta preventivo:
-            nome e cognome, telefono, e — se li compili — email, comune, tipo di
-            intervento e il messaggio che scrivi.
+            <strong>Dati che ci invii tu</strong> quando ci scrivi un&apos;email, ci
+            chiami o ci mandi un messaggio su WhatsApp: il tuo indirizzo o il tuo
+            numero, e quello che decidi di raccontarci del lavoro. Sul sito non
+            c&apos;è un modulo che ti chiede i dati: sei tu a scegliere cosa
+            scrivere.
+          </li>
+          <li>
+            <strong>Il solo indirizzo email</strong>, se lo lasci nel riquadro
+            dedicato allo sconto del {SITE.promo.percentuale}%.
           </li>
           <li>
             <strong>Dati tecnici</strong> raccolti dal nostro fornitore di hosting per
@@ -64,8 +70,10 @@ export default function Privacy() {
           </li>
         </ul>
         <p>
-          Non usiamo i tuoi dati per inviarti pubblicità e non li cediamo né li
-          vendiamo a terzi per finalità di marketing.
+          I dati che ci lasci con il modulo di preventivo non li usiamo per
+          inviarti pubblicità: per quella serve il consenso separato che trovi nel
+          riquadro dello sconto, spiegato più avanti. In nessun caso vendiamo i
+          tuoi dati.
         </p>
       </div>
 
@@ -78,6 +86,12 @@ export default function Privacy() {
           Qualora un fornitore tratti dati fuori dallo Spazio Economico Europeo, il
           trasferimento avviene sulla base delle clausole contrattuali tipo
           approvate dalla Commissione europea.
+        </p>
+        <p>
+          I fornitori sono: <strong>Netlify</strong> (hosting del sito e raccolta
+          degli invii del modulo) e <strong>Supabase</strong> (la base di dati in
+          cui finiscono le richieste di preventivo e gli indirizzi iscritti allo
+          sconto, su server nell&apos;Unione europea).
         </p>
       </div>
 
@@ -118,14 +132,25 @@ export default function Privacy() {
           revochi il consenso. La revoca non toglie validità a quanto inviato prima, e non fa
           decadere uno sconto già applicato a un preventivo.
         </p>
+        <p>
+          Quell&apos;indirizzo viene conservato nella nostra base di dati e, se hai
+          accettato i cookie di misurazione, trasmesso a{" "}
+          <strong>Meta Platforms Ireland Limited</strong> in forma cifrata con
+          SHA-256 — mai in chiaro — perché possa riconoscerti tra il pubblico delle
+          nostre campagne su Facebook e Instagram e mostrarti le promozioni che ti
+          riguardano. Per quel trattamento siamo contitolari con Meta. Se rifiuti i
+          cookie di misurazione, l&apos;indirizzo resta solo da noi. I dettagli sono
+          nella <a href="/cookie/">cookie policy</a>.
+        </p>
       </div>
 
       <div>
         <h2>Conferimento dei dati</h2>
         <p>
-          Nome e telefono sono necessari per ricontattarti: senza, non possiamo
-          darti una risposta. Gli altri campi sono facoltativi e servono solo a
-          prepararci meglio al sopralluogo.
+          Non c&apos;è nessun dato obbligatorio per visitare il sito. Per riceverne
+          una risposta ci serve un recapito — quello da cui ci scrivi è
+          sufficiente. Per l&apos;iscrizione allo sconto serve l&apos;indirizzo email
+          e la spunta del consenso: senza, non possiamo mandarti l&apos;offerta.
         </p>
       </div>
     </PaginaLegale>

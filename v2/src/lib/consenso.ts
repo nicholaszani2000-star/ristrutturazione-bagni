@@ -50,7 +50,44 @@ export const stato = (): Consenso => leggi();
  */
 export const statoSulServer = (): Consenso => "sul-server";
 
+/**
+ * Cosa succede quando qualcuno ci ripensa.
+ *
+ * Revocare il consenso deve fermare la misurazione, non solo smettere di
+ * avviarla alla prossima visita. Tre cose, in quest'ordine:
+ *   1. si avvisano gli script gia' caricati in questa pagina, con le funzioni
+ *      ufficiali che Google e Meta prevedono per la revoca;
+ *   2. si cancellano i cookie che hanno gia' scritto;
+ *   3. da li' in avanti, alla visita successiva, gli script non partono piu'.
+ *
+ * I cookie di Google stanno di solito sul dominio padre (.easybagno.it), non
+ * su www: per questo si prova su ogni livello del nome, altrimenti la
+ * cancellazione "riesce" e il cookie resta dov'era.
+ */
+const DI_MISURAZIONE = /^(_ga|_gid|_gat|_fbp|_fbc)/;
+
+function fermaMisurazione() {
+  if (typeof window === "undefined") return;
+
+  window.gtag?.("consent", "update", { analytics_storage: "denied", ad_storage: "denied" });
+  window.fbq?.("consent", "revoke");
+
+  const parti = location.hostname.split(".");
+  const domini = [
+    "",
+    ...parti.map((_, i) => "." + parti.slice(i).join(".")).filter((d) => d.split(".").length > 2),
+  ];
+  for (const voce of document.cookie.split(";")) {
+    const nome = voce.split("=")[0].trim();
+    if (!DI_MISURAZIONE.test(nome)) continue;
+    for (const d of domini) {
+      document.cookie = `${nome}=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/${d ? `; domain=${d}` : ""}`;
+    }
+  }
+}
+
 export function imposta(v: "accettato" | "rifiutato") {
+  if (v === "rifiutato") fermaMisurazione();
   corrente = v;
   try {
     localStorage.setItem(CHIAVE, v);
@@ -62,6 +99,7 @@ export function imposta(v: "accettato" | "rifiutato") {
 }
 
 export function azzera() {
+  fermaMisurazione();
   corrente = "ignoto";
   try {
     localStorage.removeItem(CHIAVE);

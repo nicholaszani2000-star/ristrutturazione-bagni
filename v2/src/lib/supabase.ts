@@ -1,7 +1,7 @@
 import { SITE } from "@/config/site";
 
 /**
- * Invio di un contatto a Supabase.
+ * Invio a Supabase.
  *
  * Una sola POST, senza la libreria @supabase/supabase-js: per un unico
  * inserimento sarebbero centinaia di kB nel pacchetto del browser in cambio di
@@ -13,15 +13,6 @@ import { SITE } from "@/config/site";
  * o cancellarlo. Il rischio e' qualche riga di spam, non una fuga di dati.
  */
 
-type Lead = {
-  nome: string;
-  telefono: string;
-  email?: string;
-  comune?: string;
-  tipo_intervento?: string;
-  messaggio?: string;
-  consenso_marketing: boolean;
-};
 
 /**
  * Da dove arriva la visita.
@@ -50,28 +41,14 @@ function provenienza() {
  * la cancellazione.
  */
 export async function inviaIscrizione(email: string) {
+  // Stessa normalizzazione che si usa per l'abbinamento di Meta: minuscole e
+  // senza spazi. Senza, "Mario@X.it" e "mario@x.it" diventano due iscritti,
+  // e la stessa persona riceve la promozione due volte.
+  const pulita = email.trim().toLowerCase();
   const { url, publishableKey } = SITE.integrations.supabase;
   if (!url || url.startsWith("[")) return;
 
   const r = await fetch(`${url}/rest/v1/iscrizioni`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      apikey: publishableKey,
-      Authorization: `Bearer ${publishableKey}`,
-      Prefer: "return=minimal",
-    },
-    body: JSON.stringify({ email, consenso_marketing: true, ...provenienza() }),
-  });
-
-  if (!r.ok) throw new Error(`Supabase ha risposto ${r.status}`);
-}
-
-export async function inviaLead(lead: Lead) {
-  const { url, publishableKey } = SITE.integrations.supabase;
-  if (!url || url.startsWith("[")) return;
-
-  const r = await fetch(`${url}/rest/v1/leads`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -84,10 +61,10 @@ export async function inviaLead(lead: Lead) {
       // la riga appena scritta — e RETURNING ha bisogno del permesso di
       // LETTURA, che al ruolo anonimo abbiamo tolto apposta. Il risultato
       // sarebbe "new row violates row-level security policy" su ogni
-      // contatto: verificato, non ipotizzato.
+      // iscrizione: verificato, non ipotizzato.
       Prefer: "return=minimal",
     },
-    body: JSON.stringify({ ...lead, ...provenienza() }),
+    body: JSON.stringify({ email: pulita, consenso_marketing: true, ...provenienza() }),
   });
 
   if (!r.ok) throw new Error(`Supabase ha risposto ${r.status}`);

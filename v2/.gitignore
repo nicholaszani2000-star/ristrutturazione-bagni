@@ -39,3 +39,6 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# pacchetti di pubblicazione: si rigenerano con npm run build:netlify
+*.zip

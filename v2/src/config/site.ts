@@ -209,15 +209,17 @@ export const SITE = {
   integrations: {
     /** Stream "easybagno.it" (ID 15826734180). Parte solo dopo il consenso. */
     ga4Id: "G-FCEM78H075",
-    metaPixelId: "[META PIXEL ID]",
+    /** Pixel "EasyBagno". Parte solo dopo il consenso, come GA4. */
+    metaPixelId: "1640497950773690",
 
     /**
      * Progetto "easy-bagno" (eu-central-1).
      *
      * La chiave e' quella PUBBLICABILE: sta nel codice del browser di
-     * proposito. Sulla tabella leads c'e' una sola policy, di solo
-     * inserimento — con questa chiave non si legge, non si modifica, non si
-     * cancella. Non e' un segreto sfuggito.
+     * proposito. Sulla tabella iscrizioni c'e' una sola policy, di solo
+     * inserimento e solo con consenso_marketing a true — con questa chiave
+     * non si legge, non si modifica, non si cancella. Non e' un segreto
+     * sfuggito.
      */
     supabase: {
       url: "https://mwydejjaevqamsjayghk.supabase.co",
