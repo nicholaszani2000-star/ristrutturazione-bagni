@@ -27,7 +27,7 @@ const base =
   // inventa e il modulo finisce con un pulsante che sembra premibile mentre
   // sta gia' inviando.
   "aria-disabled:pointer-events-none aria-disabled:opacity-45 " +
-  "disabled:pointer-events-none disabled:opacity-45 disabled:shadow-none";
+  "disabled:cursor-not-allowed disabled:opacity-45 disabled:shadow-none";
 
 const variants = {
   // blue-700 e non blue: bianco su #1b84dd da' 3,90:1, sotto il minimo di

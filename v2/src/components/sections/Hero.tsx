@@ -97,7 +97,7 @@ export function Hero() {
                 href="#processo"
                 className="group inline-flex min-h-12 shrink-0 items-center gap-3 whitespace-nowrap font-display font-semibold text-navy transition-colors hover:text-blue-700"
               >
-                <span className="grid size-11 place-items-center rounded-full border border-line bg-white text-blue-700 shadow-[0_1px_2px_rgb(20_58_92/0.05)] transition-[transform,box-shadow] duration-300 group-hover:scale-105 group-hover:shadow-[var(--shadow-card)]">
+                <span className="grid size-11 place-items-center rounded-full border border-line bg-white text-blue-700 shadow-[0_1px_2px_rgb(20_58_92/0.05)] transition-[border-color,box-shadow] duration-300 group-hover:border-sky group-hover:shadow-[var(--shadow-card)]">
                   <Icon name="chevron" className="size-4" />
                 </span>
                 Scopri come funziona

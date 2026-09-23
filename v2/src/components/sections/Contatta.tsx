@@ -66,8 +66,9 @@ export function Contatta() {
 
   const campo =
     "w-full rounded-xl border border-line bg-white px-4 py-3 text-base text-ink " +
-    "outline-none transition-colors placeholder:text-muted/70 focus:border-blue " +
-    "focus:ring-2 focus:ring-blue/25";
+    "transition-colors placeholder:text-muted/70 focus:border-blue " +
+    "focus:ring-2 focus:ring-blue/25 focus-visible:outline-3 " +
+    "focus-visible:outline-offset-2 focus-visible:outline-blue";
 
   return (
     <section id="scrivici" className="relative isolate overflow-hidden bg-surface py-[length:var(--spacing-section)]">
