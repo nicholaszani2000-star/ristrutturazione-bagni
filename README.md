@@ -15,6 +15,7 @@ v2/                     il sito (Next.js 16, export statico)
   public/               foto, anteprima social, LEGGIMI-NETLIFY.txt
   netlify.toml          comando di build, cartella, intestazioni
 netlify.toml            dice a Netlify che il sito sta in v2/
+annunci/                immagini e testi per Meta (CAMPAGNA.md), non pubblicati sul sito
 reference/              materiale di consultazione, non pubblicato
 .claude/, .mcp.json     skill e server MCP per lo sviluppo
 ```
