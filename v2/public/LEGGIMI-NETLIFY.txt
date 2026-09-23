@@ -7,14 +7,14 @@ EasyBagno.it — come si pubblica e cosa c'e' dentro
 
 MODO CONSIGLIATO: collega il repo, poi ogni push va online da solo
 ------------------------------------------------------------------
-  Netlify -> il tuo sito -> Site configuration -> Build & deploy
-  -> Link repository -> GitHub -> nicholaszani2000-star/ristrutturazione-bagni
+  Netlify -> progetto "easy-bagno-anteprima" -> Site configuration
+  -> Build & deploy -> Link repository -> GitHub
+  -> nicholaszani2000-star/ristrutturazione-bagni
+  -> Branch to deploy: claude/new-session-01gjm2
 
-  Impostazioni:
-    Branch to deploy    claude/new-session-01gjm2
-    Base directory      v2
-    Build command       npm run build:netlify
-    Publish directory   v2/out
+  Tutto il resto lascialo com'e', Base directory compresa: il file
+  netlify.toml nella radice del repo porta Netlify nella cartella v2/,
+  dove trova il comando di build e la cartella da pubblicare.
 
   Da quel momento non serve piu' nessuno zip: ogni modifica spinta sul
   branch diventa live da sola.
@@ -29,6 +29,7 @@ MODO RAPIDO: trascina lo zip "final-boss"
 =======================================================
 
 1) NOTIFICHE DEL MODULO SCONTO
+   (I moduli sul progetto "easy-bagno-anteprima" li ho gia' attivati io.)
    Site configuration -> Forms -> Form notifications
    -> Add notification -> Email notification
    -> la tua email, form = "sconto"
@@ -120,7 +121,26 @@ NETLIFY FORMS
   Il sito non usa quella chiave, quindi ruotarla non rompe niente.
 
 
-5. QUELLO CHE MANCA E DIPENDE DA TE
+5. META: TRE BLOCCHI PRIMA DI POTER SPENDERE
+=============================================
+  Controllati sull'account pubblicitario "Easybagno"
+  (ID 1836403044189994). Il Pixel e' gia' collegato a quell'account.
+
+  a) METODO DI PAGAMENTO: manca. Senza, nessun annuncio parte.
+     Gestione inserzioni -> Impostazioni di pagamento -> Aggiungi.
+
+  b) PAGINA FACEBOOK: nessuna collegata all'account. Gli annunci su
+     Facebook e Instagram escono sempre a nome di una Pagina.
+     Business Manager "Easybagno" -> Account -> Pagine -> Aggiungi
+     (crea "EasyBagno" se non esiste), poi assegnala all'account
+     pubblicitario. Collega anche il profilo Instagram.
+
+  c) CONDIZIONI DEI PUBBLICI PERSONALIZZATI: non accettate. Senza,
+     niente retargeting e niente pubblici simili. Si accettano qui:
+     https://www.facebook.com/customaudiences/app/tos/?act=1836403044189994
+
+
+6. QUELLO CHE MANCA E DIPENDE DA TE
 ====================================
   - IVA: in pagina c'e' scritto "IVA agevolata 10% inclusa". Conferma
     col commercialista prima di spingere gli annunci: un prezzo

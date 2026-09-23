@@ -18,7 +18,14 @@
   [headers.values]
     Cache-Control = "public, max-age=31536000, immutable"
 
+# Sicurezza di base su tutte le pagine. Niente Content-Security-Policy:
+# con GA4, Meta e Supabase caricati solo dopo il consenso, una CSP sbagliata
+# bloccherebbe il tracciamento in silenzio, ed e' un guasto che non si vede.
 [[headers]]
-  for = "/models/*"
+  for = "/*"
   [headers.values]
-    Cache-Control = "public, max-age=2592000"
+    X-Content-Type-Options = "nosniff"
+    X-Frame-Options = "SAMEORIGIN"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "geolocation=(), microphone=(), camera=()"
+    Strict-Transport-Security = "max-age=31536000; includeSubDomains"
