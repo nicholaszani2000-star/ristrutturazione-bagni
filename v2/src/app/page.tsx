@@ -1,7 +1,11 @@
 import { Header } from "@/components/sections/Header";
 import { Hero } from "@/components/sections/Hero";
 import { Offer } from "@/components/sections/Offer";
+import { Detrazione } from "@/components/sections/Detrazione";
 import { BeforeAfter } from "@/components/sections/BeforeAfter";
+import { Processo } from "@/components/sections/Processo";
+import { Garanzie } from "@/components/sections/Garanzie";
+import { Faq } from "@/components/sections/Faq";
 import { Preventivo } from "@/components/sections/Preventivo";
 import { Footer } from "@/components/sections/Footer";
 import { StickyCta } from "@/components/StickyCta";
@@ -14,7 +18,15 @@ export default function Home() {
       <main id="contenuto" className="pb-[4.75rem] lg:pb-0">
         <Hero />
         <Offer />
+        {/* La detrazione sta subito dopo il prezzo: e' li' che 9.490 €
+            smette di essere la cifra che il visitatore si porta via. */}
+        <Detrazione />
         <BeforeAfter />
+        {/* Prima come si svolge il cantiere, poi cosa garantiamo, infine le
+            obiezioni: e' l'ordine in cui le domande arrivano davvero. */}
+        <Processo />
+        <Garanzie />
+        <Faq />
         {/* Sezione 3D sospesa su richiesta del committente.
             I componenti restano in src/components/three e sections/Progetto3D:
             basta rimettere l'import e la riga qui per riattivarla. Non essendo

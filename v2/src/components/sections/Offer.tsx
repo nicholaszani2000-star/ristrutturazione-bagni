@@ -10,7 +10,7 @@ export function Offer() {
     <section id="offerta" className="py-[length:var(--spacing-section)]">
       <div className="wrap">
         <div className="mx-auto mb-14 max-w-[62ch] text-center">
-          <p className="mb-3 font-display text-[0.78rem] font-semibold uppercase tracking-[0.12em] text-blue">
+          <p className="mb-3 font-display text-[0.78rem] font-semibold uppercase tracking-[0.12em] text-blue-700">
             L&apos;offerta
           </p>
           <h2 className="text-[length:var(--text-h2)]">

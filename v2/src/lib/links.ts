@@ -23,3 +23,10 @@ export const migliaia = (n: number) =>
   String(Math.round(n)).replace(/\B(?=(\d{3})+(?!\d))/g, ".");
 
 export const euro = (n: number) => `${migliaia(n)} €`;
+
+/** Come euro(), ma con i centesimi: serve alla rata annuale della detrazione,
+ *  che non e' quasi mai un numero intero. */
+export const euroCent = (n: number) => {
+  const [interi, decimali] = n.toFixed(2).split(".");
+  return `${migliaia(Number(interi))},${decimali} €`;
+};

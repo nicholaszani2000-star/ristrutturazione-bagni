@@ -189,13 +189,13 @@ export function Preventivo() {
               <div className="grid gap-4 sm:grid-cols-2">
                 <div>
                   <label className={etichetta} htmlFor="nome">
-                    Nome e cognome <span className="text-blue">*</span>
+                    Nome e cognome <span className="text-blue-700">*</span>
                   </label>
                   <input id="nome" name="nome" required autoComplete="name" className={campo} placeholder="Mario Rossi" />
                 </div>
                 <div>
                   <label className={etichetta} htmlFor="telefono">
-                    Telefono <span className="text-blue">*</span>
+                    Telefono <span className="text-blue-700">*</span>
                   </label>
                   <input
                     id="telefono" name="telefono" required type="tel"
@@ -234,7 +234,7 @@ export function Preventivo() {
                     informativa privacy
                   </a>{" "}
                   e acconsento al trattamento dei dati per essere ricontattato.{" "}
-                  <span className="text-blue">*</span>
+                  <span className="text-blue-700">*</span>
                 </span>
               </label>
 

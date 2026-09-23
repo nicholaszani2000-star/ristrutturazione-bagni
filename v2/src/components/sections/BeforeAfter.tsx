@@ -43,7 +43,7 @@ export function BeforeAfter() {
     <section id="prima-dopo" className="bg-sand-50 py-[length:var(--spacing-section)]">
       <div className="wrap">
         <div className="mx-auto mb-12 max-w-[60ch] text-center">
-          <p className="mb-3 font-display text-[0.78rem] font-semibold uppercase tracking-[0.12em] text-blue">
+          <p className="mb-3 font-display text-[0.78rem] font-semibold uppercase tracking-[0.12em] text-blue-700">
             Prima e dopo
           </p>
           <h2 className="text-[length:var(--text-h2)]">Lo stesso bagno, due mondi</h2>
