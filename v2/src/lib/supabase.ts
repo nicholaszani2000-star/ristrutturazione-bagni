@@ -30,7 +30,9 @@ function provenienza() {
     // archivio una fonte vuota invece di nessuna fonte.
     fonte: p.get("utm_source") || document.referrer || undefined,
     campagna: p.get("utm_campaign") || undefined,
-    pagina: window.location.pathname,
+    // Con l'host: il sito risponde anche all'indirizzo tecnico di Netlify,
+    // e senza non si distinguerebbe un'iscrizione vera da una prova.
+    pagina: window.location.host + window.location.pathname,
   };
 }
 

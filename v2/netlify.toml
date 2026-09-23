@@ -11,21 +11,6 @@
 [build.environment]
   NODE_VERSION = "22"
 
-# Gli asset hanno l'impronta nel nome: non cambiano mai a parita' di nome.
-# L'HTML invece deve poter cambiare a ogni pubblicazione.
-[[headers]]
-  for = "/_next/static/*"
-  [headers.values]
-    Cache-Control = "public, max-age=31536000, immutable"
-
-# Sicurezza di base su tutte le pagine. Niente Content-Security-Policy:
-# con GA4, Meta e Supabase caricati solo dopo il consenso, una CSP sbagliata
-# bloccherebbe il tracciamento in silenzio, ed e' un guasto che non si vede.
-[[headers]]
-  for = "/*"
-  [headers.values]
-    X-Content-Type-Options = "nosniff"
-    X-Frame-Options = "SAMEORIGIN"
-    Referrer-Policy = "strict-origin-when-cross-origin"
-    Permissions-Policy = "geolocation=(), microphone=(), camera=()"
-    Strict-Transport-Security = "max-age=31536000; includeSubDomains"
+# Intestazioni e reindirizzamenti stanno in public/_headers e
+# public/_redirects: sono gli unici che Netlify legge anche quando il sito
+# viene pubblicato trascinando la cartella, senza passare da una build.

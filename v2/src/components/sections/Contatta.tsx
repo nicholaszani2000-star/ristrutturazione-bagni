@@ -79,7 +79,15 @@ export function Contatta() {
     // il retargeting mirato. L'indirizzo parte cifrato in SHA-256, mai in
     // chiaro, e solo se il pixel e' stato avviato — cioe' se i cookie di
     // misurazione sono stati accettati.
-    await riconosci(SITE.integrations.metaPixelId, email);
+    //
+    // Il Lead pero' e' l'evento su cui Meta ottimizza le campagne, e non deve
+    // dipendere dall'abbinamento: se la cifratura o il secondo init non vanno
+    // a buon fine si perde l'abbinamento di quel contatto, non la conversione.
+    try {
+      await riconosci(SITE.integrations.metaPixelId, email);
+    } catch {
+      /* si prosegue senza abbinamento */
+    }
     tracciaMeta("Lead", {
       content_name: "Sconto email",
       currency: "EUR",

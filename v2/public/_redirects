@@ -1,0 +1,9 @@
+# Chi apre l'indirizzo tecnico di Netlify finisce sul dominio vero.
+#
+# Non e' estetica. La scelta sui cookie vale per un indirizzo solo: chi
+# accettava su netlify.app e poi tornava su easybagno.it risultava senza
+# consenso, e Meta vedeva due siti diversi. Con un indirizzo solo, i conti
+# tornano. Le anteprime dei singoli deploy (id--nome.netlify.app) restano
+# raggiungibili: sono altri nomi e questa regola non le tocca.
+https://beamish-heliotrope-e2d8a2.netlify.app/*  https://easybagno.it/:splat  301!
+http://beamish-heliotrope-e2d8a2.netlify.app/*   https://easybagno.it/:splat  301!

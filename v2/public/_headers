@@ -1,3 +1,14 @@
+# Letto da Netlify sia quando si trascina la cartella sia nelle build da
+# GitHub. Le intestazioni stanno solo qui: ripeterle in netlify.toml le
+# farebbe comparire due volte.
+
+/*
+  X-Content-Type-Options: nosniff
+  X-Frame-Options: SAMEORIGIN
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: geolocation=(), microphone=(), camera=()
+  Strict-Transport-Security: max-age=31536000; includeSubDomains
+
 /_next/static/*
   Cache-Control: public, max-age=31536000, immutable
 
