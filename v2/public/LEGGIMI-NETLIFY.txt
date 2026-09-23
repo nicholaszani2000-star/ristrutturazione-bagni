@@ -65,10 +65,12 @@ GA4 — stream easybagno.it, ID G-FCEM78H075
 META PIXEL — ID 1640497950773690
   Stessa regola di GA4: parte solo dopo il consenso.
 
-  Eventi inviati:
-    PageView    all'accettazione dei cookie
-    Contact     clic su telefono, WhatsApp o email
-    Lead        email lasciata per lo sconto, con valore in euro
+  Eventi inviati (dal browser E dal server, vedi sotto):
+    PageView     all'accettazione dei cookie
+    ViewContent  chi arriva a vedere il prezzo (una volta per visita)
+    Contact      clic su telefono, WhatsApp o email
+    Lead         email lasciata per lo sconto, con valore in euro
+  L'evento da scegliere come conversione nelle campagne e' "Lead".
 
   ABBINAMENTO AVANZATO. Quando qualcuno lascia l'email per lo sconto,
   l'indirizzo viene passato a Meta cifrato in SHA-256 — mai in chiaro.
@@ -84,10 +86,29 @@ META PIXEL — ID 1640497950773690
   rende inutile la fascia dei cookie. Chi naviga con JavaScript spento
   non viene misurato, ed e' corretto cosi'.
 
-  NON C'E' LA CAPI (Conversions API). Richiede un endpoint sul server
-  che invii gli eventi da server a server: questo sito e' HTML statico e
-  un server non ce l'ha. Se la vuoi, serve una funzione serverless su
-  Netlify: e' mezza giornata di lavoro, si fa quando vuoi.
+  CONVERSIONS API (CAPI) — gia' nel codice, si accende con il token.
+  Ogni evento parte due volte: dal Pixel nel browser e dal nostro server
+  (funzione netlify/functions/meta-evento.mts, indirizzo /api/meta-evento).
+  Meta riconosce le due copie dallo stesso event_id e ne tiene una.
+  Serve a recuperare gli eventi che il browser perde (iPhone, blocchi
+  pubblicita'). Solo per chi ha premuto "Accetta", come il Pixel.
+
+  PER ACCENDERLA:
+    Gestione eventi -> "dati di easybagno" -> Impostazioni
+    -> API Conversioni -> Genera token di accesso.
+    Netlify -> beamish-heliotrope-e2d8a2 -> Project configuration
+    -> Environment variables -> Add variable
+       Key:   META_CAPI_TOKEN
+       Value: il token (segna "Contains secret values")
+    Poi Deploys -> Trigger deploy -> Deploy site.
+  Finche' il token manca la funzione non fa nulla e il sito funziona
+  con il solo Pixel.
+
+  PER PROVARLA: in Gestione eventi -> Eventi di test copia il codice
+  (tipo TEST12345), mettilo su Netlify come META_TEST_EVENT_CODE, rifai
+  il deploy e gli eventi del server compaiono in diretta. Finita la
+  prova CANCELLA quella variabile, altrimenti gli eventi veri restano
+  marcati come prova e non contano per le campagne.
 
 SUPABASE — progetto "easy-bagno", tabella "iscrizioni"
   Ogni email lasciata per lo sconto viene salvata qui, insieme a fonte e

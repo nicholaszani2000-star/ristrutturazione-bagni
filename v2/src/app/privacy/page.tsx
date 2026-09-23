@@ -142,6 +142,13 @@ export default function Privacy() {
           cookie di misurazione, l&apos;indirizzo resta solo da noi. I dettagli sono
           nella <a href="/cookie/">cookie policy</a>.
         </p>
+        <p>
+          Sempre e solo con il consenso ai cookie di misurazione, Meta riceve
+          anche dal nostro server, tramite la Conversions API, gli eventi della
+          tua visita — pagina vista, offerta vista, clic su un contatto,
+          iscrizione — con indirizzo IP e tipo di browser. La funzione che li
+          invia gira su Netlify; i dati non vengono conservati da noi.
+        </p>
       </div>
 
       <div>

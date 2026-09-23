@@ -4,7 +4,7 @@ import { useState } from "react";
 import { SITE } from "@/config/site";
 import { links, euro, euroCent } from "@/lib/links";
 import { traccia } from "@/lib/ga4";
-import { tracciaMeta, riconosci } from "@/lib/meta";
+import { tracciaMeta, riconosci, emailCifrata } from "@/lib/meta";
 import { inviaIscrizione } from "@/lib/supabase";
 import { Icon } from "@/components/Icon";
 import { stileBottone } from "@/components/Button";
@@ -83,16 +83,18 @@ export function Contatta() {
     // Il Lead pero' e' l'evento su cui Meta ottimizza le campagne, e non deve
     // dipendere dall'abbinamento: se la cifratura o il secondo init non vanno
     // a buon fine si perde l'abbinamento di quel contatto, non la conversione.
+    let em: string | undefined;
     try {
-      await riconosci(SITE.integrations.metaPixelId, email);
+      em = await emailCifrata(email);
+      if (em) riconosci(SITE.integrations.metaPixelId, em);
     } catch {
       /* si prosegue senza abbinamento */
     }
-    tracciaMeta("Lead", {
-      content_name: "Sconto email",
-      currency: "EUR",
-      value: risparmio,
-    });
+    tracciaMeta(
+      "Lead",
+      { content_name: "Sconto email", currency: "EUR", value: risparmio },
+      { em },
+    );
   }
 
   const campo =

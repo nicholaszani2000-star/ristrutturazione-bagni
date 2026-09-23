@@ -56,11 +56,52 @@ export function avviaPixel(id: string) {
   document.head.appendChild(s);
 
   window.fbq("init", id);
-  window.fbq("track", "PageView");
+  tracciaMeta("PageView");
 }
 
-export function tracciaMeta(nome: string, parametri?: Record<string, unknown>) {
-  window.fbq?.("track", nome, parametri);
+/**
+ * Un identificativo per ogni evento, uguale nel browser e sul server: e' da
+ * questo che Meta capisce che le due copie sono lo stesso evento e ne tiene
+ * una sola.
+ */
+function nuovoId() {
+  if (typeof crypto !== "undefined" && typeof crypto.randomUUID === "function") {
+    return crypto.randomUUID();
+  }
+  return `${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 12)}`;
+}
+
+/**
+ * Manda l'evento a Meta per due strade: il Pixel nel browser e la Conversions
+ * API attraverso la nostra funzione su Netlify (netlify/functions).
+ *
+ * Tutto dipende da window.fbq, che esiste solo dopo "Accetta": senza consenso
+ * non parte ne' l'una ne' l'altra copia.
+ *
+ * La copia per il server usa keepalive: un clic su "Chiama" o su WhatsApp
+ * porta via la pagina, e senza la richiesta verrebbe interrotta a meta'.
+ * Se la funzione non risponde non succede niente di visibile: il Pixel ha gia'
+ * fatto la sua parte.
+ */
+export function tracciaMeta(
+  nome: string,
+  parametri?: Record<string, unknown>,
+  utente?: { em?: string },
+) {
+  if (!window.fbq) return;
+  const id = nuovoId();
+  window.fbq("track", nome, parametri ?? {}, { eventID: id });
+
+  try {
+    void fetch("/api/meta-evento", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ evento: nome, id, url: location.href, parametri, em: utente?.em }),
+      keepalive: true,
+    }).catch(() => {});
+  } catch {
+    /* il Pixel e' gia' partito: basta cosi' */
+  }
 }
 
 /**
@@ -88,12 +129,11 @@ export async function emailCifrata(email: string): Promise<string | undefined> {
 /**
  * Riconosce l'utente a Meta tramite l'indirizzo cifrato.
  *
- * Va chiamata dopo che la persona ha lasciato l'email e ha acconsentito: da
- * quel momento gli eventi successivi sono collegabili a quel contatto, ed e'
- * quello che permette le campagne mirate e i pubblici simili.
+ * Riceve l'indirizzo gia' cifrato con emailCifrata(). Va chiamata dopo che la
+ * persona ha lasciato l'email e ha acconsentito: da quel momento gli eventi
+ * del Pixel sono collegabili a quel contatto, ed e' quello che permette le
+ * campagne mirate e i pubblici simili.
  */
-export async function riconosci(id: string, email: string) {
-  const em = await emailCifrata(email);
-  if (!em || !window.fbq) return;
-  window.fbq("init", id, { em });
+export function riconosci(id: string, em: string) {
+  window.fbq?.("init", id, { em });
 }

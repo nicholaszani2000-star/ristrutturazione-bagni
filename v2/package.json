@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "eslint",
     "build:netlify": "PREVIEW_EXPORT=1 next build",
-    "build:offline": "PREVIEW_EXPORT=1 OFFLINE=1 next build && node scripts/preview-relative.mjs"
+    "build:offline": "PREVIEW_EXPORT=1 OFFLINE=1 next build && node scripts/preview-relative.mjs",
+    "typecheck:funzioni": "tsc -p netlify/tsconfig.json"
   },
   "dependencies": {
     "gsap": "^3.15.0",
@@ -17,6 +18,7 @@
     "react-dom": "19.2.8"
   },
   "devDependencies": {
+    "@netlify/functions": "^6.0.0",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^20",
     "@types/react": "^19",

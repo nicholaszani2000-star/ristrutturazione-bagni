@@ -26,6 +26,36 @@ export function Analytics() {
     avviaPixel(SITE.integrations.metaPixelId);
   }, [attivo]);
 
+  // ViewContent: chi arriva a vedere il prezzo.
+  //
+  // Con pochi contatti a settimana e' il segnale intermedio che serve di piu':
+  // dice a Meta chi si e' interessato davvero, oltre a chi ha solo aperto la
+  // pagina, e diventa un pubblico per il retargeting ("ha visto il prezzo ma
+  // non ha scritto"). Una volta per visita, quando l'offerta e' a schermo per
+  // almeno il 40%.
+  useEffect(() => {
+    if (!attivo) return;
+    const offerta = document.getElementById("offerta");
+    if (!offerta || !("IntersectionObserver" in window)) return;
+
+    const osservatore = new IntersectionObserver(
+      (voci) => {
+        if (!voci.some((v) => v.isIntersecting)) return;
+        osservatore.disconnect();
+        traccia("vista_offerta", { valore: SITE.offer.price });
+        tracciaMeta("ViewContent", {
+          content_name: "Bagno 3x2 m chiavi in mano",
+          content_category: "Ristrutturazione bagno",
+          currency: "EUR",
+          value: SITE.offer.price,
+        });
+      },
+      { threshold: 0.4 },
+    );
+    osservatore.observe(offerta);
+    return () => osservatore.disconnect();
+  }, [attivo]);
+
   useEffect(() => {
     if (!attivo) return;
 

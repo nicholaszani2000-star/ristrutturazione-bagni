@@ -47,6 +47,15 @@ export default function Cookie() {
           <em>abbinamento avanzato</em>.
         </p>
         <p>
+          Gli stessi eventi — la visita, la visione dell&apos;offerta, il clic
+          su un contatto, l&apos;iscrizione allo sconto — li inviamo a Meta
+          anche dal nostro server, con la <em>Conversions API</em>, insieme
+          all&apos;indirizzo IP e al tipo di browser. Serve a non perdere quelli
+          che il browser non riesce a spedire, e Meta conta ogni evento una volta
+          sola. Vale la stessa regola del Pixel: parte solo se hai premuto
+          «Accetta».
+        </p>
+        <p>
           <strong>Non partono da soli.</strong> Finché non premi «Accetta» nella
           fascia in fondo alla pagina, né lo script di Google né quello di Meta
           vengono scaricati e nessun cookie di misurazione viene scritto. Se premi
