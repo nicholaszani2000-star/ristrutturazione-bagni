@@ -109,6 +109,42 @@ export const SITE = {
       "Importi indicativi. La detrazione spetta se hai i requisiti previsti e va verificata con il tuo commercialista o CAF.",
   },
 
+  /**
+   * Cosa facciamo. Non e' un elenco inventato per riempire una sezione: sono
+   * gli stessi interventi che l'impresa gia' elenca nel modulo di richiesta
+   * (form.interventionTypes), scritti per essere letti invece che scelti da
+   * una tendina. Se un giorno l'impresa smette di fare uno di questi, va tolto
+   * da tutti e due i posti.
+   */
+  services: [
+    {
+      icon: "tiles",
+      title: "Bagno completo chiavi in mano",
+      text: "Demolizione, impianti, rivestimenti e sanitari. Un solo referente dal sopralluogo alla consegna.",
+      evidenza: true,
+    },
+    {
+      icon: "design",
+      title: "Bagno su misura",
+      text: "Metrature diverse dai 3×2 m, bagni ciechi, sottotetti e secondi bagni. Prezzo esatto dopo il sopralluogo.",
+    },
+    {
+      icon: "plumbing",
+      title: "Da vasca a doccia",
+      text: "Sostituzione della vasca con un piatto a filo pavimento, senza rifare tutto il bagno.",
+    },
+    {
+      icon: "survey",
+      title: "Sanitari e rubinetteria",
+      text: "Sostituzione di WC, bidet, lavabo e miscelatori, con allacci e scarichi a norma.",
+    },
+    {
+      icon: "demo",
+      title: "Pavimento e rivestimento",
+      text: "Rifacimento delle sole superfici quando impianti e sanitari sono ancora in buono stato.",
+    },
+  ],
+
   /** I 6 passaggi del biglietto da visita */
   process: [
     { icon: "survey", title: "Sopralluogo", text: "Veniamo a misurare, ascoltiamo cosa vuoi e controlliamo impianti e scarichi esistenti. Gratuito e senza impegno." },

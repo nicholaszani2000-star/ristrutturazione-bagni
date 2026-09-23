@@ -31,7 +31,7 @@ export function Footer() {
           <ul className="grid gap-2.5 text-sm">
             {NAVIGA.map((v) => (
               <li key={v.href}>
-                <Link href={v.href} className="transition-colors hover:text-sky">
+                <Link href={v.href} className="inline-flex min-h-6 items-center transition-colors hover:text-sky">
                   {v.testo}
                 </Link>
               </li>
@@ -45,19 +45,19 @@ export function Footer() {
           </h2>
           <ul className="grid gap-2.5 text-sm">
             <li>
-              <a href={links.tel} className="inline-flex items-center gap-2 transition-colors hover:text-sky">
+              <a href={links.tel} className="inline-flex min-h-6 items-center gap-2 transition-colors hover:text-sky">
                 <Icon name="phone" className="size-4 text-sky" />
                 <span className="tabular">{SITE.contact.phoneDisplay}</span>
               </a>
             </li>
             <li>
-              <a href={links.whatsapp} target="_blank" rel="noopener" className="inline-flex items-center gap-2 transition-colors hover:text-sky">
+              <a href={links.whatsapp} target="_blank" rel="noopener" className="inline-flex min-h-6 items-center gap-2 transition-colors hover:text-sky">
                 <Icon name="whatsapp" className="size-4 text-sky" />
                 <span className="tabular">{SITE.contact.whatsappDisplay}</span>
               </a>
             </li>
             <li>
-              <a href={links.mail} className="inline-flex items-center gap-2 break-all transition-colors hover:text-sky">
+              <a href={links.mail} className="inline-flex min-h-6 items-center gap-2 break-all transition-colors hover:text-sky">
                 <Icon name="mail" className="size-4 shrink-0 text-sky" />
                 {SITE.contact.email}
               </a>
@@ -86,10 +86,10 @@ export function Footer() {
           PEC {L.pec} · SDI {L.sdi}
         </p>
         <p className="flex gap-4">
-          <Link href="/privacy" className="underline underline-offset-2 transition-colors hover:text-sky">
+          <Link href="/privacy" className="inline-flex min-h-6 items-center underline underline-offset-2 transition-colors hover:text-sky">
             Privacy
           </Link>
-          <Link href="/cookie" className="underline underline-offset-2 transition-colors hover:text-sky">
+          <Link href="/cookie" className="inline-flex min-h-6 items-center underline underline-offset-2 transition-colors hover:text-sky">
             Cookie
           </Link>
         </p>

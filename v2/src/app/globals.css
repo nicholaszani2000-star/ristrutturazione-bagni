@@ -1,20 +1,21 @@
 @import "tailwindcss";
 
 /* =============================================================================
-   DESIGN SYSTEM — Easy-Bagno.it
+   DESIGN SYSTEM — EasyBagno.it
    =============================================================================
    Tailwind 4: i token si dichiarano qui in @theme, non in tailwind.config.js.
 
-   Due famiglie di colore, e non è un caso:
+   Un principio solo: ACQUA, LUCE, PULITO.
 
-   - BLU DEL MARCHIO (navy/blue/sky) — presi dal biglietto da visita già
-     stampato. Servono all'INTERFACCIA: bottoni, link, accenti, icone.
-   - NEUTRI CALDI (sand) — le foto dei cantieri sono microcemento taupe con
-     luce calda. Su superfici grigio-azzurre stonerebbero. I fondi delle
-     sezioni che ospitano fotografia usano questi.
+   La pagina vende un bagno nuovo, quindi deve sembrare un bagno nuovo — cioe'
+   chiara, fredda, senza sporco visivo. Da qui discendono tre regole:
 
-   La regola che tiene insieme le due: il blu è il colore dell'azione, mai
-   dell'arredamento. Accent for CTA only.
+   1. Le superfici vanno dal bianco all'azzurro chiarissimo. Nessun neutro
+      caldo: un fondo taupe accanto a un blu fa sembrare la pagina sporca.
+   2. Il blu pieno e' il colore dell'AZIONE, mai dell'arredamento. Se una cosa
+      e' blu satura, o si clicca o e' il prezzo.
+   3. La profondita' arriva da luce e strati — gradienti larghi, ombre fredde,
+      vetro leggero, onde — non da bordi marcati o da 3D.
    ========================================================================== */
 
 @theme {
@@ -24,28 +25,32 @@
   --color-blue-700: #1663b0;
   --color-sky: #56b4ee;
   /* Schiarita di sky per i testi minuti su fondo scuro: #56b4ee su navy
-     arriva a 4.36:1, sotto il minimo di 4.5:1 per il testo piccolo. Stessa
-     tinta, luminosita' alzata quanto basta. */
+     arriva a 4.36:1, sotto il minimo di 4.5:1 per il testo piccolo. */
   --color-sky-200: #8ecdf5;
   --color-sky-soft: #e8f3fc;
 
-  /* --- Neutri caldi: fanno respirare la fotografia --- */
-  --color-sand-50: #faf8f5;
-  --color-sand-100: #f4f0ea;
-  --color-sand-200: #e6ded3;
-  --color-sand-300: #d3c7b7;
+  /* --- Superfici: una sola scala, fredda ---------------------------------
+     Prima erano due famiglie in conflitto: dei neutri caldi (sand, taupe) per
+     le sezioni con fotografia e dei neutri freddi per l'interfaccia. Il
+     risultato era una pagina che cambiava temperatura scendendo. Ora la scala
+     e' una sola e va dal bianco all'azzurro chiarissimo: e' il colore
+     dell'acqua pulita e della luce di un bagno, ed e' anche quello che il
+     catalogo suggerisce per un servizio che deve comunicare fiducia.
+     -------------------------------------------------------------------- */
+  --color-surface: #f6fafe;
+  --color-surface-2: #eaf3fb;
+  --color-line: #dce9f5;
+  --color-line-soft: #edf5fc;
 
-  /* --- Neutri freddi: interfaccia --- */
-  --color-tint: #f5f9fc;
-  --color-ink: #1b2b3a;
-  --color-muted: #5a7183;
-  --color-line: #e2ecf3;
+  --color-ink: #12283a;
+  --color-muted: #55707f;
 
   /* --- Servizio --- */
   --color-success: #0f7b4f;
   --color-success-bg: #e8f6ef;
-  --color-warn-bg: #fff6e5;
-  --color-warn-ink: #5c4210;
+  --color-avviso-bg: #eef6fd;
+  --color-avviso-bordo: #1b84dd;
+  --color-avviso-ink: #21445e;
   --color-whatsapp: #25d366;
   --color-whatsapp-dark: #1da851;
 
@@ -54,20 +59,22 @@
   --font-sans: var(--font-inter), system-ui, sans-serif;
 
   /* --- Scala fluida: da 375px a 1440px senza scatti --- */
-  --text-display: clamp(2rem, 1.5rem + 2.1vw, 3.4rem);
+  --text-display: clamp(2.05rem, 1.5rem + 2.3vw, 3.6rem);
   --text-h2: clamp(1.65rem, 1.3rem + 1.5vw, 2.6rem);
   --text-h3: clamp(1.15rem, 1.05rem + 0.45vw, 1.45rem);
   --text-lead: clamp(1.05rem, 0.98rem + 0.35vw, 1.28rem);
   --text-price: clamp(2.9rem, 2rem + 4vw, 5rem);
 
-  /* --- Densità 3/10: spaziosa, da catalogo --- */
-  --spacing-section: clamp(4rem, 2.5rem + 6vw, 8rem);
+  /* --- Densita' spaziosa, da catalogo --- */
+  --spacing-section: clamp(4.5rem, 2.5rem + 6.5vw, 8.5rem);
 
-  /* --- Ombre: nette e discrete, coerenti con la card --- */
+  /* --- Ombre: fredde, nella stessa tinta dell'inchiostro --- */
   --shadow-card: 0 1px 2px rgb(20 58 92 / 0.05), 0 8px 24px rgb(20 58 92 / 0.06);
   --shadow-lift: 0 4px 12px rgb(20 58 92 / 0.08), 0 20px 48px rgb(20 58 92 / 0.10);
+  --shadow-acqua: 0 2px 6px rgb(27 132 221 / 0.10), 0 18px 40px rgb(27 132 221 / 0.14);
 
   --radius-card: 1.25rem;
+
 }
 
 /* -----------------------------------------------------------------------------
@@ -148,21 +155,108 @@
  * semplice comparsa al passaggio. Volutamente: il catalogo UI consiglia non
  * piu' di uno o due elementi "focali" per schermata.
  */
-/* Comparsa dello shader dell'hero. La tela WebGL arriva dopo la fotografia,
-   e senza una dissolvenza il passaggio si vede come uno scatto. "both" tiene
-   l'opacita' a zero anche prima che l'animazione parta, cosi' non c'e' un
-   fotogramma a piena opacita' prima del ritardo. */
-@keyframes comparsa {
-  from { opacity: 0; }
-  to   { opacity: 1; }
+/* -----------------------------------------------------------------------------
+   Linguaggio dell'acqua
+   -----------------------------------------------------------------------------
+   Tutto in CSS e SVG, niente canvas e nessuna dipendenza: l'acqua qui e' una
+   questione di luce, e la luce si fa con i gradienti.
+   -------------------------------------------------------------------------- */
+
+/**
+ * Velo: la luce diffusa che si posa su una sezione.
+ *
+ * Tre macchie molto larghe e molto tenui, non un gradiente unico: un gradiente
+ * lineare si legge come "sfondo colorato", tre pozze sovrapposte si leggono
+ * come luce. Va su un elemento vuoto dentro a una sezione "relative".
+ */
+@utility velo-acqua {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+  background:
+    radial-gradient(52rem 32rem at 10% -12%, rgb(86 180 238 / 0.18), transparent 62%),
+    radial-gradient(38rem 28rem at 92% 6%, rgb(27 132 221 / 0.10), transparent 60%),
+    radial-gradient(34rem 24rem at 62% 108%, rgb(142 205 245 / 0.16), transparent 65%);
 }
 
-@utility comparsa {
-  animation: comparsa 1.1s ease-out both;
+/** Variante scura, per le sezioni su fondo navy. */
+@utility velo-acqua-scuro {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+  background:
+    radial-gradient(50rem 32rem at 8% -10%, rgb(86 180 238 / 0.22), transparent 60%),
+    radial-gradient(40rem 30rem at 95% 20%, rgb(27 132 221 / 0.18), transparent 62%);
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .comparsa { animation-duration: 0.01ms; }
+/**
+ * Vetro leggero. Non il "glassmorphism" con blur enorme e bordi bianchi
+ * spessi, che a schermo piccolo diventa una macchia: solo quanto basta perche'
+ * un pannello sembri appoggiato sopra a qualcosa invece che incollato.
+ */
+@utility vetro {
+  background-color: rgb(255 255 255 / 0.74);
+  backdrop-filter: blur(14px) saturate(140%);
+  -webkit-backdrop-filter: blur(14px) saturate(140%);
+  border: 1px solid rgb(255 255 255 / 0.7);
+}
+
+@utility vetro-scuro {
+  background-color: rgb(12 34 54 / 0.42);
+  backdrop-filter: blur(14px) saturate(130%);
+  -webkit-backdrop-filter: blur(14px) saturate(130%);
+  border: 1px solid rgb(255 255 255 / 0.16);
+}
+
+/**
+ * Riflesso che attraversa lentamente una superficie, come la luce sull'acqua.
+ *
+ * Uno solo per schermata, e solo su un elemento che vale la pena guardare (il
+ * pannello del prezzo). Ripetuto ovunque diventa un cartellone luminoso.
+ * Sotto "movimento ridotto" la regola globale porta l'animazione alla fine in
+ * 0,01ms: il fotogramma finale e' fuori dall'inquadratura, quindi il riflesso
+ * semplicemente non si vede. Nessun lampo.
+ */
+@keyframes scorri-luce {
+  0%   { transform: translateX(-130%) skewX(-14deg); }
+  55%  { transform: translateX(240%) skewX(-14deg); }
+  100% { transform: translateX(240%) skewX(-14deg); }
+}
+
+@utility luce-scorrevole {
+  position: relative;
+  overflow: hidden;
+
+  &::after {
+    content: "";
+    position: absolute;
+    inset-block: -40%;
+    left: 0;
+    width: 38%;
+    pointer-events: none;
+    background: linear-gradient(90deg, transparent, rgb(255 255 255 / 0.22), transparent);
+    animation: scorri-luce 9s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  }
+}
+
+/**
+ * Filo di luce sul bordo alto di una scheda: e' il modo piu' economico di far
+ * sembrare una superficie bagnata dalla luce invece che disegnata.
+ */
+@utility filo-luce {
+  position: relative;
+
+  &::before {
+    content: "";
+    position: absolute;
+    inset-inline: 12%;
+    top: 0;
+    height: 1px;
+    pointer-events: none;
+    background: linear-gradient(90deg, transparent, rgb(255 255 255 / 0.9), transparent);
+  }
 }
 
 @utility riflesso {

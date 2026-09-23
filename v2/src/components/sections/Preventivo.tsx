@@ -88,7 +88,7 @@ export function Preventivo() {
   const etichetta = "mb-1.5 block text-sm font-semibold text-navy";
 
   return (
-    <section id="preventivo" className="scroll-mt-24 bg-tint py-[length:var(--spacing-section)]">
+    <section id="preventivo" className="scroll-mt-24 bg-surface py-[length:var(--spacing-section)]">
       <div className="wrap grid gap-12 lg:grid-cols-[1fr_1.05fr] lg:items-start lg:gap-16">
         <div>
           <p className="mb-3 text-[0.72rem] font-semibold uppercase tracking-[0.18em] text-blue-700">
@@ -120,7 +120,7 @@ export function Preventivo() {
           <div className="mt-8 rounded-2xl border border-line bg-white p-5">
             <p className="mb-3 text-sm font-semibold text-navy">Preferisci parlarne subito?</p>
             <div className="flex flex-wrap gap-2.5">
-              <a href={links.tel} className={stileBottone("ghost", "md", "text-sm")}>
+              <a href={links.tel} className={stileBottone("secondary", "md", "text-sm")}>
                 <Icon name="phone" className="size-4" />
                 {SITE.contact.phoneDisplay}
               </a>
@@ -227,7 +227,7 @@ export function Preventivo() {
               </div>
 
               <label className="flex items-start gap-3 text-sm text-muted">
-                <input type="checkbox" name="consenso" required className="mt-1 size-4 shrink-0 accent-[#1b84dd]" />
+                <input type="checkbox" name="consenso" required className="mt-0.5 size-6 shrink-0 accent-[#1663b0]" />
                 <span>
                   Ho letto l&apos;
                   <a href="/privacy" className="font-semibold text-blue-700 underline underline-offset-2">

@@ -7,7 +7,7 @@ import { Reveal } from "@/components/Reveal";
 
 export function Offer() {
   return (
-    <section id="offerta" className="py-[length:var(--spacing-section)]">
+    <section id="offerta" className="bg-white py-[length:var(--spacing-section)]">
       <div className="wrap">
         <div className="mx-auto mb-14 max-w-[62ch] text-center">
           <p className="mb-3 font-display text-[0.78rem] font-semibold uppercase tracking-[0.12em] text-blue-700">
@@ -24,7 +24,7 @@ export function Offer() {
 
         <div className="grid items-start gap-8 lg:grid-cols-[0.85fr_1.15fr] lg:gap-14">
           {/* --- Pannello prezzo: resta in vista mentre si scorre l'elenco --- */}
-          <div className="grad-brand relative overflow-hidden rounded-[var(--radius-card)] p-7 text-white shadow-[var(--shadow-lift)] lg:sticky lg:top-24">
+          <div className="grad-brand luce-scorrevole filo-luce rounded-[var(--radius-card)] p-7 text-white shadow-[var(--shadow-acqua)] lg:sticky lg:top-24">
             <span className="inline-flex rounded-full bg-white/18 px-4 py-1.5 font-display text-[0.8rem] font-semibold">
               {SITE.offer.subtitle}
             </span>
@@ -41,7 +41,7 @@ export function Offer() {
               {SITE.offer.claim}
             </p>
 
-            <Button href="#preventivo" variant="light" size="lg" block className="mt-6">
+            <Button href="#preventivo" variant="secondaryDark" size="lg" block className="mt-6">
               Richiedi il preventivo gratuito
             </Button>
 
@@ -75,7 +75,7 @@ export function Offer() {
 
             <div>
               <h3 className="mb-5 flex items-center gap-3">
-                <span className="grid size-9 shrink-0 place-items-center rounded-full bg-sand-100 text-muted">
+                <span className="grid size-9 shrink-0 place-items-center rounded-full bg-surface-2 text-muted">
                   <Icon name="minus" className="size-5" />
                 </span>
                 Cosa non comprende
@@ -89,7 +89,7 @@ export function Offer() {
                 ))}
               </Reveal>
 
-              <p className="mt-6 rounded-r-lg border-l-4 border-[#E0A93A] bg-warn-bg px-5 py-4 text-sm leading-relaxed text-warn-ink">
+              <p className="mt-6 rounded-r-lg border-l-4 border-avviso-bordo bg-avviso-bg px-5 py-4 text-sm leading-relaxed text-avviso-ink">
                 {SITE.offer.surprisesNote}
               </p>
             </div>

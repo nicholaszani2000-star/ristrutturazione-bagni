@@ -3,6 +3,7 @@ import { Icon } from "@/components/Icon";
 import { SITE } from "@/config/site";
 import { euro, euroCent } from "@/lib/links";
 import { Reveal } from "@/components/Reveal";
+import { Onda } from "@/components/Onda";
 
 /**
  * Sta subito dopo il prezzo, e non e' un caso: e' il punto in cui 9.490 €
@@ -27,8 +28,23 @@ const restaSeconda = prezzo - detrazioneSeconda;
 
 export function Detrazione() {
   return (
-    <section id="detrazione" className="bg-navy py-[length:var(--spacing-section)] text-white">
-      <div className="wrap">
+    <section
+      id="detrazione"
+      className="relative isolate overflow-hidden bg-navy py-[length:var(--spacing-section)] text-white"
+    >
+      <div aria-hidden className="velo-acqua-scuro -z-10" />
+
+      {/* Onda in entrata e in uscita: e' lo stacco piu' forte della pagina
+          (bianco -> blu notte), e una riga netta lo farebbe sembrare un
+          banner incollato invece che una parte della stessa pagina. */}
+      <div aria-hidden className="absolute inset-x-0 top-0 rotate-180">
+        <Onda colore="fill-white" variante="calma" />
+      </div>
+      <div aria-hidden className="absolute inset-x-0 bottom-0 translate-y-px">
+        <Onda colore="fill-surface" variante="mossa" />
+      </div>
+
+      <div className="wrap relative pt-[clamp(1rem,2vw,2rem)] pb-[clamp(1.5rem,3vw,3rem)]">
         <div className="mx-auto mb-12 max-w-[62ch] text-center">
           <p className="mb-3 font-display text-[0.78rem] font-semibold uppercase tracking-[0.12em] text-sky-200">
             Detrazione fiscale {SITE.taxCredit.year}
@@ -84,7 +100,7 @@ export function Detrazione() {
               </span>
             </p>
 
-            <Button href="#preventivo" variant="light" size="lg" className="mt-7 max-sm:w-full">
+            <Button href="#preventivo" variant="secondaryDark" size="lg" className="mt-7 max-sm:w-full">
               Richiedi il preventivo gratuito
               <Icon name="chevron" className="size-4 -rotate-90" />
             </Button>
@@ -107,8 +123,8 @@ export function Detrazione() {
 
             {/* Questa scadenza e' vera e sta nella norma: e' l'unica leva di
                 urgenza che questa pagina puo' usare senza inventarsi niente. */}
-            <div className="flex flex-1 items-center gap-3 rounded-[var(--radius-card)] border border-sky/30 bg-sky/10 p-7">
-              <Icon name="clock" className="mt-0.5 size-5 shrink-0 text-sky-200" />
+            <div className="flex flex-1 flex-col justify-center gap-3 rounded-[var(--radius-card)] border border-sky/30 bg-sky/10 p-7">
+              <Icon name="clock" className="size-6 text-sky-200" />
               <p className="text-sm leading-relaxed text-white/85">
                 <strong className="block font-semibold text-white">
                   Dal {SITE.taxCredit.year + 1} l&apos;aliquota scende

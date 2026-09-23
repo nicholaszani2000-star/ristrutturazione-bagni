@@ -10,7 +10,7 @@ import { Reveal } from "@/components/Reveal";
  */
 export function Processo() {
   return (
-    <section id="processo" className="py-[length:var(--spacing-section)]">
+    <section id="processo" className="bg-surface py-[length:var(--spacing-section)]">
       <div className="wrap">
         <div className="mx-auto mb-14 max-w-[62ch] text-center">
           <p className="mb-3 font-display text-[0.78rem] font-semibold uppercase tracking-[0.12em] text-blue-700">
@@ -28,7 +28,7 @@ export function Processo() {
               key={passo.title}
               className="rounded-[var(--radius-card)] border border-line bg-white p-7 shadow-[var(--shadow-card)]"
             >
-              {/* Il numero era una filigrana gigante in text-tint: 1,06:1 su
+              {/* Il numero era una filigrana gigante in text-surface: 1,06:1 su
                   fondo bianco, cioe' invisibile. Una sezione che si intitola
                   "in sei passi" non puo' permettersi che il passo non si
                   legga, quindi il numero diventa un'etichetta vera accanto

@@ -8,7 +8,7 @@ import { links } from "@/lib/links";
 export function StickyCta() {
   const item =
     "flex min-h-[3.75rem] flex-col items-center justify-center gap-1 bg-white " +
-    "font-display text-[0.72rem] font-semibold leading-tight active:bg-tint";
+    "font-display text-[0.72rem] font-semibold leading-tight active:bg-surface";
 
   return (
     <nav

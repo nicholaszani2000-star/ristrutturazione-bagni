@@ -38,7 +38,7 @@ export function BannerCookie() {
           <button
             type="button"
             onClick={() => imposta("rifiutato")}
-            className={stileBottone("ghost", "md", "flex-1 text-sm sm:flex-none")}
+            className={stileBottone("secondary", "md", "flex-1 text-sm sm:flex-none")}
           >
             Rifiuta
           </button>

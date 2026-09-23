@@ -31,7 +31,7 @@ export function Faq() {
   if (DOMANDE.length === 0) return null;
 
   return (
-    <section id="domande" className="py-[length:var(--spacing-section)]">
+    <section id="domande" className="bg-white py-[length:var(--spacing-section)]">
       <script
         type="application/ld+json"
         // Il minore va neutralizzato: un "<" dentro una risposta chiuderebbe
@@ -55,7 +55,7 @@ export function Faq() {
         <Reveal className="mx-auto max-w-[75ch] divide-y divide-line overflow-hidden rounded-[var(--radius-card)] border border-line bg-white shadow-[var(--shadow-card)]">
           {DOMANDE.map((d) => (
             <details key={d.q} name="faq" className="group">
-              <summary className="flex cursor-pointer list-none items-center justify-between gap-4 p-6 font-display text-[1.05rem] font-semibold transition-colors hover:bg-tint focus-visible:bg-tint [&::-webkit-details-marker]:hidden">
+              <summary className="flex cursor-pointer list-none items-center justify-between gap-4 p-6 font-display text-[1.05rem] font-semibold transition-colors hover:bg-surface focus-visible:bg-surface [&::-webkit-details-marker]:hidden">
                 {d.q}
                 <Icon
                   name="chevron"

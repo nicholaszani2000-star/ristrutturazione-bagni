@@ -21,33 +21,3 @@ export function useMediaQuery(query: string, valoreSulServer: boolean) {
     () => valoreSulServer,
   );
 }
-
-/**
- * WebGL puo' mancare: browser vecchi, GPU in lista nera, accelerazione spenta.
- * Il risultato si tiene in cache perche' la verifica crea un canvas, e viene
- * letta a ogni render.
- */
-let cacheWebGL: boolean | null = null;
-export function supportaWebGL() {
-  if (cacheWebGL !== null) return cacheWebGL;
-  try {
-    const c = document.createElement("canvas");
-    cacheWebGL = !!(c.getContext("webgl2") || c.getContext("webgl"));
-  } catch {
-    cacheWebGL = false;
-  }
-  return cacheWebGL;
-}
-
-/**
- * Sul server risponde sempre "no". Chi legge questo valore decide se montare
- * qualcosa in piu' sopra a una pagina che deve gia' funzionare da sola: se
- * partisse da "si'", l'HTML nascerebbe con un buco al posto della tela.
- */
-export function useWebGL() {
-  return useSyncExternalStore(
-    () => () => {},
-    () => supportaWebGL(),
-    () => false,
-  );
-}

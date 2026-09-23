@@ -23,7 +23,7 @@ export function RevocaConsenso() {
     consenso === "accettato" ? "hai accettato" : consenso === "rifiutato" ? "hai rifiutato" : "non hai ancora scelto";
 
   return (
-    <div className="rounded-2xl border border-line bg-tint p-5">
+    <div className="rounded-2xl border border-line bg-surface p-5">
       <p className="mb-3 text-sm text-ink">
         Al momento <strong>{scelto}</strong> i cookie di misurazione.
       </p>
@@ -33,7 +33,7 @@ export function RevocaConsenso() {
           azzera();
           window.location.reload();
         }}
-        className={stileBottone("ghost", "md", "text-sm")}
+        className={stileBottone("secondary", "md", "text-sm")}
       >
         Cambia la mia scelta
       </button>

@@ -40,7 +40,7 @@ export function BeforeAfter() {
   };
 
   return (
-    <section id="prima-dopo" className="bg-sand-50 py-[length:var(--spacing-section)]">
+    <section id="prima-dopo" className="bg-surface py-[length:var(--spacing-section)]">
       <div className="wrap">
         <div className="mx-auto mb-12 max-w-[60ch] text-center">
           <p className="mb-3 font-display text-[0.78rem] font-semibold uppercase tracking-[0.12em] text-blue-700">
@@ -59,7 +59,7 @@ export function BeforeAfter() {
         <Reveal effetto="maschera">
         <div
           ref={boxRef}
-          className="relative mx-auto aspect-[7/9] max-w-2xl touch-pan-y select-none overflow-hidden rounded-[var(--radius-card)] border border-sand-200 shadow-[var(--shadow-lift)]"
+          className="relative mx-auto aspect-[7/9] max-w-2xl touch-pan-y select-none overflow-hidden rounded-[var(--radius-card)] border border-line shadow-[var(--shadow-lift)]"
           onPointerDown={(e) => {
             dragging.current = true;
             moveTo(e.clientX);
@@ -109,7 +109,7 @@ export function BeforeAfter() {
             aria-valuetext={`${Math.round(pos)}% prima`}
             onKeyDown={onKey}
             onClick={(e) => e.preventDefault()}
-            className="absolute inset-y-0 -ml-0.5 grid w-1 cursor-ew-resize place-items-center bg-white shadow-[0_0_0_1px_rgb(20_58_92/0.18)]"
+            className="absolute inset-y-0 -ml-[1.375rem] grid w-11 cursor-ew-resize place-items-center before:absolute before:inset-y-0 before:left-1/2 before:w-1 before:-translate-x-1/2 before:bg-white before:shadow-[0_0_0_1px_rgb(20_58_92/0.18)] before:content-['']"
             style={{ left: `${pos}%` }}
           >
             <span className="grid size-12 place-items-center rounded-full bg-white text-blue shadow-[var(--shadow-card)]">
