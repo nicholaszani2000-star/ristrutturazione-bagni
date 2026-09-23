@@ -5,6 +5,7 @@ import { Offer } from "@/components/sections/Offer";
 import { Detrazione } from "@/components/sections/Detrazione";
 import { BeforeAfter } from "@/components/sections/BeforeAfter";
 import { Servizi } from "@/components/sections/Servizi";
+import { Progetto } from "@/components/sections/Progetto";
 import { Processo } from "@/components/sections/Processo";
 import { Garanzie } from "@/components/sections/Garanzie";
 import { Credenziali } from "@/components/sections/Credenziali";
@@ -41,6 +42,7 @@ export default function Home() {
         <Detrazione />
         <BeforeAfter />
         <Servizi />
+        <Progetto />
         <Processo />
         <Garanzie />
         <Credenziali />
