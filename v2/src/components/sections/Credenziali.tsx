@@ -49,7 +49,7 @@ const CERTIFICAZIONI = [
 
 export function Credenziali() {
   return (
-    <section id="chi-siamo" className="relative isolate overflow-hidden bg-surface py-[length:var(--spacing-section)]">
+    <section id="chi-siamo" className="relative isolate overflow-hidden bg-white py-[length:var(--spacing-section)]">
       <div aria-hidden className="velo-acqua -z-10" />
 
       <div className="wrap">

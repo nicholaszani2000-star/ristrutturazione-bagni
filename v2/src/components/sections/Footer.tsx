@@ -8,7 +8,7 @@ import { Reveal } from "@/components/Reveal";
 const NAVIGA = [
   { href: "#offerta", testo: "L'offerta" },
   { href: "#prima-dopo", testo: "Prima e dopo" },
-  { href: "#preventivo", testo: "Preventivo gratuito" },
+  { href: "#scrivici", testo: "Scrivici" },
 ];
 
 export function Footer() {

@@ -20,34 +20,53 @@ import type { ComponentProps } from "react";
 const base =
   "group relative isolate inline-flex min-h-12 cursor-pointer select-none items-center " +
   "justify-center gap-2 rounded-full border px-6 font-display text-base font-semibold " +
-  "leading-tight transition-[transform,box-shadow,background-color,border-color] " +
+  "leading-tight transition-[transform,box-shadow,background-color,border-color,opacity] " +
   "duration-200 ease-out hover:-translate-y-0.5 active:translate-y-0 active:duration-75 " +
-  "focus-visible:outline-3 focus-visible:outline-offset-3 focus-visible:outline-blue";
+  "focus-visible:outline-3 focus-visible:outline-offset-3 focus-visible:outline-blue " +
+  // Stato disabilitato, una volta per tutte: senza, ogni chiamante se lo
+  // inventa e il modulo finisce con un pulsante che sembra premibile mentre
+  // sta gia' inviando.
+  "aria-disabled:pointer-events-none aria-disabled:opacity-45 " +
+  "disabled:pointer-events-none disabled:opacity-45 disabled:shadow-none";
 
 const variants = {
   // blue-700 e non blue: bianco su #1b84dd da' 3,90:1, sotto il minimo di
   // 4,5:1 per un testo di 17px semibold. Su #1663b0 sale a 6,09:1.
   //
-  // Al passaggio del mouse il colore non cambia: il segnale e' il riflesso che
-  // si accende piu' l'ombra che si allarga. Cambiare anche il colore sarebbe
-  // un terzo segnale per la stessa cosa.
+  // L'alone al passaggio del mouse e' un anello di colore piu' un'ombra della
+  // stessa tinta: e' la resa in CSS del bagliore della tavola dei CTA, e costa
+  // due box-shadow invece di un filtro o di una tela.
   primary:
     "border-blue-700 bg-blue-700 text-white shadow-[var(--shadow-card)] riflesso " +
-    "hover:shadow-[var(--shadow-acqua)]",
+    "hover:shadow-[0_0_0_4px_rgb(27_132_221/0.20),0_14px_30px_rgb(22_99_176/0.38)] " +
+    "active:bg-navy active:border-navy",
 
   secondary:
     "border-line bg-white text-navy shadow-[0_1px_2px_rgb(20_58_92/0.04)] " +
-    "hover:border-sky hover:bg-surface hover:shadow-[var(--shadow-card)]",
+    "hover:border-sky hover:bg-surface hover:shadow-[var(--shadow-card)] " +
+    "active:bg-surface-2",
 
   // Su fondo blu o navy. Bianco pieno, non un contorno traslucido: su quel
   // fondo un contorno e' un invito che si vede solo se lo cerchi.
   secondaryDark:
     "border-white bg-white text-navy shadow-[var(--shadow-card)] riflesso-scuro " +
-    "hover:shadow-[var(--shadow-lift)]",
+    "hover:shadow-[0_0_0_4px_rgb(255_255_255/0.25),0_14px_30px_rgb(10_28_44/0.35)] " +
+    "active:bg-surface",
 
   whatsapp:
     "border-whatsapp bg-whatsapp text-white shadow-[var(--shadow-card)] " +
-    "hover:border-whatsapp-dark hover:bg-whatsapp-dark hover:shadow-[var(--shadow-lift)]",
+    "hover:border-whatsapp-dark hover:bg-whatsapp-dark " +
+    "hover:shadow-[0_0_0_4px_rgb(37_211_102/0.22),0_14px_30px_rgb(29_168_81/0.35)] " +
+    "active:bg-whatsapp-dark",
+
+  // Il grado piu' leggero della scala: nessun riquadro, solo testo e freccia.
+  // Serve dove un pulsante sarebbe troppo — accanto a una primaria, dentro a
+  // un paragrafo — e senza di lui quei posti finiscono con una "secondary"
+  // che ruba peso alla primaria.
+  link:
+    "min-h-6 gap-1.5 border-transparent px-0 text-blue-700 underline decoration-sky " +
+    "decoration-2 underline-offset-[6px] hover:translate-y-0 hover:text-navy " +
+    "hover:decoration-blue-700",
 } as const;
 
 const sizes = {
@@ -67,7 +86,8 @@ export function stileBottone(
   size: keyof typeof sizes = "md",
   extra = "",
 ) {
-  return `${base} ${variants[variant]} ${sizes[size]} ${extra}`;
+  const taglia = variant === "link" ? "" : sizes[size];
+  return `${base} ${variants[variant]} ${taglia} ${extra}`;
 }
 
 type Props = ComponentProps<typeof Link> & {
@@ -85,7 +105,7 @@ export function Button({
 }: Props) {
   return (
     <Link
-      className={`${base} ${variants[variant]} ${sizes[size]} ${block ? "w-full" : ""} ${className}`}
+      className={`${base} ${variants[variant]} ${variant === "link" ? "" : sizes[size]} ${block ? "w-full" : ""} ${className}`}
       {...props}
     />
   );

@@ -16,7 +16,7 @@ import { Reveal } from "@/components/Reveal";
  */
 export function Processo() {
   return (
-    <section id="processo" className="bg-surface py-[length:var(--spacing-section)]">
+    <section id="processo" className="bg-white py-[length:var(--spacing-section)]">
       <div className="wrap grid gap-y-12 lg:grid-cols-[minmax(0,0.78fr)_minmax(0,1.22fr)] lg:gap-x-16">
         <IntestazioneSezione
           occhiello="Il nostro processo"

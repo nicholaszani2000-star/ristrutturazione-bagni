@@ -64,8 +64,8 @@ export function Header() {
             <span className="tabular">{SITE.contact.phoneDisplay}</span>
           </a>
 
-          <Button href="#preventivo" className="max-md:hidden">
-            Richiedi un preventivo
+          <Button href="#scrivici" className="max-md:hidden">
+            Scrivici
             <Icon
               name="chevron"
               className="size-4 -rotate-90 transition-transform duration-200 group-hover:translate-x-0.5"

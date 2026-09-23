@@ -44,6 +44,11 @@ export function Contatta() {
 
       setStato("ok");
       form.reset();
+      // Due eventi, uno per scopo: "generate_lead" e' l'evento standard che
+      // va segnato come conversione in GA4 — ed e' questo il momento in cui la
+      // pagina acquisisce davvero un contatto, ora che il modulo non c'e' piu'.
+      // L'altro serve a distinguere questa iscrizione dagli altri contatti.
+      traccia("generate_lead", { metodo: "sconto-email", valore_offerta: SITE.offer.price });
       traccia("iscrizione_sconto", { valore_sconto: risparmio });
 
       // Copia in archivio, in un try a parte: Netlify ha gia' l'iscrizione, e
@@ -76,8 +81,8 @@ export function Contatta() {
           </span>
 
           <h2 className="mt-6 text-[length:var(--text-h2)]">
-            Scrivici{" "}
-            <span className="text-blue">un&apos;email.</span>
+            Hai un progetto in mente?{" "}
+            <span className="text-blue">Scrivici.</span>
           </h2>
           <p className="mt-4 leading-relaxed text-muted">
             Se preferisci spiegare a parole tue, apri la posta e scrivi. Il messaggio è già
@@ -104,6 +109,27 @@ export function Contatta() {
           <p className="mt-4 text-sm text-muted">
             Si apre il tuo programma di posta — Gmail, Mail, Outlook, quello che usi.
           </p>
+
+          {/* Gli altri due canali. Anche questi partono da chi legge: nessuno
+              di loro lascia un numero perche' qualcuno richiami. */}
+          <div className="mt-7 border-t border-line pt-6">
+            <p className="mb-3 text-sm font-semibold text-navy">Preferisci parlarne subito?</p>
+            <div className="flex flex-wrap gap-2.5">
+              <a
+                href={links.whatsapp}
+                target="_blank"
+                rel="noopener"
+                className={stileBottone("whatsapp", "md", "text-sm")}
+              >
+                <Icon name="whatsapp" className="size-4" />
+                WhatsApp
+              </a>
+              <a href={links.tel} className={stileBottone("secondary", "md", "text-sm")}>
+                <Icon name="phone" className="size-4" />
+                <span className="tabular">{SITE.contact.phoneDisplay}</span>
+              </a>
+            </div>
+          </div>
         </Reveal>
 
         {/* ---------------------- sconto per l'iscrizione ---------------------- */}
@@ -129,10 +155,9 @@ export function Contatta() {
               <span className="mb-3 grid size-11 place-items-center rounded-full bg-white/20">
                 <Icon name="check" className="size-6" />
               </span>
-              <p className="font-display text-lg font-semibold">Iscrizione registrata.</p>
+              <p className="font-display text-lg font-semibold">Fatto. Hai diritto al 5%.</p>
               <p className="mt-2 text-sm leading-relaxed text-white/85">
-                Lo sconto è tuo. Ricordalo al sopralluogo: lo troviamo già applicato nel
-                preventivo.
+                Tienilo da parte e scrivici quando vuoi: lo applichiamo al preventivo.
               </p>
             </div>
           ) : (
@@ -196,8 +221,10 @@ export function Contatta() {
               </label>
 
               {stato === "errore" ? (
-                <p role="alert" className="mt-4 rounded-xl bg-white/15 px-4 py-3 text-sm">
-                  Non è partita. Riprova, oppure scrivici direttamente a {SITE.contact.email}.
+                <p role="alert" className="mt-4 rounded-xl bg-white/15 px-4 py-3 text-sm leading-relaxed">
+                  L&apos;invio non è andato a buon fine. Riprova, oppure scrivici direttamente
+                  a <strong className="font-semibold">{SITE.contact.email}</strong> o su WhatsApp:
+                  lo sconto vale lo stesso.
                 </p>
               ) : null}
             </form>

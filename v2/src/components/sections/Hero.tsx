@@ -82,8 +82,8 @@ export function Hero() {
 
             <div className="mt-10 flex flex-col items-start gap-4 sm:flex-row sm:items-center sm:gap-6">
               <Magnetico className="max-sm:w-full">
-                <Button href="#preventivo" size="lg" className="whitespace-nowrap max-sm:w-full">
-                  Richiedi un preventivo
+                <Button href="#scrivici" size="lg" className="whitespace-nowrap max-sm:w-full">
+                  Scrivici un’email
                   <Icon
                     name="chevron"
                     className="size-4 -rotate-90 transition-transform duration-200 group-hover:translate-x-0.5"

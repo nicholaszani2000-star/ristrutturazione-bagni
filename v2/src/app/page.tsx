@@ -11,7 +11,6 @@ import { Garanzie } from "@/components/sections/Garanzie";
 import { Credenziali } from "@/components/sections/Credenziali";
 import { Faq } from "@/components/sections/Faq";
 import { CtaFinale } from "@/components/sections/CtaFinale";
-import { Preventivo } from "@/components/sections/Preventivo";
 import { Contatta } from "@/components/sections/Contatta";
 import { Footer } from "@/components/sections/Footer";
 import { StickyCta } from "@/components/StickyCta";
@@ -39,18 +38,17 @@ export default function Home() {
       <main id="contenuto" className="pb-[4.75rem] lg:pb-0">
         <Hero />
         <TrustBar />
+        <Servizi />
         <Offer />
         <Detrazione />
         <BeforeAfter />
-        <Servizi />
         <Progetto />
         <Processo />
         <Garanzie />
         <Credenziali />
+        <Contatta />
         <Faq />
         <CtaFinale />
-        <Preventivo />
-        <Contatta />
       </main>
       <Footer />
       <StickyCta />

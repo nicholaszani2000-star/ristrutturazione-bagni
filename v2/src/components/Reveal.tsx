@@ -97,9 +97,22 @@ export function Reveal({
           return;
         }
 
-        const figli = tutti.filter(
-          (f) => f.getBoundingClientRect().top > window.innerHeight,
-        );
+        // Chi decide COSA nascondere dev'essere lo stesso che decide QUANDO
+        // mostrarlo, e prima non lo era.
+        //
+        // Il filtro guardava ogni figlio, lo scroll trigger guarda il
+        // contenitore. Su un riquadro alto — la scheda dell'email — il
+        // contenitore era gia' entrato mentre il pulsante in fondo stava
+        // ancora sotto la piega: il pulsante veniva nascosto, il trigger era
+        // gia' passato, e restava a opacita' zero per sempre. La CTA
+        // principale di quella sezione, invisibile.
+        //
+        // Ora la domanda e' una sola, sul contenitore: se e' gia' a schermo
+        // non si nasconde niente e al massimo l'animazione non parte; se e'
+        // sotto la piega si nasconde tutto, e il trigger scattera' di sicuro
+        // perche' quel punto deve ancora essere attraversato.
+        if (el.getBoundingClientRect().top <= window.innerHeight) return;
+        const figli = tutti;
         if (figli.length === 0) return;
 
         // Oltre le otto voci il passo si accorcia da solo.
@@ -113,7 +126,7 @@ export function Reveal({
             ? Math.min(scaglionamento, 0.4 / figli.length)
             : scaglionamento;
 
-        gsap.from(figli, {
+        const anim = gsap.from(figli, {
           opacity: 0,
           ...(effetto === "maschera"
             ? { clipPath: "inset(0 0 100% 0)", y: 0, duration: 1.05, ease: "power3.out", clearProps: "clipPath" }
@@ -132,13 +145,46 @@ export function Reveal({
             once: true,
           },
         });
+
+        // Rete di sicurezza.
+        //
+        // La promessa di questo componente e' che il caso peggiore sia
+        // "l'animazione non parte", mai "il contenuto sparisce". Il filtro
+        // sopra riduce il rischio ma non lo annulla: un tween puo' restare a
+        // meta' per ragioni che non dipendono da qui — un rilayout, un
+        // rimontaggio di React, una tela che cambia altezza. E' successo
+        // davvero, sulla CTA principale della sezione contatto, che e' rimasta
+        // invisibile mentre i sei elementi accanto erano a posto.
+        //
+        // Quindi dopo il tempo massimo che l'animazione puo' impiegare si
+        // controlla, e qualunque cosa sia ancora trasparente viene ripulita.
+        // Costa un timer per blocco e toglie di mezzo un'intera classe di
+        // guasti silenziosi.
+        const durataMassima =
+          (ritardo + passo * figli.length + 1.2) * 1000;
+        const salvagente = window.setTimeout(() => {
+          for (const f of figli) {
+            if (Number(getComputedStyle(f).opacity) < 0.95) {
+              gsap.set(f, { clearProps: "opacity,transform,translate,rotate,scale" });
+            }
+          }
+        }, durataMassima);
+        return () => {
+          window.clearTimeout(salvagente);
+          anim.kill();
+        };
       });
     }, box);
 
-    // Il 3D si carica dopo e puo' spostare quello che ha sotto: senza un
-    // ricalcolo, ScrollTrigger resta con le misure vecchie e certi blocchi non
-    // scattano mai.
+    // Le fotografie si caricano dopo e spostano quello che hanno sotto: senza
+    // un ricalcolo, ScrollTrigger resta con le misure vecchie e certi blocchi
+    // non scattano mai.
+    //
+    // Il solo addEventListener non basta: con le risorse in cache "load" e'
+    // gia' scattato prima che questo effetto venga eseguito, e il ricalcolo
+    // non arriva. Quindi si controlla anche lo stato corrente.
     const ricalcola = () => ScrollTrigger.refresh();
+    if (document.readyState === "complete") ricalcola();
     window.addEventListener("load", ricalcola);
 
     return () => {

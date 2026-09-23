@@ -39,10 +39,10 @@ export function Detrazione() {
           (bianco -> blu notte), e una riga netta lo farebbe sembrare un
           banner incollato invece che una parte della stessa pagina. */}
       <div aria-hidden className="absolute inset-x-0 top-0 rotate-180">
-        <Onda colore="fill-white" variante="calma" />
+        <Onda colore="fill-surface" variante="calma" />
       </div>
       <div aria-hidden className="absolute inset-x-0 bottom-0 translate-y-px">
-        <Onda colore="fill-surface" variante="mossa" />
+        <Onda colore="fill-white" variante="mossa" />
       </div>
 
       <div className="wrap relative pt-[clamp(0.5rem,1.5vw,1.5rem)]">
@@ -95,8 +95,8 @@ export function Detrazione() {
               </span>
             </p>
 
-            <Button href="#preventivo" variant="secondaryDark" size="lg" className="mt-7 max-sm:w-full">
-              Richiedi il preventivo gratuito
+            <Button href="#scrivici" variant="secondaryDark" size="lg" className="mt-7 max-sm:w-full">
+              Scrivici
               <Icon name="chevron" className="size-4 -rotate-90" />
             </Button>
           </div>

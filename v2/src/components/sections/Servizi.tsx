@@ -23,7 +23,7 @@ export function Servizi() {
           titolo="Non solo il bagno"
           accento={`da ${euro(SITE.offer.price)}.`}
           testo="L'offerta in evidenza copre la misura più richiesta. Se il tuo bagno è diverso, o se ti serve solo una parte del lavoro, lo facciamo lo stesso."
-          azione={{ href: "#preventivo", testo: "Chiedi il tuo prezzo" }}
+          azione={{ href: "#scrivici", testo: "Scrivici il tuo caso" }}
           className="lg:sticky lg:top-28 lg:self-start"
         />
 

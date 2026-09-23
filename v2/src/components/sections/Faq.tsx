@@ -80,10 +80,10 @@ export function Faq() {
           </a>{" "}
           oppure{" "}
           <a
-            href="#preventivo"
+            href="#scrivici"
             className="font-semibold text-blue-700 underline underline-offset-2"
           >
-            scrivici dal modulo
+            scrivici un’email
           </a>
           : rispondiamo {SITE.contact.hours.toLowerCase()}.
         </p>

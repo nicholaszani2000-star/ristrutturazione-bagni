@@ -37,12 +37,12 @@ export function CtaFinale() {
 
             <div className="shrink-0 lg:text-right">
               <Button
-                href="#preventivo"
+                href="#scrivici"
                 variant="secondaryDark"
                 size="lg"
                 className="whitespace-nowrap max-sm:w-full"
               >
-                Richiedi un preventivo
+                Scrivici un’email
                 <Icon
                   name="chevron"
                   className="size-4 -rotate-90 transition-transform duration-200 group-hover:translate-x-0.5"

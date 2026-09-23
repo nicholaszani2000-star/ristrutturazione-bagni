@@ -41,7 +41,7 @@ export function BeforeAfter() {
   };
 
   return (
-    <section id="prima-dopo" className="bg-surface py-[length:var(--spacing-section)]">
+    <section id="prima-dopo" className="bg-white py-[length:var(--spacing-section)]">
       <div className="wrap grid items-center gap-y-10 lg:grid-cols-[minmax(0,0.78fr)_minmax(0,1.22fr)] lg:gap-x-16">
         <IntestazioneSezione
           occhiello="I nostri lavori"

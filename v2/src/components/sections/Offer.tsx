@@ -8,7 +8,7 @@ import { IntestazioneSezione } from "@/components/IntestazioneSezione";
 
 export function Offer() {
   return (
-    <section id="offerta" className="bg-white py-[length:var(--spacing-section)]">
+    <section id="offerta" className="bg-surface py-[length:var(--spacing-section)]">
       <div className="wrap">
         <IntestazioneSezione
           occhiello="L'offerta"
@@ -38,14 +38,14 @@ export function Offer() {
               {SITE.offer.claim}
             </p>
 
-            <Button href="#preventivo" variant="secondaryDark" size="lg" block className="mt-6">
-              Richiedi il preventivo gratuito
+            <Button href="#scrivici" variant="secondaryDark" size="lg" block className="mt-6">
+              Scrivici per il tuo preventivo
             </Button>
 
             <p className="mt-4 text-sm leading-relaxed text-white/85">
               Il tuo bagno ha una misura diversa?{" "}
-              <a href="#preventivo" className="font-semibold text-white underline underline-offset-2">
-                Mandaci la richiesta
+              <a href="#scrivici" className="font-semibold text-white underline underline-offset-2">
+                Scrivici
               </a>
               : dopo il sopralluogo ti diamo il prezzo esatto per la tua metratura.
             </p>

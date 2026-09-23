@@ -11,7 +11,7 @@ import { Reveal } from "@/components/Reveal";
  */
 export function Garanzie() {
   return (
-    <section id="garanzie" className="relative isolate overflow-hidden bg-white py-[length:var(--spacing-section)]">
+    <section id="garanzie" className="relative isolate overflow-hidden bg-surface py-[length:var(--spacing-section)]">
       <div aria-hidden className="velo-acqua -z-10" />
 
       <div className="wrap grid gap-y-12 lg:grid-cols-[minmax(0,0.8fr)_minmax(0,1.2fr)] lg:gap-x-16">
@@ -20,7 +20,7 @@ export function Garanzie() {
           titolo="Un nuovo bagno,"
           accento="e niente sorprese."
           testo="Sono le sei cose che di solito restano promesse a voce. Qui finiscono nel preventivo, dove puoi rileggerle anche fra sei mesi."
-          azione={{ href: "#preventivo", testo: "Richiedi un preventivo", variante: "secondary" }}
+          azione={{ href: "#scrivici", testo: "Scrivici", variante: "secondary" }}
           className="lg:sticky lg:top-28 lg:self-start"
         />
 

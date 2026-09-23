@@ -40,7 +40,7 @@ const SCHEDE = [
 
 export function Progetto() {
   return (
-    <section id="progetto" className="relative isolate overflow-hidden bg-white py-[length:var(--spacing-section)]">
+    <section id="progetto" className="relative isolate overflow-hidden bg-surface py-[length:var(--spacing-section)]">
       <div aria-hidden className="velo-acqua -z-10" />
 
       <div className="wrap grid items-center gap-y-12 lg:grid-cols-[minmax(0,0.8fr)_minmax(0,1.2fr)] lg:gap-x-14">
@@ -49,7 +49,7 @@ export function Progetto() {
           titolo="Lo vedi prima,"
           accento="non dopo."
           testo={`${SITE.process[1].text} Se qualcosa non ti convince si cambia sul foglio, che costa zero, invece che in cantiere.`}
-          azione={{ href: "#preventivo", testo: "Prenota il sopralluogo" }}
+          azione={{ href: "#scrivici", testo: "Scrivici per il sopralluogo" }}
         />
 
         <Reveal className="relative">
