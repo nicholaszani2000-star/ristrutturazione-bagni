@@ -36,12 +36,16 @@ const caveat = Caveat({
   weight: ["600"],
   variable: "--font-mano",
   display: "swap",
+  // Niente precaricamento: sono 51 KB, il file piu' pesante fra i font, per
+  // una frase decorativa che su telefono sta sotto la piega. Senza preload
+  // arriva quando serve e non ruba banda alla prima schermata.
+  preload: false,
 });
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE.brand.url),
   title: `Ristrutturazione bagni chiavi in mano a ${SITE.zone.short} | ${SITE.brand.name}`,
-  description: `Bagno completo 3×2 m a ${migliaia(SITE.offer.price)} € tutto compreso: demolizione, impianti certificati, piastrelle e sanitari. Prezzo bloccato in contratto. Sopralluogo gratuito a ${SITE.zone.long}.`,
+  description: `Bagno completo 3×2 m a ${migliaia(SITE.offer.price)} € chiavi in mano: demolizione, impianti certificati, piastrelle e sanitari. Sopralluogo gratuito a ${SITE.zone.long}.`,
   alternates: { canonical: "/" },
   robots: { index: true, follow: true },
   openGraph: {
@@ -73,6 +77,10 @@ export const viewport: Viewport = {
   themeColor: "#1B84DD",
   width: "device-width",
   initialScale: 1,
+  // Senza "cover" iOS non comunica i margini di sicurezza: env(safe-area-*)
+  // vale sempre 0 e la barra fissa in basso finisce sotto la linea del gesto
+  // Home. Con "cover" i margini arrivano, e i contenitori li rispettano.
+  viewportFit: "cover",
 };
 
 export default function RootLayout({

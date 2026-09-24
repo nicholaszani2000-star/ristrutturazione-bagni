@@ -24,7 +24,7 @@ export function BannerCookie() {
     <div
       role="dialog"
       aria-label="Consenso ai cookie di misurazione e pubblicità"
-      className="fixed inset-x-0 bottom-[4.75rem] z-[120] px-4 pb-4 lg:bottom-0 lg:px-6 lg:pb-6"
+      className="fixed inset-x-0 bottom-[calc(4.75rem+env(safe-area-inset-bottom))] z-[120] pl-[max(1rem,env(safe-area-inset-left))] pr-[max(1rem,env(safe-area-inset-right))] pb-4 lg:bottom-0 lg:px-6 lg:pb-6"
     >
       <div className="wrap flex max-w-3xl flex-col gap-4 rounded-[var(--radius-card)] border border-line bg-white p-5 shadow-[var(--shadow-lift)] sm:flex-row sm:items-center sm:gap-6">
         <p className="text-sm leading-relaxed text-muted">

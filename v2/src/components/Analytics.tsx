@@ -31,11 +31,15 @@ export function Analytics() {
   // Con pochi contatti a settimana e' il segnale intermedio che serve di piu':
   // dice a Meta chi si e' interessato davvero, oltre a chi ha solo aperto la
   // pagina, e diventa un pubblico per il retargeting ("ha visto il prezzo ma
-  // non ha scritto"). Una volta per visita, quando l'offerta e' a schermo per
-  // almeno il 40%.
+  // non ha scritto"). Una volta per visita.
+  //
+  // Si osserva la cifra del prezzo, non l'intera sezione. La prima versione
+  // chiedeva il 40% della sezione a schermo: su telefono la sezione e' alta
+  // due schermi e mezzo, il 40% non entrava mai e l'evento non partiva su
+  // nessun telefono — cioe' per l'80% del traffico. Trovato nell'audit.
   useEffect(() => {
     if (!attivo) return;
-    const offerta = document.getElementById("offerta");
+    const offerta = document.querySelector("#offerta [data-prezzo]");
     if (!offerta || !("IntersectionObserver" in window)) return;
 
     const osservatore = new IntersectionObserver(
@@ -50,7 +54,7 @@ export function Analytics() {
           value: SITE.offer.price,
         });
       },
-      { threshold: 0.4 },
+      { threshold: 0.6 },
     );
     osservatore.observe(offerta);
     return () => osservatore.disconnect();
@@ -67,7 +71,11 @@ export function Analytics() {
 
       const href = a.getAttribute("href") ?? "";
       // In quale sezione stava il pulsante: serve a capire dove si converte.
-      const dove = a.closest("section")?.id || a.closest("header,footer")?.tagName.toLowerCase() || "altro";
+      const dove =
+        a.closest("section")?.id ||
+        (a.closest('nav[aria-label="Contatti rapidi"]') ? "barra-mobile" : "") ||
+        a.closest("header,footer")?.tagName.toLowerCase() ||
+        "altro";
 
       // Lo stesso gesto va segnato a entrambi: "Contact" e' l'evento
       // standard di Meta per un contatto avviato, ed e' quello su cui si

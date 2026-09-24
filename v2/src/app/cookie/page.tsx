@@ -7,6 +7,7 @@ import { SITE } from "@/config/site";
 export const metadata: Metadata = {
   title: `Cookie policy — ${SITE.brand.name}`,
   description: "Quali cookie usa il sito EasyBagno.it.",
+  alternates: { canonical: "/cookie/" },
   robots: { index: true, follow: true },
 };
 

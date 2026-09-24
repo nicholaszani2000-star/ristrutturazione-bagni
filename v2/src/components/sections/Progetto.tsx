@@ -22,13 +22,13 @@ const SCHEDE = [
     icon: "design",
     titolo: "Disposizione",
     testo: "Dove finiscono lavabo, sanitari e doccia, con le misure.",
-    cella: "lg:col-start-1 lg:row-start-1 lg:self-start lg:-ml-8",
+    cella: "lg:col-start-1 lg:row-start-1 lg:self-start xl:-ml-8",
   },
   {
     icon: "tiles",
     titolo: "Materiali",
     testo: "Piastrelle, sanitari e rubinetteria scelti dal capitolato.",
-    cella: "lg:col-start-3 lg:row-start-2 lg:self-center lg:-mr-8",
+    cella: "lg:col-start-3 lg:row-start-2 lg:self-center xl:-mr-8",
   },
   {
     icon: "lock",

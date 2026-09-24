@@ -94,10 +94,10 @@ export function BeforeAfter() {
             />
           </div>
 
-          <span className="pointer-events-none absolute left-4 top-4 rounded-full bg-navy/85 px-3 py-1 font-display text-[0.72rem] font-semibold uppercase tracking-wider text-white">
+          <span className="pointer-events-none absolute left-4 top-4 rounded-full bg-navy/85 px-3 py-1 font-display text-[0.75rem] font-semibold uppercase tracking-wider text-white">
             Prima
           </span>
-          <span className="pointer-events-none absolute right-4 top-4 rounded-full bg-blue-700/92 px-3 py-1 font-display text-[0.72rem] font-semibold uppercase tracking-wider text-white">
+          <span className="pointer-events-none absolute right-4 top-4 rounded-full bg-blue-700/92 px-3 py-1 font-display text-[0.75rem] font-semibold uppercase tracking-wider text-white">
             Dopo
           </span>
 

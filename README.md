@@ -12,9 +12,10 @@ v2/                     il sito (Next.js 16, export statico)
                         FAQ, sconto, ID di GA4 e Meta. Si tocca solo questo.
   src/components/       sezioni della pagina e componenti
   src/lib/              consenso cookie, GA4, Meta Pixel, Supabase
-  public/               foto, anteprima social, LEGGIMI-NETLIFY.txt
+  public/               foto, anteprima social, _headers, _redirects
   netlify.toml          comando di build, cartella, intestazioni
 netlify.toml            dice a Netlify che il sito sta in v2/
+LEGGIMI-NETLIFY.txt     pubblicazione, integrazioni, cose da fare (NON va online)
 annunci/                immagini e testi per Meta (CAMPAGNA.md), non pubblicati sul sito
 reference/              materiale di consultazione, non pubblicato
 .claude/, .mcp.json     skill e server MCP per lo sviluppo
@@ -45,4 +46,4 @@ npm run build:netlify    # sito statico in v2/out, quello che va online
 | Supabase `easy-bagno` | tabella `iscrizioni`: email + fonte/campagna UTM | a ogni iscrizione con consenso |
 | Netlify Forms | modulo `sconto`, notifica via email | a ogni iscrizione |
 
-Dettagli e passaggi da fare nei pannelli: `v2/public/LEGGIMI-NETLIFY.txt`.
+Dettagli e passaggi da fare nei pannelli: `LEGGIMI-NETLIFY.txt`.

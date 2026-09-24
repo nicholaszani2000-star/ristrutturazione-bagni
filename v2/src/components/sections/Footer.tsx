@@ -14,7 +14,7 @@ const NAVIGA = [
 export function Footer() {
   const L = SITE.legal;
   return (
-    <footer className="bg-navy pb-28 pt-16 text-white/70 lg:pb-16">
+    <footer className="bg-navy pb-[calc(7rem+env(safe-area-inset-bottom))] pt-16 text-white/70 lg:pb-16">
       <Reveal className="wrap grid gap-10 sm:grid-cols-2 lg:grid-cols-[1.4fr_1fr_1.2fr]">
         <div>
           <Logo tono="chiaro" />
@@ -31,7 +31,7 @@ export function Footer() {
           <ul className="grid gap-2.5 text-sm">
             {NAVIGA.map((v) => (
               <li key={v.href}>
-                <Link href={v.href} className="inline-flex min-h-6 items-center transition-colors hover:text-sky">
+                <Link href={v.href} className="inline-flex min-h-11 items-center lg:min-h-6 transition-colors hover:text-sky">
                   {v.testo}
                 </Link>
               </li>
@@ -45,19 +45,19 @@ export function Footer() {
           </h2>
           <ul className="grid gap-2.5 text-sm">
             <li>
-              <a href={links.tel} className="inline-flex min-h-6 items-center gap-2 transition-colors hover:text-sky">
+              <a href={links.tel} className="inline-flex min-h-11 items-center lg:min-h-6 gap-2 transition-colors hover:text-sky">
                 <Icon name="phone" className="size-4 text-sky" />
                 <span className="tabular">{SITE.contact.phoneDisplay}</span>
               </a>
             </li>
             <li>
-              <a href={links.whatsapp} target="_blank" rel="noopener" className="inline-flex min-h-6 items-center gap-2 transition-colors hover:text-sky">
+              <a href={links.whatsapp} target="_blank" rel="noopener" className="inline-flex min-h-11 items-center lg:min-h-6 gap-2 transition-colors hover:text-sky">
                 <Icon name="whatsapp" className="size-4 text-sky" />
                 <span className="tabular">{SITE.contact.whatsappDisplay}</span>
               </a>
             </li>
             <li>
-              <a href={links.mail} className="inline-flex min-h-6 items-center gap-2 break-all transition-colors hover:text-sky">
+              <a href={links.mail} className="inline-flex min-h-11 items-center lg:min-h-6 gap-2 break-all transition-colors hover:text-sky">
                 <Icon name="mail" className="size-4 shrink-0 text-sky" />
                 {SITE.contact.email}
               </a>
@@ -86,10 +86,10 @@ export function Footer() {
           PEC {L.pec} · SDI {L.sdi}
         </p>
         <p className="flex gap-4">
-          <Link href="/privacy" className="inline-flex min-h-6 items-center underline underline-offset-2 transition-colors hover:text-sky">
+          <Link href="/privacy" className="inline-flex min-h-11 items-center lg:min-h-6 underline underline-offset-2 transition-colors hover:text-sky">
             Privacy
           </Link>
-          <Link href="/cookie" className="inline-flex min-h-6 items-center underline underline-offset-2 transition-colors hover:text-sky">
+          <Link href="/cookie" className="inline-flex min-h-11 items-center lg:min-h-6 underline underline-offset-2 transition-colors hover:text-sky">
             Cookie
           </Link>
         </p>

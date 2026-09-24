@@ -40,7 +40,7 @@ export function Hero() {
 
       <div className="grid items-stretch gap-y-10 lg:grid-cols-[minmax(0,1.08fr)_minmax(0,1fr)]">
         {/* ------------------------------ testo ------------------------------ */}
-        <div className="flex flex-col justify-center px-5 pt-[clamp(2rem,5vw,3.5rem)] lg:py-[clamp(3.5rem,5vw,6rem)] lg:pl-[max(1.25rem,calc((100vw-76rem)/2))] lg:pr-14">
+        <div className="flex flex-col justify-center pl-[max(1.25rem,env(safe-area-inset-left))] pr-[max(1.25rem,env(safe-area-inset-right))] pt-[clamp(2rem,5vw,3.5rem)] lg:py-[clamp(3.5rem,5vw,6rem)] lg:pl-[max(1.25rem,calc((100vw-76rem)/2))] lg:pr-14">
           <div className="max-w-[37rem]">
             {/* Sopra la piega uno ScrollTrigger non scatterebbe mai: qui
                 l'ingresso parte al montaggio, nell'ordine in cui si legge. */}
@@ -144,7 +144,7 @@ export function Hero() {
           </div>
 
           <div className="vetro absolute bottom-7 left-7 rounded-2xl px-5 py-4 shadow-[var(--shadow-lift)] max-sm:hidden">
-            <p className="font-display text-[0.7rem] font-semibold uppercase tracking-[0.14em] text-blue-700">
+            <p className="font-display text-[0.75rem] font-semibold uppercase tracking-[0.12em] text-blue-700">
               Bagno 3×2 m, tutto compreso
             </p>
             <p className="tabular mt-1 font-display text-[clamp(1.9rem,1.2rem+1.6vw,2.4rem)] font-bold leading-none tracking-[-0.03em] text-navy">

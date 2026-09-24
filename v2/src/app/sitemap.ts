@@ -11,8 +11,8 @@ export const dynamic = "force-static";
 export default function sitemap(): MetadataRoute.Sitemap {
   const aggiornato = new Date();
   return [
-    { url: SITE.brand.url, lastModified: aggiornato, changeFrequency: "monthly", priority: 1 },
-    { url: `${SITE.brand.url}/privacy`, lastModified: aggiornato, changeFrequency: "yearly", priority: 0.3 },
-    { url: `${SITE.brand.url}/cookie`, lastModified: aggiornato, changeFrequency: "yearly", priority: 0.3 },
+    { url: `${SITE.brand.url}/`, lastModified: aggiornato, changeFrequency: "monthly", priority: 1 },
+    { url: `${SITE.brand.url}/privacy/`, lastModified: aggiornato, changeFrequency: "yearly", priority: 0.3 },
+    { url: `${SITE.brand.url}/cookie/`, lastModified: aggiornato, changeFrequency: "yearly", priority: 0.3 },
   ];
 }

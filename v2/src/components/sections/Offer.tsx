@@ -29,7 +29,7 @@ export function Offer() {
             <h3 className="mt-4 text-white">{SITE.offer.title}</h3>
             <p className="mt-1 text-sm text-white/80">{SITE.offer.size}</p>
 
-            <p className="tabular mt-5 font-display text-[length:var(--text-price)] font-bold leading-none tracking-[-0.03em]">
+            <p data-prezzo className="tabular mt-5 font-display text-[length:var(--text-price)] font-bold leading-none tracking-[-0.03em]">
               <Contatore valore={SITE.offer.price} />
             </p>
             <p className="mt-2 text-sm text-white/85">{SITE.offer.vatNote}</p>
@@ -38,7 +38,7 @@ export function Offer() {
               {SITE.offer.claim}
             </p>
 
-            <Button href="#scrivici" variant="secondaryDark" size="lg" block className="mt-6">
+            <Button href="#scrivici" variant="secondaryDark" size="lg" block className="mt-6 text-center">
               Scrivici per il tuo preventivo
             </Button>
 

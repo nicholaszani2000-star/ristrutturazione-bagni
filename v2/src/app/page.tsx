@@ -35,7 +35,7 @@ export default function Home() {
     <>
       <Header />
       {/* pb: riserva lo spazio della barra fissa mobile */}
-      <main id="contenuto" className="pb-[4.75rem] lg:pb-0">
+      <main id="contenuto" className="pb-[calc(4.75rem+env(safe-area-inset-bottom))] lg:pb-0">
         <Hero />
         <TrustBar />
         <Servizi />

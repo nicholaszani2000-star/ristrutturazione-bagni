@@ -45,7 +45,7 @@ export function IntestazioneSezione({
   return (
     <div className={`${centrata ? "mx-auto max-w-[60ch] text-center" : "max-w-[34rem]"} ${className}`}>
       <p
-        className={`mb-4 font-display text-[0.72rem] font-semibold uppercase tracking-[0.18em] ${
+        className={`mb-4 font-display text-[0.75rem] font-semibold uppercase tracking-[0.18em] ${
           chiaro ? "text-sky-200" : "text-blue-700"
         }`}
       >
