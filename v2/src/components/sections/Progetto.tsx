@@ -49,7 +49,7 @@ export function Progetto() {
           titolo="Lo vedi prima,"
           accento="non dopo."
           testo={`${SITE.process[1].text} Se qualcosa non ti convince si cambia sul foglio, che costa zero, invece che in cantiere.`}
-          azione={{ href: "#scrivici", testo: "Scrivici per il sopralluogo" }}
+          azione={{ href: "#sopralluogo", testo: "Richiedi il sopralluogo" }}
         />
 
         <Reveal className="relative">

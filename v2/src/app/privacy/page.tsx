@@ -31,11 +31,16 @@ export default function Privacy() {
         <h2>Quali dati raccogliamo</h2>
         <ul>
           <li>
+            <strong>I dati della richiesta di sopralluogo</strong>, se compili il
+            modulo: nome e cognome, telefono, comune in cui si trova il bagno, il
+            lavoro che ti serve e quando vorresti iniziare, e — solo se li scrivi —
+            email e note. Registriamo anche da quale annuncio o sito sei arrivato.
+          </li>
+          <li>
             <strong>Dati che ci invii tu</strong> quando ci scrivi un&apos;email, ci
             chiami o ci mandi un messaggio su WhatsApp: il tuo indirizzo o il tuo
-            numero, e quello che decidi di raccontarci del lavoro. Sul sito non
-            c&apos;è un modulo che ti chiede i dati: sei tu a scegliere cosa
-            scrivere.
+            numero, e quello che decidi di raccontarci del lavoro, comprese le foto
+            del bagno se scegli di mandarcele.
           </li>
           <li>
             <strong>Il solo indirizzo email</strong>, se lo lasci nel riquadro
@@ -71,10 +76,11 @@ export default function Privacy() {
           </li>
         </ul>
         <p>
-          I dati che ci lasci con il modulo di preventivo non li usiamo per
-          inviarti pubblicità: per quella serve il consenso separato che trovi nel
-          riquadro dello sconto, spiegato più avanti. In nessun caso vendiamo i
-          tuoi dati.
+          I dati che ci lasci con il modulo del sopralluogo servono solo a
+          richiamarti per quel lavoro: non li usiamo per inviarti pubblicità e
+          non li passiamo a call center. Per la pubblicità serve il consenso
+          separato che trovi nel riquadro dello sconto, spiegato più avanti. In
+          nessun caso vendiamo i tuoi dati.
         </p>
       </div>
 
@@ -143,21 +149,39 @@ export default function Privacy() {
           cookie di misurazione, l&apos;indirizzo resta solo da noi. I dettagli sono
           nella <a href="/cookie/">cookie policy</a>.
         </p>
+      </div>
+
+      <div>
+        <h2>Richiesta di sopralluogo e Meta</h2>
+        <p>
+          Se hai accettato i cookie di misurazione, quando invii la richiesta di
+          sopralluogo trasmettiamo a Meta Platforms Ireland Limited telefono,
+          nome, cognome, comune ed email (se l&apos;hai scritta), tutti cifrati con
+          SHA-256 e mai in chiaro. Servono a sapere quali annunci portano
+          richieste vere e a non mostrare più i nostri annunci a chi ci ha già
+          contattato. La base giuridica è il consenso che dai con «Accetta» nel
+          banner dei cookie, e che puoi revocare in ogni momento dalla{" "}
+          <a href="/cookie/">cookie policy</a>; per questo trattamento siamo
+          contitolari con Meta. Se non accetti, la richiesta arriva a noi lo
+          stesso e a Meta non parte nulla.
+        </p>
         <p>
           Sempre e solo con il consenso ai cookie di misurazione, Meta riceve
           anche dal nostro server, tramite la Conversions API, gli eventi della
           tua visita — pagina vista, offerta vista, clic su un contatto,
-          iscrizione — con indirizzo IP e tipo di browser. La funzione che li
-          invia gira su Netlify; i dati non vengono conservati da noi.
+          richiesta di sopralluogo, iscrizione allo sconto — con indirizzo IP e
+          tipo di browser. La funzione che li invia gira su Netlify; i dati non
+          vengono conservati da noi.
         </p>
       </div>
 
       <div>
         <h2>Conferimento dei dati</h2>
         <p>
-          Non c&apos;è nessun dato obbligatorio per visitare il sito. Per riceverne
-          una risposta ci serve un recapito — quello da cui ci scrivi è
-          sufficiente. Per l&apos;iscrizione allo sconto serve l&apos;indirizzo email
+          Non c&apos;è nessun dato obbligatorio per visitare il sito. Per
+          richiedere il sopralluogo servono nome, telefono e comune: senza, non
+          possiamo richiamarti né sapere se la zona è la nostra. Se ci scrivi tu,
+          basta il recapito da cui ci scrivi. Per l&apos;iscrizione allo sconto serve l&apos;indirizzo email
           e la spunta del consenso: senza, non possiamo mandarti l&apos;offerta.
         </p>
       </div>

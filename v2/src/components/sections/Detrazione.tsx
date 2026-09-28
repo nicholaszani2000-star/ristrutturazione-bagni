@@ -95,8 +95,8 @@ export function Detrazione() {
               </span>
             </p>
 
-            <Button href="#scrivici" variant="secondaryDark" size="lg" className="mt-7 max-sm:w-full">
-              Scrivici
+            <Button href="#sopralluogo" variant="secondaryDark" size="lg" className="mt-7 max-sm:w-full">
+              Richiedi il sopralluogo
               <Icon name="chevron" className="size-4 -rotate-90" />
             </Button>
           </div>

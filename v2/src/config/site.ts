@@ -178,6 +178,8 @@ export const SITE = {
     percentuale: 5,
     suCosa: "sul preventivo del bagno completo",
     validita: "60 giorni dall'iscrizione",
+    // Gli stessi 60 giorni delle viste "sconti" e "richieste" su Supabase.
+    giorni: 60,
     condizioni:
       "Lo sconto si applica al preventivo firmato dopo il sopralluogo e non è cumulabile con altre promozioni in corso.",
   },
@@ -195,6 +197,11 @@ export const SITE = {
     { q: "Posso scegliere io piastrelle e sanitari?", a: "Sì. Il prezzo comprende la scelta dal nostro capitolato. Se preferisci materiali diversi ti diciamo subito la differenza di costo, prima di firmare." },
   ],
 
+  /**
+   * Il modulo "Richiedi il sopralluogo". Le voci sono quelle che finiscono
+   * nella richiesta, in Supabase e nell'email di Netlify: se si cambiano qui,
+   * cambiano ovunque.
+   */
   form: {
     interventionTypes: [
       "Bagno completo 3×2 (offerta 9.490 €)",
@@ -204,6 +211,7 @@ export const SITE = {
       "Solo rivestimenti e pavimento",
       "Non lo so ancora, vorrei un consiglio",
     ],
+    whenOptions: ["Appena possibile", "Entro 3 mesi", "Più avanti, sto valutando"],
   },
 
   integrations: {

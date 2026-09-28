@@ -37,12 +37,12 @@ export function CtaFinale() {
 
             <div className="shrink-0 lg:text-right">
               <Button
-                href="#scrivici"
+                href="#sopralluogo"
                 variant="secondaryDark"
                 size="lg"
-                className="whitespace-nowrap max-sm:w-full"
+                className="max-sm:w-full sm:whitespace-nowrap"
               >
-                Scrivici un’email
+                Richiedi il sopralluogo
                 <Icon
                   name="chevron"
                   className="size-4 -rotate-90 transition-transform duration-200 group-hover:translate-x-0.5"

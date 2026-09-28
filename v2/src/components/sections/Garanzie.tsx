@@ -20,7 +20,7 @@ export function Garanzie() {
           titolo="Un nuovo bagno,"
           accento="e niente sorprese."
           testo="Sono le sei cose che di solito restano promesse a voce. Qui finiscono nel preventivo, dove puoi rileggerle anche fra sei mesi."
-          azione={{ href: "#scrivici", testo: "Scrivici", variante: "secondary" }}
+          azione={{ href: "#sopralluogo", testo: "Richiedi il sopralluogo", variante: "secondary" }}
           className="lg:sticky lg:top-28 lg:self-start"
         />
 

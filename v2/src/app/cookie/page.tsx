@@ -42,14 +42,15 @@ export default function Cookie() {
           Usiamo anche il <strong>Meta Pixel</strong> (Facebook e Instagram) per
           misurare i risultati delle campagne e per mostrare annunci a chi ha
           già visitato il sito. Se lasci il tuo indirizzo nel riquadro dello
-          sconto, lo trasmettiamo a Meta <strong>cifrato</strong> con SHA-256, mai
-          in chiaro: serve a riconoscere quel contatto senza consegnare a nessuno
-          la nostra rubrica. È la funzione che Meta chiama{" "}
-          <em>abbinamento avanzato</em>.
+          sconto, o i tuoi dati nel modulo del sopralluogo, li trasmettiamo a
+          Meta <strong>cifrati</strong> con SHA-256, mai in chiaro: servono a
+          riconoscere quel contatto senza consegnare a nessuno la nostra
+          rubrica. È la funzione che Meta chiama <em>abbinamento avanzato</em>.
         </p>
         <p>
           Gli stessi eventi — la visita, la visione dell&apos;offerta, il clic
-          su un contatto, l&apos;iscrizione allo sconto — li inviamo a Meta
+          su un contatto, la richiesta di sopralluogo, l&apos;iscrizione allo
+          sconto — li inviamo a Meta
           anche dal nostro server, con la <em>Conversions API</em>, insieme
           all&apos;indirizzo IP e al tipo di browser. Serve a non perdere quelli
           che il browser non riesce a spedire, e Meta conta ogni evento una volta

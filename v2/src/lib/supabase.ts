@@ -17,22 +17,28 @@ import { SITE } from "@/config/site";
 /**
  * Da dove arriva la visita.
  *
- * Senza questi due campi, a campagna avviata non si sa quale annuncio ha
+ * Senza questi campi, a campagna avviata non si sa quale annuncio ha
  * portato il contatto: si vede solo che sono arrivati contatti. Sono letti
  * dall'indirizzo, dove Meta e Google li aggiungono da soli.
  */
-function provenienza() {
+export function provenienza() {
   if (typeof window === "undefined") return {};
   const p = new URLSearchParams(window.location.search);
+  // Tagliati alle lunghezze che il database accetta: un referrer lunghissimo
+  // non deve far rifiutare una richiesta vera.
+  const corto = (v: string | null | undefined, max = 200) => (v ? v.slice(0, max) : undefined);
   return {
     // "||" e non "??": chi apre il sito digitando l'indirizzo ha un
     // referrer vuoto, "", che per "??" e' un valore valido. Finiva in
     // archivio una fonte vuota invece di nessuna fonte.
-    fonte: p.get("utm_source") || document.referrer || undefined,
-    campagna: p.get("utm_campaign") || undefined,
+    fonte: corto(p.get("utm_source") || document.referrer),
+    campagna: corto(p.get("utm_campaign")),
+    // Quale inserzione: negli indirizzi degli annunci e' utm_content
+    // (A-dopo, B-prima-dopo, C-sconto). E' cosi' che si sa quale spegnere.
+    annuncio: corto(p.get("utm_content")),
     // Con l'host: il sito risponde anche all'indirizzo tecnico di Netlify,
     // e senza non si distinguerebbe un'iscrizione vera da una prova.
-    pagina: window.location.host + window.location.pathname,
+    pagina: corto(window.location.host + window.location.pathname, 500),
   };
 }
 
@@ -73,4 +79,46 @@ export async function inviaIscrizione(email: string) {
   });
 
   if (!r.ok) throw new Error(`Supabase ha risposto ${r.status}`);
+}
+
+/**
+ * Richiesta di sopralluogo.
+ *
+ * Va nella tabella "leads", separata dalle iscrizioni allo sconto per lo
+ * stesso motivo scritto sopra. Il ruolo anonimo puo' solo inserire e solo
+ * queste colonne: lo stato, l'id e la data li decide il database.
+ */
+export type Richiesta = {
+  nome: string;
+  telefono: string;
+  comune: string;
+  tipo_intervento: string;
+  quando?: string;
+  email?: string;
+  messaggio?: string;
+};
+
+export async function inviaRichiesta(r: Richiesta) {
+  const { url, publishableKey } = SITE.integrations.supabase;
+  if (!url || url.startsWith("[")) return;
+
+  const res = await fetch(`${url}/rest/v1/leads`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      apikey: publishableKey,
+      Authorization: `Bearer ${publishableKey}`,
+      // Come sopra: senza, PostgREST chiede di rileggere la riga e il ruolo
+      // anonimo non ha il permesso di lettura.
+      Prefer: "return=minimal",
+    },
+    body: JSON.stringify({
+      ...r,
+      email: r.email?.trim().toLowerCase() || undefined,
+      privacy_letta: true,
+      ...provenienza(),
+    }),
+  });
+
+  if (!res.ok) throw new Error(`Supabase ha risposto ${res.status}`);
 }

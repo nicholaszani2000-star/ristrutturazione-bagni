@@ -67,22 +67,24 @@ export function Contatta() {
     setStato("ok");
     form.reset();
 
-    // Due eventi, uno per scopo: "generate_lead" e' l'evento standard che va
-    // segnato come conversione in GA4 — ed e' questo il momento in cui la
-    // pagina acquisisce davvero un contatto, ora che il modulo non c'e' piu'.
-    // L'altro serve a distinguere questa iscrizione dagli altri contatti.
-    traccia("generate_lead", { metodo: "sconto-email", valore_offerta: SITE.offer.price });
+    // Due eventi, uno per scopo: "sign_up" e' l'evento standard di GA4 per
+    // un'iscrizione, "iscrizione_sconto" la distingue dalle altre. Non e'
+    // piu' "generate_lead": quello ora e' la richiesta di sopralluogo, cioe'
+    // un contatto da richiamare, ed e' la conversione da contare.
+    traccia("sign_up", { method: "sconto-email" });
     traccia("iscrizione_sconto", { valore_sconto: risparmio });
 
-    // Meta. Prima l'abbinamento, poi l'evento: cosi' il Lead arriva gia'
-    // collegato a quel contatto, ed e' quello che permette i pubblici simili e
+    // Meta. Prima l'abbinamento, poi l'evento: cosi' l'iscrizione arriva gia'
+    // collegata a quel contatto, ed e' quello che permette i pubblici simili e
     // il retargeting mirato. L'indirizzo parte cifrato in SHA-256, mai in
     // chiaro, e solo se il pixel e' stato avviato — cioe' se i cookie di
     // misurazione sono stati accettati.
     //
-    // Il Lead pero' e' l'evento su cui Meta ottimizza le campagne, e non deve
-    // dipendere dall'abbinamento: se la cifratura o il secondo init non vanno
-    // a buon fine si perde l'abbinamento di quel contatto, non la conversione.
+    // CompleteRegistration e non Lead: Lead e' la richiesta di sopralluogo,
+    // l'evento su cui ottimizza la campagna. Se contasse anche le email per
+    // lo sconto, Meta imparerebbe a cercare chi lascia l'email invece di chi
+    // vuole rifare il bagno. L'evento non dipende dall'abbinamento: se la
+    // cifratura non va a buon fine si perde l'abbinamento, non l'iscrizione.
     let em: string | undefined;
     try {
       em = await emailCifrata(email);
@@ -91,7 +93,7 @@ export function Contatta() {
       /* si prosegue senza abbinamento */
     }
     tracciaMeta(
-      "Lead",
+      "CompleteRegistration",
       { content_name: "Sconto email", currency: "EUR", value: risparmio },
       { em },
     );
@@ -104,7 +106,7 @@ export function Contatta() {
     "focus-visible:outline-offset-2 focus-visible:outline-blue";
 
   return (
-    <section id="scrivici" className="relative isolate overflow-hidden bg-surface py-[length:var(--spacing-section)]">
+    <section id="scrivici" className="relative isolate overflow-hidden bg-white py-[length:var(--spacing-section)]">
       <div aria-hidden className="velo-acqua -z-10" />
 
       <div className="wrap grid gap-6 lg:grid-cols-2 lg:gap-8">
@@ -144,8 +146,8 @@ export function Contatta() {
             Si apre il tuo programma di posta — Gmail, Mail, Outlook, quello che usi.
           </p>
 
-          {/* Gli altri due canali. Anche questi partono da chi legge: nessuno
-              di loro lascia un numero perche' qualcuno richiami. */}
+          {/* Gli altri due canali, per chi preferisce cominciare lui. La
+              richiesta di richiamata e' nel modulo del sopralluogo, sopra. */}
           <div className="mt-7 border-t border-line pt-6">
             <p className="mb-3 text-sm font-semibold text-navy">Preferisci parlarne subito?</p>
             <div className="flex flex-wrap gap-2.5">
@@ -179,6 +181,7 @@ export function Contatta() {
             <span className="text-sky-200">hai il {SITE.promo.percentuale}%.</span>
           </h2>
           <p className="mt-4 leading-relaxed text-white/85">
+            Non sei ancora pronto per il sopralluogo? Blocca lo sconto adesso.{" "}
             {SITE.promo.percentuale}% {SITE.promo.suCosa}: sul bagno 3×2 m da {euro(SITE.offer.price)} sono{" "}
             <strong className="font-semibold text-white">{euroCent(risparmio)}</strong> in meno.
             Valido {SITE.promo.validita}.

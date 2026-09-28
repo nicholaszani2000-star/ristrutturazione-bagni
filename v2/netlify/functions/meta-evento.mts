@@ -24,7 +24,10 @@ const VERSIONE_GRAPH = "v23.0";
 
 /** Solo questi: la funzione e' pubblica, e non deve diventare un modo per
  *  mandare al nostro Pixel eventi inventati. */
-const EVENTI_AMMESSI = ["PageView", "ViewContent", "Contact", "Lead"];
+const EVENTI_AMMESSI = ["PageView", "ViewContent", "Contact", "Lead", "CompleteRegistration"];
+/** I dati della persona, solo gia' cifrati: email, telefono, nome, cognome, citta', paese. */
+const CAMPI_UTENTE = ["em", "ph", "fn", "ln", "ct", "country"] as const;
+const CIFRATO = /^[a-f0-9]{64}$/;
 const PARAMETRI_AMMESSI = ["currency", "value", "content_name", "content_category", "canale", "posizione"];
 const HOST_AMMESSI = ["easybagno.it", "www.easybagno.it"];
 
@@ -68,14 +71,27 @@ const metaEvento = async (req: Request, context: Context) => {
   const evento = String(corpo.evento ?? "");
   const id = String(corpo.id ?? "");
   const url = String(corpo.url ?? "");
-  const em = typeof corpo.em === "string" ? corpo.em : undefined;
+  // Prima versione del sito: solo l'email, fuori da "utente". Si accetta
+  // ancora, per le pagine rimaste aperte durante un aggiornamento.
+  const utente: Record<string, unknown> =
+    corpo.utente && typeof corpo.utente === "object"
+      ? (corpo.utente as Record<string, unknown>)
+      : corpo.em !== undefined
+        ? { em: corpo.em }
+        : {};
 
   if (!EVENTI_AMMESSI.includes(evento)) return new Response(null, { status: 400 });
   if (!id || id.length > 100) return new Response(null, { status: 400 });
   if (!HOST_AMMESSI.includes(hostDi(url))) return new Response(null, { status: 400 });
-  // L'email arriva gia' cifrata dal browser. Qualunque altra cosa si scarta:
-  // un indirizzo in chiaro non deve partire nemmeno per sbaglio.
-  if (em !== undefined && !/^[a-f0-9]{64}$/.test(em)) return new Response(null, { status: 400 });
+  // I dati della persona arrivano gia' cifrati dal browser. Qualunque altra
+  // cosa si scarta: un telefono o un'email in chiaro non devono partire
+  // nemmeno per sbaglio.
+  for (const [k, v] of Object.entries(utente)) {
+    if (v === undefined) continue;
+    if (!(CAMPI_UTENTE as readonly string[]).includes(k) || typeof v !== "string" || !CIFRATO.test(v)) {
+      return new Response(null, { status: 400 });
+    }
+  }
 
   const custom_data: Record<string, unknown> = {};
   const parametri = corpo.parametri;
@@ -103,7 +119,10 @@ const metaEvento = async (req: Request, context: Context) => {
   };
   if (fbp) user_data.fbp = fbp;
   if (fbc) user_data.fbc = fbc;
-  if (em) user_data.em = [em];
+  for (const k of CAMPI_UTENTE) {
+    const v = utente[k];
+    if (typeof v === "string") user_data[k] = [v];
+  }
 
   const codiceTest = Netlify.env.get("META_TEST_EVENT_CODE");
 

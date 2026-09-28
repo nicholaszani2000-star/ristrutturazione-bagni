@@ -83,10 +83,16 @@ function nuovoId() {
  * Se la funzione non risponde non succede niente di visibile: il Pixel ha gia'
  * fatto la sua parte.
  */
+/**
+ * I dati di chi ha lasciato un contatto, gia' cifrati in SHA-256.
+ * Le chiavi sono quelle di Meta: email, telefono, nome, cognome, citta', paese.
+ */
+export type UtenteCifrato = Partial<Record<"em" | "ph" | "fn" | "ln" | "ct" | "country", string>>;
+
 export function tracciaMeta(
   nome: string,
   parametri?: Record<string, unknown>,
-  utente?: { em?: string },
+  utente?: UtenteCifrato,
 ) {
   if (!window.fbq) return;
   const id = nuovoId();
@@ -96,7 +102,7 @@ export function tracciaMeta(
     void fetch("/api/meta-evento", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ evento: nome, id, url: location.href, parametri, em: utente?.em }),
+      body: JSON.stringify({ evento: nome, id, url: location.href, parametri, utente }),
       keepalive: true,
     }).catch(() => {});
   } catch {
@@ -116,24 +122,71 @@ export function tracciaMeta(
  * crypto.subtle esiste solo in contesto sicuro (https, o localhost). Se manca,
  * si rinuncia all'abbinamento invece di ripiegare sul testo in chiaro.
  */
-export async function emailCifrata(email: string): Promise<string | undefined> {
-  const pulita = email.trim().toLowerCase();
-  if (!pulita || !globalThis.crypto?.subtle) return undefined;
-  const dati = new TextEncoder().encode(pulita);
-  const somma = await crypto.subtle.digest("SHA-256", dati);
+async function sha256(testo: string): Promise<string | undefined> {
+  if (!testo || !globalThis.crypto?.subtle) return undefined;
+  const somma = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(testo));
   return Array.from(new Uint8Array(somma))
     .map((b) => b.toString(16).padStart(2, "0"))
     .join("");
 }
 
+export async function emailCifrata(email: string): Promise<string | undefined> {
+  return sha256(email.trim().toLowerCase());
+}
+
+/** Solo lettere, minuscole: "D'Angelo" -> "dangelo", "Busto Arsizio" -> "bustoarsizio".
+ *  E' la forma in cui Meta confronta nomi e citta'. */
+const soloLettere = (v: string) => v.normalize("NFC").toLowerCase().replace(/[^\p{L}]/gu, "");
+
+/**
+ * Il numero nella forma che vuole Meta: solo cifre, con il prefisso del paese.
+ * Chi scrive "333 123 4567" intende un numero italiano: si aggiunge il 39.
+ */
+export function telefonoInternazionale(telefono: string) {
+  const t = telefono.trim();
+  const cifre = t.replace(/\D/g, "");
+  if (t.startsWith("+")) return cifre;
+  if (cifre.startsWith("00")) return cifre.slice(2);
+  if (cifre.length === 12 && cifre.startsWith("39")) return cifre;
+  return `39${cifre}`;
+}
+
+/**
+ * Cifra i dati di una richiesta di sopralluogo per l'abbinamento di Meta.
+ * Il nome si divide in nome e cognome alla prima parola; se qualcosa manca,
+ * quel campo semplicemente non parte.
+ */
+export async function utenteCifrato(d: {
+  email?: string;
+  telefono?: string;
+  nome?: string;
+  comune?: string;
+}): Promise<UtenteCifrato> {
+  const [primo = "", ...resto] = (d.nome ?? "").trim().split(/\s+/);
+  const valori = {
+    em: d.email ? d.email.trim().toLowerCase() : "",
+    ph: d.telefono ? telefonoInternazionale(d.telefono) : "",
+    fn: soloLettere(primo),
+    ln: soloLettere(resto.join("")),
+    ct: d.comune ? soloLettere(d.comune) : "",
+    country: "it",
+  };
+  const risultato: UtenteCifrato = {};
+  for (const [k, v] of Object.entries(valori)) {
+    const h = await sha256(v);
+    if (h) risultato[k as keyof UtenteCifrato] = h;
+  }
+  return risultato;
+}
+
 /**
  * Riconosce l'utente a Meta tramite l'indirizzo cifrato.
  *
- * Riceve l'indirizzo gia' cifrato con emailCifrata(). Va chiamata dopo che la
- * persona ha lasciato l'email e ha acconsentito: da quel momento gli eventi
- * del Pixel sono collegabili a quel contatto, ed e' quello che permette le
+ * Riceve i dati gia' cifrati (emailCifrata() o utenteCifrato()). Va chiamata
+ * dopo che la persona ha lasciato i suoi dati: da quel momento gli eventi del
+ * Pixel sono collegabili a quel contatto, ed e' quello che permette le
  * campagne mirate e i pubblici simili.
  */
-export function riconosci(id: string, em: string) {
-  window.fbq?.("init", id, { em });
+export function riconosci(id: string, utente: UtenteCifrato | string) {
+  window.fbq?.("init", id, typeof utente === "string" ? { em: utente } : utente);
 }

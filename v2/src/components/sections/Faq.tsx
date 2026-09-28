@@ -32,7 +32,7 @@ export function Faq() {
   if (DOMANDE.length === 0) return null;
 
   return (
-    <section id="domande" className="bg-white py-[length:var(--spacing-section)]">
+    <section id="domande" className="bg-surface py-[length:var(--spacing-section)]">
       <script
         type="application/ld+json"
         // Il minore va neutralizzato: un "<" dentro una risposta chiuderebbe

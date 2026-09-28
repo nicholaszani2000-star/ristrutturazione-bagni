@@ -38,16 +38,16 @@ export function Offer() {
               {SITE.offer.claim}
             </p>
 
-            <Button href="#scrivici" variant="secondaryDark" size="lg" block className="mt-6 text-center">
-              Scrivici per il tuo preventivo
+            <Button href="#sopralluogo" variant="secondaryDark" size="lg" block className="mt-6 text-center">
+              Richiedi il sopralluogo
             </Button>
 
             <p className="mt-4 text-sm leading-relaxed text-white/85">
               Il tuo bagno ha una misura diversa?{" "}
-              <a href="#scrivici" className="font-semibold text-white underline underline-offset-2">
-                Scrivici
+              <a href="#sopralluogo" className="font-semibold text-white underline underline-offset-2">
+                Chiedi il sopralluogo
               </a>
-              : dopo il sopralluogo ti diamo il prezzo esatto per la tua metratura.
+              : dopo ti diamo il prezzo esatto per la tua metratura.
             </p>
           </div>
 

@@ -12,6 +12,7 @@ import { Credenziali } from "@/components/sections/Credenziali";
 import { Faq } from "@/components/sections/Faq";
 import { CtaFinale } from "@/components/sections/CtaFinale";
 import { Contatta } from "@/components/sections/Contatta";
+import { Sopralluogo } from "@/components/sections/Sopralluogo";
 import { Footer } from "@/components/sections/Footer";
 import { StickyCta } from "@/components/StickyCta";
 
@@ -46,6 +47,7 @@ export default function Home() {
         <Processo />
         <Garanzie />
         <Credenziali />
+        <Sopralluogo />
         <Contatta />
         <Faq />
         <CtaFinale />
