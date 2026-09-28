@@ -2,7 +2,9 @@
 
 Landing page di **BIODOMUS SRLS** (Gallarate, VA) per la ristrutturazione del
 bagno chiavi in mano. Serve a una cosa sola: far arrivare contatti dalle
-campagne Meta — email, WhatsApp, telefono e iscrizioni allo sconto del 5%.
+campagne Meta e da Google — richieste di sopralluogo, telefono, WhatsApp,
+email e iscrizioni allo sconto del 5%. Cosa manca per il lancio:
+`LEGGIMI-NETLIFY.txt`, sezione 5.
 
 ## Dove sta cosa
 
@@ -58,9 +60,9 @@ npm run build:netlify    # sito statico in v2/out, quello che va online
 
 | Servizio | Cosa fa | Quando parte |
 |---|---|---|
-| GA4 `G-FCEM78H075` | visite, clic su contatti, iscrizioni | solo dopo "Accetta" |
-| Meta Pixel `1640497950773690` | PageView, Contact, Lead + email cifrata SHA-256 | solo dopo "Accetta" |
-| Supabase `easy-bagno` | tabella `iscrizioni`: email + fonte/campagna UTM | a ogni iscrizione con consenso |
-| Netlify Forms | modulo `sconto`, notifica via email | a ogni iscrizione |
+| GA4 `G-FCEM78H075` | visite, clic su contatti, `generate_lead` = richiesta di sopralluogo | solo dopo "Accetta" |
+| Meta Pixel `1640497950773690` + Conversions API | `Lead` = richiesta di sopralluogo, `CompleteRegistration` = sconto, `Contact`, `ViewContent`; dati cifrati SHA-256 | solo dopo "Accetta" |
+| Supabase `easy-bagno` | `leads` (vista `richieste`) e `iscrizioni` (vista `sconti`), con fonte/campagna/annuncio UTM | a ogni invio |
+| Netlify Forms | moduli `sopralluogo` e `sconto`, notifica via email | a ogni invio |
 
 Dettagli e passaggi da fare nei pannelli: `LEGGIMI-NETLIFY.txt`.
