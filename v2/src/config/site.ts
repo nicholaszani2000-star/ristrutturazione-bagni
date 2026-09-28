@@ -36,8 +36,8 @@ export const SITE = {
   contact: {
     phoneDisplay: "349 239 1107",
     phoneRaw: "+393492391107",
-    whatsapp: "393499711646",
-    whatsappDisplay: "349 971 1646",
+    whatsapp: "393429711646",
+    whatsappDisplay: "342 971 1646",
     whatsappMessage:
       "Ciao, vorrei informazioni per la ristrutturazione del mio bagno.",
     // Sostituire con info@easy-bagno.it quando la casella sul dominio è attiva

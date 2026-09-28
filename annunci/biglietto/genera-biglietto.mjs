@@ -79,7 +79,7 @@ html,body{width:${85 + 2 * B}mm;height:${55 + 2 * B}mm;overflow:hidden;text-rend
  <p class="payoff">IL TUO BAGNO, IN BUONE MANI.</p>
  <div class="contatti">
   <span class="r">${icona('phone')}349 239 1107</span>
-  <span class="r">${icona('whatsapp')}349 971 1646</span>
+  <span class="r">${icona('whatsapp')}342 971 1646</span>
   <span class="r largo">${icona('mail')}biodomus2025@libero.it</span>
   <span class="r">${icona('globe')}easybagno.it</span>
   <span class="r">${icona('pin')}Gallarate (VA)</span>
