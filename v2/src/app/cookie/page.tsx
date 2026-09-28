@@ -1,15 +1,11 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { PaginaLegale } from "@/components/PaginaLegale";
+import { PAGINE } from "@/config/pagine";
+import { metadatiPagina } from "@/lib/seo";
 import { RevocaConsenso } from "@/components/RevocaConsenso";
-import { SITE } from "@/config/site";
 
-export const metadata: Metadata = {
-  title: `Cookie policy — ${SITE.brand.name}`,
-  description: "Quali cookie usa il sito EasyBagno.it.",
-  alternates: { canonical: "/cookie/" },
-  robots: { index: true, follow: true },
-};
+export const metadata: Metadata = metadatiPagina(PAGINE.cookie);
 
 export default function Cookie() {
   return (

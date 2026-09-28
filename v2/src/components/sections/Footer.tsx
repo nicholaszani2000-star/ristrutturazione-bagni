@@ -26,9 +26,9 @@ export function Footer() {
         </div>
 
         <nav aria-label="Sezioni del sito">
-          <h2 className="mb-4 font-display text-sm font-semibold uppercase tracking-wider text-white">
+          <p className="mb-4 font-display text-sm font-semibold uppercase tracking-wider text-white">
             Naviga
-          </h2>
+          </p>
           <ul className="grid gap-2.5 text-sm">
             {NAVIGA.map((v) => (
               <li key={v.href}>
@@ -41,9 +41,9 @@ export function Footer() {
         </nav>
 
         <div>
-          <h2 className="mb-4 font-display text-sm font-semibold uppercase tracking-wider text-white">
+          <p className="mb-4 font-display text-sm font-semibold uppercase tracking-wider text-white">
             Contatti
-          </h2>
+          </p>
           <ul className="grid gap-2.5 text-sm">
             <li>
               <a href={links.tel} className="inline-flex min-h-11 items-center lg:min-h-6 gap-2 transition-colors hover:text-sky">

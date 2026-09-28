@@ -7,3 +7,11 @@
 # raggiungibili: sono altri nomi e questa regola non le tocca.
 https://beamish-heliotrope-e2d8a2.netlify.app/*  https://easybagno.it/:splat  301!
 http://beamish-heliotrope-e2d8a2.netlify.app/*   https://easybagno.it/:splat  301!
+
+# Il sottodominio del ramo di produzione serve lo stesso sito: senza questa
+# regola sarebbe una copia del sito su un altro indirizzo.
+https://claude-new-session-01gjm2--beamish-heliotrope-e2d8a2.netlify.app/*  https://easybagno.it/:splat  301!
+
+# Le foto hanno un nome che dice cosa mostrano. I vecchi indirizzi portano ai nuovi.
+/images/bagno-dopo.webp   /images/bagno-ristrutturato.webp                 301
+/images/bagno-prima.webp  /images/bagno-prima-della-ristrutturazione.webp  301

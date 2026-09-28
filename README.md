@@ -9,7 +9,9 @@ campagne Meta — email, WhatsApp, telefono e iscrizioni allo sconto del 5%.
 ```
 v2/                     il sito (Next.js 16, export statico)
   src/config/site.ts    TUTTI i testi che cambiano: prezzo, numeri, email,
-                        FAQ, sconto, ID di GA4 e Meta. Si tocca solo questo.
+                        FAQ, sconto, comuni serviti, ID di GA4 e Meta.
+  src/config/pagine.ts  titolo, descrizione e data di ogni pagina (SEO, sitemap)
+                        e le pagine previste ma non ancora pubblicate
   src/components/       sezioni della pagina e componenti
   src/lib/              consenso cookie, GA4, Meta Pixel, Supabase
   public/               foto, anteprima social, _headers, _redirects
@@ -36,6 +38,21 @@ npm install
 npm run dev              # sviluppo su http://localhost:3000
 npm run build:netlify    # sito statico in v2/out, quello che va online
 ```
+
+## SEO
+
+- **Titoli e descrizioni**: in `src/config/pagine.ts`. Ogni pagina li usa con
+  `metadatiPagina()` (`src/lib/seo.ts`), che mette anche canonical e Open Graph.
+- **Dati strutturati**: un solo grafo JSON-LD nella home
+  (`src/lib/dati-strutturati.ts`): impresa, sito, pagina con le FAQ, servizio con
+  l'offerta. Prende tutto da `site.ts`: se cambia un dato li', cambia anche qui.
+- **Sitemap e robots**: generati da `src/app/sitemap.ts` e `robots.ts`. Nella
+  sitemap vanno solo le pagine di `PAGINE`. Quando cambi il testo di una
+  pagina, aggiorna la sua data `aggiornata`.
+- **Nuova pagina** (es. `/costo-ristrutturazione-bagno/`): leggi prima cosa
+  serve in `PAGINE_FUTURE`, poi crea `src/app/costo-ristrutturazione-bagno/page.tsx`
+  con il componente `PaginaServizio`, sposta la voce in `PAGINE` e collegala
+  dalla home. Mai lo stesso testo con il nome del comune cambiato.
 
 ## Integrazioni
 

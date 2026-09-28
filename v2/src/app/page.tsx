@@ -15,6 +15,11 @@ import { Contatta } from "@/components/sections/Contatta";
 import { Sopralluogo } from "@/components/sections/Sopralluogo";
 import { Footer } from "@/components/sections/Footer";
 import { StickyCta } from "@/components/StickyCta";
+import { PAGINE } from "@/config/pagine";
+import { metadatiPagina } from "@/lib/seo";
+import { grafoHome, jsonLd } from "@/lib/dati-strutturati";
+
+export const metadata = metadatiPagina(PAGINE.home);
 
 /**
  * L'ordine e' quello del pattern "Trust & Authority + Conversion":
@@ -34,6 +39,7 @@ import { StickyCta } from "@/components/StickyCta";
 export default function Home() {
   return (
     <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLd(grafoHome()) }} />
       <Header />
       {/* pb: riserva lo spazio della barra fissa mobile */}
       <main id="contenuto" className="pb-[calc(4.75rem+env(safe-area-inset-bottom))] lg:pb-0">

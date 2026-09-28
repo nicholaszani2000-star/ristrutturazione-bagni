@@ -45,9 +45,9 @@ export function BeforeAfter() {
       <div className="wrap grid items-center gap-y-10 lg:grid-cols-[minmax(0,0.78fr)_minmax(0,1.22fr)] lg:gap-x-16">
         <IntestazioneSezione
           occhiello="I nostri lavori"
-          titolo="Lo stesso bagno,"
+          titolo="Prima e dopo: lo stesso bagno,"
           accento="due mondi."
-          testo="Un lavoro vero, fotografato dallo stesso punto. Trascina la maniglia per vedere la differenza — con le frecce della tastiera funziona uguale."
+          testo="Un lavoro vero, fotografato dallo stesso punto: via la vasca, al suo posto una doccia a filo pavimento, con rivestimenti e sanitari nuovi. Trascina la maniglia per vedere la differenza — con le frecce della tastiera funziona uguale."
         >
           <p className="mt-6 rounded-2xl border border-line bg-white p-5 text-sm leading-relaxed text-muted shadow-[var(--shadow-card)]">
             È l&apos;unico intervento che abbiamo fotografato prima e dopo dallo stesso punto.
@@ -72,8 +72,8 @@ export function BeforeAfter() {
           onPointerCancel={() => (dragging.current = false)}
         >
           <Image
-            src="/images/bagno-prima.webp"
-            alt="Il bagno prima dell'intervento: piastrelle beige, box doccia datato, sanitari e mobile originali"
+            src="/images/bagno-prima-della-ristrutturazione.webp"
+            alt="Il bagno prima dei lavori: vasca, piastrelle bianche con decori, lavabo a colonna e sanitari a pavimento"
             width={728}
             height={924}
             sizes="(min-width: 768px) 42rem, 100vw"
@@ -85,8 +85,8 @@ export function BeforeAfter() {
             style={{ clipPath: `inset(0 0 0 ${pos}%)` }}
           >
             <Image
-              src="/images/bagno-dopo.webp"
-              alt="Lo stesso bagno dopo l'intervento: microcemento, specchio retroilluminato, doccia walk-in e mobile sospeso"
+              src="/images/bagno-ristrutturato.webp"
+              alt="Lo stesso bagno dopo la ristrutturazione: al posto della vasca una doccia a filo pavimento, grès effetto pietra, sanitari sospesi e specchio retroilluminato"
               width={728}
               height={924}
               sizes="(min-width: 768px) 42rem, 100vw"

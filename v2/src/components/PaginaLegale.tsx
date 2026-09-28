@@ -23,7 +23,7 @@ export function PaginaLegale({
     <>
       <header className="border-b border-line bg-white">
         <div className="wrap flex min-h-[4.25rem] items-center">
-          <Link href="/" aria-label={`${SITE.brand.name}, torna alla pagina principale`}>
+          <Link href="/" aria-label={`${SITE.brand.name} Ristrutturazione bagno, torna alla pagina principale`}>
             <Logo />
           </Link>
         </div>

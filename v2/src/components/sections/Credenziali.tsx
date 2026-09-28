@@ -55,7 +55,7 @@ export function Credenziali() {
       <div className="wrap">
         <IntestazioneSezione
           occhiello="Chi siamo"
-          titolo="Un'impresa"
+          titolo="Un'impresa di Gallarate"
           accento="che puoi verificare."
           testo="Prima di far demolire un bagno vale la pena sapere a chi si apre la porta. Questi sono i dati con cui puoi controllarci, e le carte che ti restano in mano a lavori finiti."
           centrata

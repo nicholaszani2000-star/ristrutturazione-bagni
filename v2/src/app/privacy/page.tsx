@@ -1,13 +1,10 @@
 import type { Metadata } from "next";
 import { PaginaLegale } from "@/components/PaginaLegale";
+import { PAGINE } from "@/config/pagine";
+import { metadatiPagina } from "@/lib/seo";
 import { SITE } from "@/config/site";
 
-export const metadata: Metadata = {
-  title: `Informativa privacy — ${SITE.brand.name}`,
-  description: "Come tratta i dati personali BIODOMUS SRLS attraverso il sito EasyBagno.it.",
-  alternates: { canonical: "/privacy/" },
-  robots: { index: true, follow: true },
-};
+export const metadata: Metadata = metadatiPagina(PAGINE.privacy);
 
 export default function Privacy() {
   const L = SITE.legal;

@@ -45,19 +45,23 @@ export function Hero() {
             {/* Sopra la piega uno ScrollTrigger non scatterebbe mai: qui
                 l'ingresso parte al montaggio, nell'ordine in cui si legge. */}
             <Reveal effetto="ingresso" scaglionamento={0.09} ritardo={0.08}>
-              <p className="mb-6 inline-flex items-center gap-2 rounded-full bg-sky-soft px-4 py-1.5 font-display text-[0.78rem] font-semibold text-blue-700">
-                <Icon name="pin" className="size-3.5" />
-                Ristrutturazione bagni a {SITE.zone.short}
-              </p>
-
+              {/* Un solo H1, in due parti: sopra cosa facciamo e dove, detto
+                  come lo cerca chi scrive su Google; sotto il messaggio. La
+                  prima parte ha l'aspetto dell'etichetta di prima, ma ora sta
+                  dentro al titolo e Google la legge come tale. */}
               <h1 className="text-[length:var(--text-display)]">
+                <span className="mb-6 flex w-fit items-center gap-2 rounded-full bg-sky-soft px-4 py-1.5 font-display text-[0.78rem] font-semibold leading-normal tracking-normal text-blue-700">
+                  <Icon name="pin" className="size-3.5" />
+                  Ristrutturazione bagno a {SITE.zone.comuni[0]}
+                </span>
                 Il tuo nuovo bagno,
                 <br />
                 <span className="text-blue">senza stress.</span>
               </h1>
 
               <p className="mt-6 max-w-[44ch] text-[length:var(--text-lead)] leading-relaxed text-muted">
-                Demolizione, impianti, piastrelle e sanitari: un solo
+                Ristrutturazione bagno chiavi in mano a {SITE.zone.long}:
+                demolizione, impianti, piastrelle e sanitari, con un solo
                 interlocutore e un solo prezzo, scritto per intero prima di
                 iniziare. Tu dici come lo vuoi, al resto pensiamo noi.
               </p>
@@ -122,10 +126,13 @@ export function Hero() {
           <div className="absolute inset-0 overflow-hidden max-lg:mx-5 max-lg:rounded-[1.75rem] lg:rounded-bl-[3.5rem]">
             <Parallasse ampiezza={22} className="size-full">
               <Image
-                src="/images/bagno-dopo.webp"
-                alt="Bagno ristrutturato da BIODOMUS a Gallarate: doccia a filo pavimento, rivestimento in grès e nicchia illuminata"
+                src="/images/bagno-ristrutturato.webp"
+                alt="Bagno ristrutturato da BIODOMUS: doccia a filo pavimento con parete in vetro, rivestimento in grès effetto pietra, sanitari sospesi e mobile lavabo in legno"
                 fill
-                priority
+                // "priority" e' deprecato da Next 16: la foto dell'hero si
+                // scarica subito e con precedenza alta, ed e' gia' nell'HTML.
+                loading="eager"
+                fetchPriority="high"
                 sizes="(min-width: 1024px) 52vw, 100vw"
                 className="scale-106 object-cover object-center"
               />

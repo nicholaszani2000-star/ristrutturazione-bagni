@@ -1,18 +1,18 @@
 import type { MetadataRoute } from "next";
 import { SITE } from "@/config/site";
+import { PAGINE } from "@/config/pagine";
 
 export const dynamic = "force-static";
 
 /**
- * Tre pagine, e tante resteranno. La data di modifica e' quella della build:
- * su un sito che cambia quando cambia il listino e' l'informazione giusta, e
- * non richiede di ricordarsi di aggiornarla a mano.
+ * Solo le pagine pubblicate e indicizzabili, con l'indirizzo canonico (barra
+ * finale compresa) e la data dell'ultima modifica vera del contenuto, presa
+ * da config/pagine.ts. Le pagine previste ma non ancora scritte
+ * (PAGINE_FUTURE) restano fuori, e la 404 non c'e' per definizione.
  */
 export default function sitemap(): MetadataRoute.Sitemap {
-  const aggiornato = new Date();
-  return [
-    { url: `${SITE.brand.url}/`, lastModified: aggiornato, changeFrequency: "monthly", priority: 1 },
-    { url: `${SITE.brand.url}/privacy/`, lastModified: aggiornato, changeFrequency: "yearly", priority: 0.3 },
-    { url: `${SITE.brand.url}/cookie/`, lastModified: aggiornato, changeFrequency: "yearly", priority: 0.3 },
-  ];
+  return Object.values(PAGINE).map((p) => ({
+    url: `${SITE.brand.url}${p.percorso}`,
+    lastModified: p.aggiornata,
+  }));
 }

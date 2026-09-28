@@ -12,8 +12,8 @@ export function Offer() {
       <div className="wrap">
         <IntestazioneSezione
           occhiello="L'offerta"
-          titolo="Il prezzo per intero,"
-          accento="prima di iniziare."
+          titolo="Quanto costa ristrutturare il bagno?"
+          accento="Il prezzo per intero, prima di iniziare."
           testo="In giro leggi «a partire da». Poi arriva il conto e sale del 20–30%. Noi facciamo il contrario: ti diciamo subito quanto costa e cosa comprende."
           centrata
           className="mb-14"

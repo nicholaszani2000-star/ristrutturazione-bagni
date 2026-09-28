@@ -1,5 +1,5 @@
 import { Icon } from "@/components/Icon";
-import { SITE, isPlaceholder } from "@/config/site";
+import { SITE, FAQ_VISIBILI } from "@/config/site";
 import { links } from "@/lib/links";
 import { Reveal } from "@/components/Reveal";
 import { IntestazioneSezione } from "@/components/IntestazioneSezione";
@@ -9,39 +9,17 @@ import { IntestazioneSezione } from "@/components/IntestazioneSezione";
  * la regola dei segnaposto di site.ts. Meglio sei domande vere che sette con
  * una risposta inventata sulla garanzia — che poi e' esattamente il punto su
  * cui un cliente tornerebbe a chiedere conto.
+ *
+ * I dati strutturati FAQPage non stanno piu' qui: sono nel grafo unico della
+ * home (lib/dati-strutturati.ts), con le stesse domande di FAQ_VISIBILI.
  */
-const DOMANDE = SITE.faq.filter((d) => !isPlaceholder(d.a));
-
-/**
- * Dati strutturati FAQPage: le stesse domande che stanno nella pagina, in un
- * formato che Google puo' mostrare direttamente nei risultati. Vale solo
- * perche' il testo e' davvero visibile qui sotto — dichiarare risposte che la
- * pagina non contiene e' contro le linee guida, oltre che inutile.
- */
-const datiStrutturati = {
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  mainEntity: DOMANDE.map((d) => ({
-    "@type": "Question",
-    name: d.q,
-    acceptedAnswer: { "@type": "Answer", text: d.a },
-  })),
-};
+const DOMANDE = FAQ_VISIBILI;
 
 export function Faq() {
   if (DOMANDE.length === 0) return null;
 
   return (
     <section id="domande" className="bg-surface py-[length:var(--spacing-section)]">
-      <script
-        type="application/ld+json"
-        // Il minore va neutralizzato: un "<" dentro una risposta chiuderebbe
-        // il tag script prima del tempo e romperebbe la pagina.
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify(datiStrutturati).replace(/</g, "\\u003c"),
-        }}
-      />
-
       <div className="wrap">
         <IntestazioneSezione
           occhiello="Domande frequenti"

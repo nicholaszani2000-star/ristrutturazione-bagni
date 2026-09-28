@@ -4,9 +4,13 @@ import { Logo } from "@/components/Logo";
 import { Button } from "@/components/Button";
 import { SITE } from "@/config/site";
 
+/**
+ * Niente canonical e niente robots qui: Next aggiunge da solo il noindex alla
+ * 404, e un secondo tag robots o un canonical verso la home darebbero a Google
+ * segnali doppi o contraddittori.
+ */
 export const metadata: Metadata = {
-  title: `Pagina non trovata — ${SITE.brand.name}`,
-  robots: { index: false, follow: true },
+  title: { absolute: `Pagina non trovata | ${SITE.brand.short}` },
 };
 
 /**
@@ -21,7 +25,7 @@ export default function NonTrovata() {
     <>
       <header className="border-b border-line bg-white">
         <div className="wrap flex min-h-[4.25rem] items-center">
-          <Link href="/" aria-label={`${SITE.brand.name}, torna alla pagina principale`}>
+          <Link href="/" aria-label={`${SITE.brand.name} Ristrutturazione bagno, torna alla pagina principale`}>
             <Logo />
           </Link>
         </div>

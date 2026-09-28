@@ -28,7 +28,13 @@ export function Header() {
   return (
     <header className="sticky top-0 z-50 border-b border-line-soft bg-white/85 backdrop-blur-xl backdrop-saturate-150">
       <div className="wrap flex min-h-[4.25rem] items-center justify-between gap-6">
-        <Link href="#top" aria-label={`${SITE.brand.name}, torna all'inizio`} className="shrink-0">
+        <Link
+          href="#top"
+          // Il nome accessibile deve contenere il testo visibile del logo:
+          // chi usa i comandi vocali dice quello che legge.
+          aria-label={`${SITE.brand.name} Ristrutturazione bagno, torna all'inizio`}
+          className="shrink-0"
+        >
           <Logo />
         </Link>
 

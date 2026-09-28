@@ -1,7 +1,7 @@
 "use client";
 
-import { useLayoutEffect, useRef, type ReactNode } from "react";
-import gsap from "gsap";
+import { useEffect, useRef, type ReactNode } from "react";
+import { conAnimazioni } from "@/lib/animazione";
 
 /**
  * Attrazione magnetica del cursore.
@@ -28,7 +28,7 @@ export function Magnetico({
 }) {
   const box = useRef<HTMLSpanElement>(null);
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     const el = box.current;
     if (!el) return;
 
@@ -36,43 +36,45 @@ export function Magnetico({
     const menoMovimento = window.matchMedia("(prefers-reduced-motion: reduce)");
     if (!fine.matches || menoMovimento.matches) return;
 
-    const ctx = gsap.context(() => {
-      // quickTo riusa sempre lo stesso tween.
-      //
-      // Con gsap.to dentro pointermove se ne creava uno nuovo a ogni
-      // movimento: su un puntatore a 120 Hz sono centoventi oggetti al
-      // secondo da allocare e buttare via, e il netturbino della memoria
-      // finisce per farsi sentire proprio mentre l'utente muove il mouse.
-      const xA = gsap.quickTo(el, "x", { duration: 0.45, ease: "power3.out" });
-      const yA = gsap.quickTo(el, "y", { duration: 0.45, ease: "power3.out" });
+    return conAnimazioni(({ gsap }) => {
+      const ctx = gsap.context(() => {
+        // quickTo riusa sempre lo stesso tween.
+        //
+        // Con gsap.to dentro pointermove se ne creava uno nuovo a ogni
+        // movimento: su un puntatore a 120 Hz sono centoventi oggetti al
+        // secondo da allocare e buttare via, e il netturbino della memoria
+        // finisce per farsi sentire proprio mentre l'utente muove il mouse.
+        const xA = gsap.quickTo(el, "x", { duration: 0.45, ease: "power3.out" });
+        const yA = gsap.quickTo(el, "y", { duration: 0.45, ease: "power3.out" });
 
-      const muovi = (e: PointerEvent) => {
-        const r = el.getBoundingClientRect();
-        xA((e.clientX - (r.left + r.width / 2)) * forza);
-        yA((e.clientY - (r.top + r.height / 2)) * forza);
-        // Le variabili scendono per eredita' fino al pulsante interno, dove
-        // l'utility "riflesso" le usa per posizionare la luce.
-        el.style.setProperty("--mx", `${((e.clientX - r.left) / r.width) * 100}%`);
-        el.style.setProperty("--my", `${((e.clientY - r.top) / r.height) * 100}%`);
-      };
-      // elastic in uscita: il ritorno a posto e' la meta' visibile dell'effetto
-      const rilascia = () => {
-        gsap.to(el, { x: 0, y: 0, duration: 0.7, ease: "elastic.out(1, 0.45)" });
-        // La luce torna al centro insieme al pulsante, altrimenti resterebbe
-        // ferma dove il cursore e' uscito.
-        el.style.setProperty("--mx", "50%");
-        el.style.setProperty("--my", "50%");
-      };
+        const muovi = (e: PointerEvent) => {
+          const r = el.getBoundingClientRect();
+          xA((e.clientX - (r.left + r.width / 2)) * forza);
+          yA((e.clientY - (r.top + r.height / 2)) * forza);
+          // Le variabili scendono per eredita' fino al pulsante interno, dove
+          // l'utility "riflesso" le usa per posizionare la luce.
+          el.style.setProperty("--mx", `${((e.clientX - r.left) / r.width) * 100}%`);
+          el.style.setProperty("--my", `${((e.clientY - r.top) / r.height) * 100}%`);
+        };
+        // elastic in uscita: il ritorno a posto e' la meta' visibile dell'effetto
+        const rilascia = () => {
+          gsap.to(el, { x: 0, y: 0, duration: 0.7, ease: "elastic.out(1, 0.45)" });
+          // La luce torna al centro insieme al pulsante, altrimenti resterebbe
+          // ferma dove il cursore e' uscito.
+          el.style.setProperty("--mx", "50%");
+          el.style.setProperty("--my", "50%");
+        };
 
-      el.addEventListener("pointermove", muovi);
-      el.addEventListener("pointerleave", rilascia);
-      return () => {
-        el.removeEventListener("pointermove", muovi);
-        el.removeEventListener("pointerleave", rilascia);
-      };
-    }, box);
+        el.addEventListener("pointermove", muovi);
+        el.addEventListener("pointerleave", rilascia);
+        return () => {
+          el.removeEventListener("pointermove", muovi);
+          el.removeEventListener("pointerleave", rilascia);
+        };
+      }, box);
 
-    return () => ctx.revert();
+      return () => ctx.revert();
+    });
   }, [forza]);
 
   return (

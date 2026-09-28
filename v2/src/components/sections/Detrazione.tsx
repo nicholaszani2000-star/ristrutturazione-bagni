@@ -48,7 +48,7 @@ export function Detrazione() {
       <div className="wrap relative pt-[clamp(0.5rem,1.5vw,1.5rem)]">
         <IntestazioneSezione
           occhiello={`Detrazione fiscale ${SITE.taxCredit.year}`}
-          titolo="Metà della spesa"
+          titolo="Bonus ristrutturazione: metà della spesa"
           accento="torna indietro."
           testo={`Non è uno sconto sul prezzo: è una detrazione IRPEF che recuperi in ${years} anni, una quota all'anno, presentando la fattura dei lavori.`}
           centrata

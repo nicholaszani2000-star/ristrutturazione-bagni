@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="3 2 58 58">
+  <defs>
+    <linearGradient id="g" x1="14" y1="8" x2="50" y2="58" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#56B4EE"/><stop offset=".5" stop-color="#1B84DD"/><stop offset="1" stop-color="#1663B0"/></linearGradient>
+    <linearGradient id="n" x1="20" y1="14" x2="44" y2="52" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#8ACFF7"/><stop offset="1" stop-color="#2B95E8"/></linearGradient>
+    <clipPath id="c"><path d="M32 5C32 5 51 28 51 39.5A19 19 0 1 1 13 39.5C13 28 32 5 32 5Z"/></clipPath>
+  </defs>
+  <path fill-rule="evenodd" fill="url(#g)" d="M32 5C32 5 51 28 51 39.5A19 19 0 1 1 13 39.5C13 28 32 5 32 5Z M32 18.5C32 18.5 42 31 42 39.7A10 10 0 1 1 22 39.7C22 31 32 18.5 32 18.5Z"/>
+  <g clip-path="url(#c)"><path d="M6 44 L40 2 L52 10 L18 54 Z" fill="url(#n)" opacity=".55"/></g>
+</svg>

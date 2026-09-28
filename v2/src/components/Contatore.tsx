@@ -1,11 +1,8 @@
 "use client";
 
-import { useLayoutEffect, useRef } from "react";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useEffect, useRef } from "react";
+import { conAnimazioni } from "@/lib/animazione";
 import { migliaia } from "@/lib/links";
-
-gsap.registerPlugin(ScrollTrigger);
 
 /**
  * Il prezzo che sale fino al suo valore quando entra a schermo.
@@ -18,28 +15,30 @@ gsap.registerPlugin(ScrollTrigger);
 export function Contatore({ valore, className }: { valore: number; className?: string }) {
   const el = useRef<HTMLSpanElement>(null);
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     const nodo = el.current;
     if (!nodo) return;
 
-    const ctx = gsap.context(() => {
-      const mm = gsap.matchMedia();
-      mm.add("(prefers-reduced-motion: no-preference)", () => {
-        const stato = { n: 0 };
-        gsap.to(stato, {
-          n: valore,
-          duration: 1.1,
-          ease: "power2.out",
-          onUpdate: () => {
-            nodo.textContent = `${migliaia(stato.n)} €`;
-          },
-          // Stessa ragione del Reveal: soglia raggiungibile anche a fondo pagina.
-          scrollTrigger: { trigger: nodo, start: "top bottom-=40", once: true },
+    return conAnimazioni(({ gsap }) => {
+      const ctx = gsap.context(() => {
+        const mm = gsap.matchMedia();
+        mm.add("(prefers-reduced-motion: no-preference)", () => {
+          const stato = { n: 0 };
+          gsap.to(stato, {
+            n: valore,
+            duration: 1.1,
+            ease: "power2.out",
+            onUpdate: () => {
+              nodo.textContent = `${migliaia(stato.n)} €`;
+            },
+            // Stessa ragione del Reveal: soglia raggiungibile anche a fondo pagina.
+            scrollTrigger: { trigger: nodo, start: "top bottom-=40", once: true },
+          });
         });
-      });
-    }, el);
+      }, el);
 
-    return () => ctx.revert();
+      return () => ctx.revert();
+    });
   }, [valore]);
 
   return (

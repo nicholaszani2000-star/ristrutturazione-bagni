@@ -135,6 +135,37 @@
 }
 
 /* -----------------------------------------------------------------------------
+   Ingresso dell'hero (Reveal effetto="ingresso")
+
+   Una salita di 20px a scaglioni, in CSS e dal primo disegno della pagina.
+
+   Niente dissolvenza e niente tendina, di proposito: sono il titolo e il
+   paragrafo della prima schermata, e il paragrafo e' l'elemento piu' grande
+   che Google misura per l'LCP. Se parte trasparente o tagliato, per Chrome
+   e' "disegnato" solo a fine animazione, dopo l'avvio degli script: 8 s su un
+   telefono lento, contro i 2,5 s richiesti. Con il solo movimento il testo si
+   legge subito e l'ingresso resta.
+   -------------------------------------------------------------------------- */
+@keyframes ingresso {
+  from { transform: translateY(20px); }
+  to { transform: none; }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .ingresso > * {
+    animation: ingresso 0.9s cubic-bezier(0.215, 0.61, 0.355, 1) backwards;
+    animation-delay: calc(var(--ritardo, 0s) + var(--passo, 0.09s) * var(--i, 0));
+  }
+  .ingresso > :nth-child(2) { --i: 1; }
+  .ingresso > :nth-child(3) { --i: 2; }
+  .ingresso > :nth-child(4) { --i: 3; }
+  .ingresso > :nth-child(5) { --i: 4; }
+  .ingresso > :nth-child(6) { --i: 5; }
+  .ingresso > :nth-child(7) { --i: 6; }
+  .ingresso > :nth-child(8) { --i: 7; }
+}
+
+/* -----------------------------------------------------------------------------
    Utility di progetto
    -------------------------------------------------------------------------- */
 @utility wrap {

@@ -1,10 +1,7 @@
 "use client";
 
-import { useLayoutEffect, useRef, type ReactNode } from "react";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-
-gsap.registerPlugin(ScrollTrigger);
+import { useEffect, useRef, type ReactNode } from "react";
+import { conAnimazioni } from "@/lib/animazione";
 
 /**
  * Parallasse legata allo scorrimento.
@@ -33,31 +30,33 @@ export function Parallasse({
 }) {
   const box = useRef<HTMLDivElement>(null);
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     const el = box.current;
     if (!el) return;
 
-    const ctx = gsap.context(() => {
-      const mm = gsap.matchMedia();
-      mm.add("(prefers-reduced-motion: no-preference)", () => {
-        gsap.fromTo(
-          el,
-          { yPercent: 0 },
-          {
-            y: ampiezza,
-            ease: "none",
-            scrollTrigger: {
-              trigger: el.parentElement ?? el,
-              start: "top top",
-              end: "bottom top",
-              scrub: true,
+    return conAnimazioni(({ gsap }) => {
+      const ctx = gsap.context(() => {
+        const mm = gsap.matchMedia();
+        mm.add("(prefers-reduced-motion: no-preference)", () => {
+          gsap.fromTo(
+            el,
+            { yPercent: 0 },
+            {
+              y: ampiezza,
+              ease: "none",
+              scrollTrigger: {
+                trigger: el.parentElement ?? el,
+                start: "top top",
+                end: "bottom top",
+                scrub: true,
+              },
             },
-          },
-        );
-      });
-    }, box);
+          );
+        });
+      }, box);
 
-    return () => ctx.revert();
+      return () => ctx.revert();
+    });
   }, [ampiezza]);
 
   return (

@@ -20,8 +20,8 @@ export function Servizi() {
       <div className="wrap grid gap-y-12 lg:grid-cols-[minmax(0,0.78fr)_minmax(0,1.22fr)] lg:gap-x-16">
         <IntestazioneSezione
           occhiello="Cosa facciamo"
-          titolo="Non solo il bagno"
-          accento={`da ${euro(SITE.offer.price)}.`}
+          titolo="Rifacimento bagno completo,"
+          accento="o solo quello che serve."
           testo="L'offerta in evidenza copre la misura più richiesta. Se il tuo bagno è diverso, o se ti serve solo una parte del lavoro, lo facciamo lo stesso."
           azione={{ href: "#sopralluogo", testo: "Raccontaci il tuo caso" }}
           className="lg:sticky lg:top-28 lg:self-start"

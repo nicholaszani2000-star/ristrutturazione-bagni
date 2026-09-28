@@ -20,8 +20,8 @@ export function Processo() {
       <div className="wrap grid gap-y-12 lg:grid-cols-[minmax(0,0.78fr)_minmax(0,1.22fr)] lg:gap-x-16">
         <IntestazioneSezione
           occhiello="Il nostro processo"
-          titolo="Dal sopralluogo alla consegna,"
-          accento="tutto incluso."
+          titolo="Bagno chiavi in mano:"
+          accento="dal sopralluogo alla consegna."
           testo={`${SITE.offer.duration} di cantiere. ${SITE.offer.durationNote}`}
           azione={{ href: "#servizi", testo: "Tutti i servizi" }}
           className="lg:sticky lg:top-28 lg:self-start"

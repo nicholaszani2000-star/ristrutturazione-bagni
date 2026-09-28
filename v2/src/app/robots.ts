@@ -4,14 +4,13 @@ import { SITE } from "@/config/site";
 export const dynamic = "force-static";
 
 /**
- * Le pagine legali restano indicizzabili — sono un segnale di serieta' per
- * un'impresa vera, non pagine da nascondere. Non c'e' nulla da escludere:
- * il sito e' una pagina sola piu' privacy e cookie.
+ * Tutto aperto: il sito e' la home piu' privacy e cookie, e le pagine legali
+ * restano indicizzabili — sono un segnale di serieta' per un'impresa vera.
+ * Niente "Host": e' una direttiva solo di Yandex, Google la ignora.
  */
 export default function robots(): MetadataRoute.Robots {
   return {
     rules: { userAgent: "*", allow: "/" },
     sitemap: `${SITE.brand.url}/sitemap.xml`,
-    host: SITE.brand.url,
   };
 }

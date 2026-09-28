@@ -12,6 +12,8 @@ export const isPlaceholder = (v: string) =>
 export const SITE = {
   brand: {
     name: "EasyBagno.it",
+    /** Il nome nei titoli delle pagine e nei risultati di Google. */
+    short: "EasyBagno",
     tagline: "Ristrutturazione bagno · chiavi in mano",
     payoff: "Il tuo bagno, in buone mani.",
     claim: "Dal progetto alla realizzazione, pensiamo a tutto noi.",
@@ -22,6 +24,13 @@ export const SITE = {
   zone: {
     long: "Gallarate e provincia di Varese",
     short: "Gallarate (VA)",
+    /**
+     * Comuni nominati nel testo e nei dati strutturati. Solo zone servite
+     * davvero: tutti in provincia di Varese, che e' l'area dichiarata. Per
+     * aggiungerne uno, prima conferma col titolare che ci si lavora.
+     */
+    comuni: ["Gallarate", "Busto Arsizio", "Cassano Magnago"],
+    provincia: "provincia di Varese",
   },
 
   contact: {
@@ -34,6 +43,9 @@ export const SITE = {
     // Sostituire con info@easy-bagno.it quando la casella sul dominio è attiva
     email: "biodomus2025@libero.it",
     hours: "Lun–Ven 8:00–18:00 · Sab su appuntamento",
+    // Gli stessi orari di "hours", nella forma dei dati strutturati. Il
+    // sabato su appuntamento non e' un orario di apertura e resta fuori.
+    orari: { giorni: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"], apre: "08:00", chiude: "18:00" },
   },
 
   legal: {
@@ -161,7 +173,7 @@ export const SITE = {
     { icon: "cert", title: "Impianti certificati", text: "Dichiarazione di conformità DM 37/08 su idraulico ed elettrico, intestata a te." },
     { icon: "clock", title: "Data di fine per iscritto", text: "La consegna è nel preventivo, non una promessa a voce." },
     { icon: "users", title: "Un solo interlocutore", text: "Niente rimpalli fra idraulico, piastrellista ed elettricista: rispondiamo noi di tutto." },
-    { icon: "pin", title: "Impresa del posto", text: "Sede e partita IVA verificabili a Gallarate. Ci trovi anche dopo la consegna." },
+    { icon: "pin", title: "Impresa del posto", text: "Sede e partita IVA verificabili a Gallarate. Lavoriamo in città, a Busto Arsizio, a Cassano Magnago e nel resto della provincia di Varese, e ci trovi anche dopo la consegna." },
     { icon: "receipt", title: "Fattura per la detrazione", text: "Prepariamo la documentazione corretta per portare i lavori in detrazione." },
   ],
 
@@ -193,7 +205,7 @@ export const SITE = {
     { q: "Il prezzo può cambiare a lavori iniziati?", a: "No. Il prezzo che firmi è bloccato. L'unica eccezione sono i problemi nascosti che si scoprono solo demolendo: in quel caso ci fermiamo, ti mostriamo le foto e ti diamo il costo. Decidi tu prima che proseguiamo." },
     { q: "Posso scaricare la spesa?", a: "Sì. Nel 2026 i lavori di ristrutturazione del bagno sull'abitazione principale danno diritto alla detrazione IRPEF del 50%, recuperata in 10 anni. Sulla seconda casa è il 36%. Prepariamo la fattura e i documenti giusti. Per la tua situazione conferma sempre con il commercialista." },
     { q: "Che garanzia avete sui lavori?", a: "[DA CONFERMARE: anni di garanzia sulle opere e sui materiali posati.]" },
-    { q: "In quali zone lavorate?", a: "Lavoriamo a Gallarate e in provincia di Varese. Se sei appena fuori zona chiamaci lo stesso: valutiamo caso per caso." },
+    { q: "In quali zone lavorate?", a: "Lavoriamo a Gallarate e in provincia di Varese, per esempio a Busto Arsizio e Cassano Magnago. Se sei appena fuori zona chiamaci lo stesso: valutiamo caso per caso." },
     { q: "Posso scegliere io piastrelle e sanitari?", a: "Sì. Il prezzo comprende la scelta dal nostro capitolato. Se preferisci materiali diversi ti diciamo subito la differenza di costo, prima di firmare." },
   ],
 
@@ -237,3 +249,9 @@ export const SITE = {
 } as const;
 
 export type Site = typeof SITE;
+
+/**
+ * Le domande che la pagina mostra davvero: quelle con la risposta ancora fra
+ * parentesi quadre restano fuori, sia dalla pagina sia dai dati strutturati.
+ */
+export const FAQ_VISIBILI = SITE.faq.filter((d) => !isPlaceholder(d.a));
