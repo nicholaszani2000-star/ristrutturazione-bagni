@@ -229,6 +229,8 @@ export const SITE = {
   integrations: {
     /** Stream "easybagno.it" (ID 15826734180). Parte solo dopo il consenso. */
     ga4Id: "G-FCEM78H075",
+    /** Verifica della proprieta' in Google Search Console (tag HTML). Non e' un segreto. */
+    googleSiteVerification: "ACAkQ8v5BlPtuGhuc09lUXb68ZYOIHIHBTyXb1_-i-0",
     /** Pixel "EasyBagno". Parte solo dopo il consenso, come GA4. */
     metaPixelId: "1640497950773690",
 

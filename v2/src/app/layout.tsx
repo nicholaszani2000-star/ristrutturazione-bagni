@@ -50,6 +50,9 @@ export const metadata: Metadata = {
   metadataBase: new URL(SITE.brand.url),
   title: { default: SITE.brand.short, template: `%s | ${SITE.brand.short}` },
   applicationName: SITE.brand.short,
+  // Search Console legge questo tag per confermare che il sito e' nostro:
+  // se lo si toglie, la proprieta' torna "non verificata".
+  verification: { google: SITE.integrations.googleSiteVerification },
   // Il numero di telefono non va trasformato in link automatico da iOS:
   // i link tel: li gestiamo noi, con il tracciamento attaccato.
   formatDetection: { telephone: false },
