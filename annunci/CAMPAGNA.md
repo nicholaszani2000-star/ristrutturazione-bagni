@@ -43,6 +43,10 @@ quale annuncio ha portato la richiesta (colonna *annuncio*):
 - A: `https://easybagno.it/?utm_source=facebook&utm_medium=paid&utm_campaign=bagno-3x2&utm_content=A-dopo`
 - B: `https://easybagno.it/?utm_source=facebook&utm_medium=paid&utm_campaign=bagno-3x2&utm_content=B-prima-dopo`
 - C: `https://easybagno.it/?utm_source=facebook&utm_medium=paid&utm_campaign=bagno-3x2&utm_content=C-sconto`
+- D (carosello): `https://easybagno.it/?utm_source=facebook&utm_medium=paid&utm_campaign=bagno-3x2&utm_content=D-compreso`
+- E (carosello): `https://easybagno.it/?utm_source=facebook&utm_medium=paid&utm_campaign=bagno-3x2&utm_content=E-prima-dopo`
+
+Nei caroselli ogni scheda usa lo stesso indirizzo del suo carosello.
 
 ## Pubblici già creati sull'account
 
@@ -57,10 +61,14 @@ quale annuncio ha portato la richiesta (colonna *annuncio*):
 I pubblici simili (lookalike) si creano quando "Richieste sopralluogo" supera le
 100 persone: prima Meta non ha abbastanza esempi.
 
-## Le tre inserzioni
+## Le cinque inserzioni
 
-Ogni inserzione usa tre formati della stessa grafica: Meta sceglie da solo
-quale mostrare in base al posizionamento.
+Tre a immagine singola (A, B, C) e due caroselli (D, E), tutte nello stesso
+gruppo di inserzioni: con 11,50 € al giorno un gruppo solo impara prima.
+Meta sposta da sola la spesa su quella che porta più richieste.
+
+Le inserzioni a immagine singola usano tre formati della stessa grafica: Meta
+sceglie da solo quale mostrare in base al posizionamento.
 
 | Inserzione | Feed (4:5) | Storie e Reel (9:16) | Quadrato (1:1) |
 |---|---|---|---|
@@ -107,12 +115,72 @@ lì Instagram e Facebook mettono nome, didascalia e pulsante.
 
 > Stai pensando di rifare il bagno?
 >
-> Richiedi il sopralluogo gratuito sul sito: lasci nome e telefono, ti richiamiamo noi per fissare il giorno. In più hai il 5% di sconto sul preventivo: sul bagno 3×2 m chiavi in mano da 9.490 € sono 474,50 € in meno.
+> Richiedi il sopralluogo gratuito sul sito: lasci nome e telefono, ti richiamiamo noi per fissare il giorno. In più ricevi subito sul telefono il buono sconto del 5% con il QR, da mostrare al sopralluogo: sul bagno 3×2 m chiavi in mano da 9.490 € sono 474,50 € in meno.
 >
 > Sconto valido 60 giorni dalla richiesta, sul preventivo firmato dopo il sopralluogo. Gallarate e provincia di Varese.
 
 **Titolo:** Sopralluogo gratis e -5% sul bagno
 **Descrizione:** Lasci il numero, ti richiamiamo noi
+
+### D — Carosello "Cosa comprende il prezzo"
+
+Sei schede 1080×1080 in `carosello-D-compreso/`, in quest'ordine.
+
+**Testo principale**
+
+> Quanto costa davvero rifare il bagno? Da noi il prezzo è uno solo, scritto per intero: 9.490 € per il bagno 3×2 m chiavi in mano.
+>
+> Scorri le schede: demolizione, impianti certificati, piastrelle, sanitari, box doccia e mobile lavabo sono dentro. Prezzo bloccato in contratto e data di fine scritta nel preventivo.
+>
+> Richiedi il sopralluogo gratuito: ricevi subito il buono sconto del 5% con il QR, da mostrare al sopralluogo. Gallarate e provincia di Varese.
+
+| Scheda | File | Titolo | Descrizione |
+|---|---|---|---|
+| 1 | D1.jpg | Bagno 3×2 m a 9.490 € | Chiavi in mano |
+| 2 | D2.jpg | Demolizione e smaltimento | Compresi nel prezzo |
+| 3 | D3.jpg | Impianti nuovi e certificati | Conformità DM 37/08 |
+| 4 | D4.jpg | Piastrelle, sanitari e doccia | Compresi nel prezzo |
+| 5 | D5.jpg | Prezzo e data di fine scritti | 10–15 giorni lavorativi |
+| 6 | D6.jpg | Sopralluogo gratis + 5% | Buono con QR subito |
+
+Impostazioni del carosello: **togli** la spunta "Mostra automaticamente
+prima le schede più performanti" (l'ordine racconta una storia) e **togli**
+"Aggiungi una scheda con l'immagine del profilo alla fine".
+
+### E — Carosello "Prima e dopo"
+
+Cinque schede 1080×1080 in `carosello-E-prima-dopo/`.
+
+**Testo principale**
+
+> Da così a così, in 10–15 giorni lavorativi.
+>
+> Sopralluogo gratuito, preventivo scritto con prezzo chiuso e data di fine, lavori con un solo referente, consegna con le certificazioni degli impianti.
+>
+> Bagno 3×2 m chiavi in mano: 9.490 €. Richiedi il sopralluogo: il buono sconto del 5% con il QR ti arriva subito sul telefono.
+
+| Scheda | File | Titolo | Descrizione |
+|---|---|---|---|
+| 1 | E1.jpg | Il bagno prima | Scorri → |
+| 2 | E2.jpg | Il bagno dopo | 10–15 giorni lavorativi |
+| 3 | E3.jpg | Come lavoriamo | Un solo referente |
+| 4 | E4.jpg | Prezzo bloccato in contratto | Impianti certificati |
+| 5 | E5.jpg | Richiedi il sopralluogo gratuito | Buono 5% con QR |
+
+Stesse due spunte da togliere del carosello D.
+
+Nelle schede D6 ed E5 il buono è un esempio: il codice è coperto
+(EB-••••-••••) e il QR porta solo a easybagno.it. Il codice vero lo
+genera il sito per ciascuno.
+
+## Il buono con il QR, al sopralluogo
+
+Chi richiede il sopralluogo o lascia l'email riceve un codice unico con un QR
+e di solito ne fa uno screenshot. Al sopralluogo inquadralo con la fotocamera:
+si apre easybagno.it/sconto/ e ti dice se è **valido**, **scaduto** o **già
+usato**, con il nome accorciato ("Mario R."). Quando applichi lo sconto a un
+contratto firmato, segnalo come usato (istruzioni in `LEGGIMI-NETLIFY.txt`,
+sezione 2): così non vale una seconda volta.
 
 ## Cosa guardare dopo la prima settimana
 
@@ -121,7 +189,7 @@ lì Instagram e Facebook mettono nome, didascalia e pulsante.
   un'inserzione: con numeri più piccoli è ancora fortuna.
 - **Richieste in Supabase** (vista `richieste`): una riga per richiesta, la più
   recente in alto. *annuncio* dice quale inserzione l'ha portata, *sconto_5* se
-  lo sconto è ancora valido. Nella tabella `leads` aggiorna la colonna *stato*
+  lo sconto è ancora valido, *codice* il buono che il cliente ti mostrerà. Nella tabella `leads` aggiorna la colonna *stato*
   man mano: Nuovo → Chiamato → Sopralluogo fissato → Preventivo inviato →
   Firmato / Perso. Dopo un mese sai quante richieste diventano lavori, che è il
   numero che conta davvero.
