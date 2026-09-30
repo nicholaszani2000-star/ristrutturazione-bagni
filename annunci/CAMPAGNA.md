@@ -19,6 +19,24 @@ cartella, i testi sono qui sotto, le impostazioni sono già decise.
 5. **GA4**: in *Amministrazione → Eventi* segna **generate_lead** come evento
    chiave. È la richiesta di sopralluogo.
 
+## Già creato su Meta (30/09/2026, tutto IN PAUSA)
+
+| Cosa | Nome | ID |
+|---|---|---|
+| Campagna | EasyBagno · Lead · Bagno 3x2 9.490€ · Gallarate | 120250803127510005 |
+| Gruppo di inserzioni | Gallarate 30 km · Lead sito · Advantage+ | 120250803143400005 |
+
+Il gruppo è già impostato: evento **Lead** del Pixel, raggio 30 km da
+Gallarate, età suggerita da 30 anni, esclusi i tre pubblici qui sotto,
+beneficiario e pagatore DSA BIODOMUS SRLS, posizionamenti automatici.
+
+**Le 19 immagini sono già nella libreria dell'account** (Gestione inserzioni →
+Contenuti multimediali), con il nome "EasyBagno …": A, B e C nei tre formati,
+le 6 schede del carosello D e le 5 del carosello E.
+
+**Mancano solo le 5 inserzioni**, che Meta non permette di creare senza una
+Pagina Facebook. E per accendere la campagna serve il metodo di pagamento.
+
 ## Impostazioni della campagna
 
 | Voce | Valore |
