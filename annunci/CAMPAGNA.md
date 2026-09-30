@@ -19,12 +19,12 @@ cartella, i testi sono qui sotto, le impostazioni sono già decise.
 5. **GA4**: in *Amministrazione → Eventi* segna **generate_lead** come evento
    chiave. È la richiesta di sopralluogo.
 
-## Già creato su Meta (30/09/2026, tutto IN PAUSA)
+## Già creato su Meta (ricreato il 30/09/2026, tutto IN PAUSA)
 
 | Cosa | Nome | ID |
 |---|---|---|
-| Campagna | EasyBagno · Lead · Bagno 3x2 9.490€ · Gallarate | 120250803127510005 |
-| Gruppo di inserzioni | Gallarate 30 km · Lead sito · Advantage+ | 120250803143400005 |
+| Campagna | EasyBagno · Lead · Bagno 3x2 9.490€ · Gallarate | 120250803597600005 |
+| Gruppo di inserzioni | Gallarate 30 km · Lead sito · Advantage+ | 120250803598470005 |
 
 Il gruppo è già impostato: evento **Lead** del Pixel, raggio 30 km da
 Gallarate, età suggerita da 30 anni, esclusi i tre pubblici qui sotto,
