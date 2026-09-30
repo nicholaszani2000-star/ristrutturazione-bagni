@@ -1,6 +1,6 @@
 EasyBagno.it — come funziona e cosa manca per il lancio
 =======================================================
-Aggiornato al 28/09/2026. Questo file NON va online: sta fuori da v2/.
+Aggiornato al 30/09/2026. Questo file NON va online: sta fuori da v2/.
 
 
 1. PUBBLICARE
@@ -32,6 +32,27 @@ Aggiornato al 28/09/2026. Questo file NON va online: sta fuori da v2/.
 
   TELEFONO, WHATSAPP, EMAIL
     Partono dal cliente. Li conti in GA4 e in Meta come "Contact".
+
+  IL BUONO SCONTO CON IL QR
+    Chi richiede il sopralluogo o lascia l'email per lo sconto riceve
+    subito, sullo schermo, un buono con un codice unico (EB-XXXX-XXXX)
+    e un QR. Il cliente fa uno screenshot o preme "Salva il buono come
+    immagine", e al sopralluogo te lo mostra.
+      - Per verificarlo: inquadra il QR con la fotocamera del telefono.
+        Si apre https://easybagno.it/sconto/ e dice VALIDO, SCADUTO,
+        GIA' USATO o NON TROVATO, con la scadenza e il nome accorciato
+        ("Mario R."). Senza QR: apri la stessa pagina e scrivi il codice.
+      - Il codice compare anche nell'email di notifica di Netlify
+        (campo "codice") e nelle viste "richieste" e "sconti".
+      - Quando applichi lo sconto a un contratto firmato, segnalo come
+        usato, altrimenti si potrebbe usare di nuovo:
+          richiesta di sopralluogo -> tabella "leads", colonna
+            "sconto_usato" = true
+          iscrizione con l'email   -> tabella "iscrizioni", colonna
+            "stato" = usato
+        Da quel momento la verifica risponde GIA' USATO.
+      - Una email gia' iscritta non riceve un secondo codice.
+      - La pagina /sconto/ e' fuori da Google e dalla sitemap.
 
 
 3. MISURAZIONE

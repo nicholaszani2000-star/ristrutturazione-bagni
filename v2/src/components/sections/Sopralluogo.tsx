@@ -5,7 +5,8 @@ import { SITE } from "@/config/site";
 import { links } from "@/lib/links";
 import { traccia } from "@/lib/ga4";
 import { tracciaMeta, riconosci, utenteCifrato, type UtenteCifrato } from "@/lib/meta";
-import { inviaRichiesta, provenienza } from "@/lib/supabase";
+import { inviaRichiesta, provenienza, type Buono } from "@/lib/supabase";
+import { BuonoSconto } from "@/components/BuonoSconto";
 import { Icon } from "@/components/Icon";
 import { stileBottone } from "@/components/Button";
 import { IntestazioneSezione } from "@/components/IntestazioneSezione";
@@ -80,6 +81,7 @@ export function Sopralluogo() {
   const [errori, setErrori] = useState<Errori>({});
   const [stato, setStato] = useState<Stato>("fermo");
   const [inviata, setInviata] = useState<{ nome: string; telefono: string; comune: string } | null>(null);
+  const [buono, setBuono] = useState<Buono | null>(null);
 
   const scheda = useRef<HTMLDivElement>(null);
   const nome = useRef<HTMLInputElement>(null);
@@ -172,8 +174,14 @@ export function Sopralluogo() {
     corpo.set("annuncio", p.annuncio ?? "");
     corpo.set("pagina", p.pagina ?? "");
 
-    const esiti = await Promise.allSettled([
-      inviaRichiesta({
+    // Prima il database, che restituisce il codice del buono; poi Netlify con
+    // il codice dentro, cosi' compare anche nell'email di notifica. Basta che
+    // ne arrivi uno: se il database non risponde la richiesta arriva lo
+    // stesso via Netlify, manca solo il buono da mostrare.
+    let codiceDb: Buono | null = null;
+    let dbOk = false;
+    try {
+      codiceDb = await inviaRichiesta({
         nome: r.nome,
         telefono: r.telefono,
         comune: r.comune,
@@ -181,21 +189,31 @@ export function Sopralluogo() {
         quando: quando || undefined,
         email: r.email || undefined,
         messaggio: r.note || undefined,
-      }),
-      fetch("/", {
+      });
+      dbOk = codiceDb !== null;
+    } catch {
+      dbOk = false;
+    }
+
+    corpo.set("codice", codiceDb?.codice ?? "");
+    let netlifyOk = false;
+    try {
+      const x = await fetch("/", {
         method: "POST",
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
         body: corpo.toString(),
-      }).then((x) => {
-        if (!x.ok) throw new Error(`Netlify ha risposto ${x.status}`);
-      }),
-    ]);
+      });
+      netlifyOk = x.ok;
+    } catch {
+      netlifyOk = false;
+    }
 
-    if (esiti.every((x) => x.status === "rejected")) {
+    if (!dbOk && !netlifyOk) {
       setStato("errore");
       return;
     }
 
+    setBuono(codiceDb);
     setInviata({ nome: r.nome, telefono: r.telefono, comune: r.comune });
     setStato("ok");
 
@@ -289,14 +307,20 @@ export function Sopralluogo() {
                 fissare il sopralluogo ({SITE.contact.hours}).
               </p>
 
-              <p className="mt-5 flex items-start gap-3 rounded-xl bg-sky-soft p-4 text-sm leading-relaxed text-navy">
-                <Icon name="receipt" className="mt-0.5 size-5 shrink-0 text-blue-700" />
-                <span>
-                  Il tuo sconto del {SITE.promo.percentuale}% è registrato: vale fino al{" "}
-                  <strong className="font-semibold">{dataFra(SITE.promo.giorni)}</strong>, sul
-                  preventivo firmato dopo il sopralluogo.
-                </span>
-              </p>
+              {buono ? (
+                <div className="mt-5">
+                  <BuonoSconto buono={buono} />
+                </div>
+              ) : (
+                <p className="mt-5 flex items-start gap-3 rounded-xl bg-sky-soft p-4 text-sm leading-relaxed text-navy">
+                  <Icon name="receipt" className="mt-0.5 size-5 shrink-0 text-blue-700" />
+                  <span>
+                    Il tuo sconto del {SITE.promo.percentuale}% è registrato: vale fino al{" "}
+                    <strong className="font-semibold">{dataFra(SITE.promo.giorni)}</strong>, sul
+                    preventivo firmato dopo il sopralluogo.
+                  </span>
+                </p>
+              )}
 
               <div className="mt-6 border-t border-line pt-6">
                 <p className="font-display font-semibold text-navy">Vuoi accorciare i tempi?</p>
@@ -340,6 +364,7 @@ export function Sopralluogo() {
               <input type="hidden" name="campagna" />
               <input type="hidden" name="annuncio" />
               <input type="hidden" name="pagina" />
+              <input type="hidden" name="codice" />
               <p className="hidden" aria-hidden>
                 <label>
                   Non compilare: <input name="lascia-vuoto" tabIndex={-1} autoComplete="off" />

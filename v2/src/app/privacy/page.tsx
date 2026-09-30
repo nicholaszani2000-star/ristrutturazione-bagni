@@ -149,6 +149,24 @@ export default function Privacy() {
       </div>
 
       <div>
+        <h2>Il buono sconto con il codice QR</h2>
+        <p>
+          Quando richiedi il sopralluogo o ti iscrivi allo sconto, la nostra base
+          di dati genera un codice unico (per esempio EB-7K2M-P9QX) e un codice
+          QR che lo contiene, da mostrare al sopralluogo. Il codice è legato alla
+          tua richiesta o alla tua iscrizione e serve solo ad applicare lo
+          sconto una volta sola ed entro la scadenza.
+        </p>
+        <p>
+          Chi inquadra il QR o scrive il codice nella pagina di verifica vede
+          soltanto se il buono è valido, scaduto o già usato, la scadenza e il
+          tuo nome accorciato (per esempio «Mario R.») oppure l&apos;email con
+          quasi tutte le lettere nascoste: non telefono, comune o altri dati.
+          Per questo conviene mostrare il buono solo a noi.
+        </p>
+      </div>
+
+      <div>
         <h2>Richiesta di sopralluogo e Meta</h2>
         <p>
           Se hai accettato i cookie di misurazione, quando invii la richiesta di

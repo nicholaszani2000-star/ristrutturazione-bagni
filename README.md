@@ -41,6 +41,14 @@ npm run dev              # sviluppo su http://localhost:3000
 npm run build:netlify    # sito statico in v2/out, quello che va online
 ```
 
+## Buono sconto
+
+Ogni richiesta di sopralluogo e ogni iscrizione allo sconto ricevono dal
+database un codice unico (`EB-XXXX-XXXX`), mostrato con un QR
+(`src/components/BuonoSconto.tsx`). Il QR porta a `/sconto/?c=CODICE`
+(`src/app/sconto/`, noindex), che chiede lo stato a `verifica_sconto`.
+Come segnare un buono usato: `LEGGIMI-NETLIFY.txt`, sezione 2.
+
 ## SEO
 
 - **Titoli e descrizioni**: in `src/config/pagine.ts`. Ogni pagina li usa con
@@ -62,7 +70,7 @@ npm run build:netlify    # sito statico in v2/out, quello che va online
 |---|---|---|
 | GA4 `G-FCEM78H075` | visite, clic su contatti, `generate_lead` = richiesta di sopralluogo | solo dopo "Accetta" |
 | Meta Pixel `1640497950773690` + Conversions API | `Lead` = richiesta di sopralluogo, `CompleteRegistration` = sconto, `Contact`, `ViewContent`; dati cifrati SHA-256 | solo dopo "Accetta" |
-| Supabase `easy-bagno` | `leads` (vista `richieste`) e `iscrizioni` (vista `sconti`), con fonte/campagna/annuncio UTM | a ogni invio |
+| Supabase `easy-bagno` | `leads` (vista `richieste`) e `iscrizioni` (vista `sconti`), con fonte/campagna/annuncio UTM e codice del buono; funzioni `richiedi_sopralluogo`, `iscrivi_sconto`, `verifica_sconto` | a ogni invio |
 | Netlify Forms | moduli `sopralluogo` e `sconto`, notifica via email | a ogni invio |
 
 Dettagli e passaggi da fare nei pannelli: `LEGGIMI-NETLIFY.txt`.

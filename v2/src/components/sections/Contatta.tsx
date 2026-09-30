@@ -5,7 +5,8 @@ import { SITE } from "@/config/site";
 import { links, euro, euroCent } from "@/lib/links";
 import { traccia } from "@/lib/ga4";
 import { tracciaMeta, riconosci, emailCifrata } from "@/lib/meta";
-import { inviaIscrizione } from "@/lib/supabase";
+import { inviaIscrizione, type Buono } from "@/lib/supabase";
+import { BuonoSconto } from "@/components/BuonoSconto";
 import { Icon } from "@/components/Icon";
 import { stileBottone } from "@/components/Button";
 import { Reveal } from "@/components/Reveal";
@@ -30,6 +31,8 @@ const risparmio = (SITE.offer.price * SITE.promo.percentuale) / 100;
  */
 export function Contatta() {
   const [stato, setStato] = useState<"fermo" | "invio" | "ok" | "errore">("fermo");
+  const [buono, setBuono] = useState<Buono | null>(null);
+  const [giaIscritto, setGiaIscritto] = useState(false);
 
   async function iscrivi(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -40,30 +43,39 @@ export function Contatta() {
 
     setStato("invio");
 
-    // Due destinazioni, nessuna delle due padrona dell'altra.
-    //
-    // Prima era in fila: Netlify, e solo se andava bene Supabase. Bastava un
-    // errore di rete sulla prima per perdere l'iscrizione anche nella seconda,
-    // e chi si era iscritto vedeva "riprova" con l'indirizzo gia' valido in
-    // mano. Ora partono insieme e basta che ne arrivi una: l'archivio e la
-    // casella di Netlify servono a due cose diverse, e nessuna delle due e'
-    // il presupposto dell'altra.
-    const esiti = await Promise.allSettled([
-      inviaIscrizione(email),
-      fetch("/", {
+    // Due destinazioni, nessuna delle due padrona dell'altra: basta che ne
+    // arrivi una. Prima il database, perche' restituisce il codice del buono;
+    // poi Netlify con il codice dentro, cosi' compare anche nell'email di
+    // notifica. Se il database non risponde, Netlify parte lo stesso e
+    // l'iscrizione non si perde: manca solo il buono da mostrare.
+    let esitoDb: Awaited<ReturnType<typeof inviaIscrizione>> | null = null;
+    try {
+      esitoDb = await inviaIscrizione(email);
+    } catch {
+      esitoDb = null;
+    }
+
+    const corpo = new URLSearchParams(dati as unknown as Record<string, string>);
+    corpo.set("codice", esitoDb?.buono?.codice ?? (esitoDb?.giaIscritto ? "gia' iscritto" : ""));
+    let netlifyOk = false;
+    try {
+      const r = await fetch("/", {
         method: "POST",
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        body: new URLSearchParams(dati as unknown as Record<string, string>).toString(),
-      }).then((r) => {
-        if (!r.ok) throw new Error(`Netlify ha risposto ${r.status}`);
-      }),
-    ]);
+        body: corpo.toString(),
+      });
+      netlifyOk = r.ok;
+    } catch {
+      netlifyOk = false;
+    }
 
-    if (esiti.every((x) => x.status === "rejected")) {
+    if (!esitoDb && !netlifyOk) {
       setStato("errore");
       return;
     }
 
+    setBuono(esitoDb?.buono ?? null);
+    setGiaIscritto(esitoDb?.giaIscritto ?? false);
     setStato("ok");
     form.reset();
 
@@ -187,15 +199,35 @@ export function Contatta() {
             Valido {SITE.promo.validita}.
           </p>
 
-          {stato === "ok" ? (
-            <div className="mt-7 rounded-2xl bg-white/12 p-6">
+          {stato === "ok" && buono ? (
+            <div className="mt-7" aria-live="polite">
+              <p className="mb-4 flex items-center gap-2.5 font-display text-lg font-semibold">
+                <Icon name="check" className="size-6" />
+                Fatto. Ecco il tuo buono.
+              </p>
+              <BuonoSconto buono={buono} />
+            </div>
+          ) : stato === "ok" ? (
+            <div className="mt-7 rounded-2xl bg-white/12 p-6" aria-live="polite">
               <span className="mb-3 grid size-11 place-items-center rounded-full bg-white/20">
                 <Icon name="check" className="size-6" />
               </span>
-              <p className="font-display text-lg font-semibold">Fatto. Hai diritto al {SITE.promo.percentuale}%.</p>
-              <p className="mt-2 text-sm leading-relaxed text-white/85">
-                Tienilo da parte e scrivici quando vuoi: lo applichiamo al preventivo.
-              </p>
+              {giaIscritto ? (
+                <>
+                  <p className="font-display text-lg font-semibold">Questa email è già iscritta.</p>
+                  <p className="mt-2 text-sm leading-relaxed text-white/85">
+                    Il tuo sconto del {SITE.promo.percentuale}% è già attivo. Se non hai salvato il
+                    buono, al sopralluogo basta dirci la tua email.
+                  </p>
+                </>
+              ) : (
+                <>
+                  <p className="font-display text-lg font-semibold">Fatto. Hai diritto al {SITE.promo.percentuale}%.</p>
+                  <p className="mt-2 text-sm leading-relaxed text-white/85">
+                    Al sopralluogo basta dirci la tua email: lo applichiamo al preventivo.
+                  </p>
+                </>
+              )}
             </div>
           ) : (
             <form
@@ -207,6 +239,9 @@ export function Contatta() {
               className="mt-7"
             >
               <input type="hidden" name="form-name" value={NOME_MODULO} />
+              {/* Il codice del buono, riempito all'invio: deve esserci gia'
+                  qui perche' Netlify lo salvi e lo metta nella notifica. */}
+              <input type="hidden" name="codice" />
               <p className="hidden" aria-hidden>
                 <label>
                   Non compilare: <input name="lascia-vuoto" tabIndex={-1} />

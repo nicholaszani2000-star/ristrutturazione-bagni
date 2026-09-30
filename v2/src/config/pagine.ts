@@ -35,7 +35,7 @@ export const PAGINE = {
     percorso: "/privacy/",
     titolo: `Informativa privacy | ${SITE.brand.short}`,
     descrizione: `Come ${SITE.legal.company} tratta i dati personali di chi usa il sito ${SITE.brand.name} e richiede un sopralluogo.`,
-    aggiornata: "2026-09-28",
+    aggiornata: "2026-09-30",
   },
   cookie: {
     percorso: "/cookie/",
