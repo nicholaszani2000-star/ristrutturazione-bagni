@@ -65,6 +65,7 @@ quale annuncio ha portato la richiesta (colonna *annuncio*):
 - C: `https://easybagno.it/?utm_source=facebook&utm_medium=paid&utm_campaign=bagno-3x2&utm_content=C-sconto`
 - D (carosello): `https://easybagno.it/?utm_source=facebook&utm_medium=paid&utm_campaign=bagno-3x2&utm_content=D-compreso`
 - E (carosello): `https://easybagno.it/?utm_source=facebook&utm_medium=paid&utm_campaign=bagno-3x2&utm_content=E-prima-dopo`
+- F (carosello): `https://easybagno.it/?utm_source=facebook&utm_medium=paid&utm_campaign=bagno-3x2&utm_content=F-cantiere`
 
 Nei caroselli ogni scheda usa lo stesso indirizzo del suo carosello.
 
@@ -81,9 +82,9 @@ Nei caroselli ogni scheda usa lo stesso indirizzo del suo carosello.
 I pubblici simili (lookalike) si creano quando "Richieste sopralluogo" supera le
 100 persone: prima Meta non ha abbastanza esempi.
 
-## Le cinque inserzioni
+## Le sei inserzioni
 
-Tre a immagine singola (A, B, C) e due caroselli (D, E), tutte nello stesso
+Tre a immagine singola (A, B, C) e tre caroselli (D, E, F), tutte nello stesso
 gruppo di inserzioni: con 11,50 € al giorno un gruppo solo impara prima.
 Meta sposta da sola la spesa su quella che porta più richieste.
 
@@ -192,6 +193,27 @@ Stesse due spunte da togliere del carosello D.
 Nelle schede D6 ed E5 il buono è un esempio: il codice è coperto
 (EB-••••-••••) e il QR porta solo a easybagno.it. Il codice vero lo
 genera il sito per ciascuno.
+
+### F — Carosello "Un nostro cantiere"
+
+Le foto di un vostro lavoro vero (durante e finito), in `carosello-F-cantiere/`
+(F1-F3) più due schede già fatte: E4 (garanzie) e D6 (sopralluogo + 5%).
+
+**Testo principale**
+
+> Questo è un nostro cantiere: durante i lavori e a lavori finiti. Stesso punto, stessa finestra.
+>
+> Lo facciamo chiavi in mano, con un solo referente: bagno 3×2 m a 9.490 € tutto compreso, prezzo e data di fine scritti nel preventivo.
+>
+> Richiedi il sopralluogo gratuito: ricevi subito il buono sconto del 5% con il QR, da mostrare al sopralluogo. Gallarate e dintorni.
+
+| Scheda | File | Titolo | Descrizione |
+|---|---|---|---|
+| 1 | F1.jpg | Un nostro cantiere | Durante i lavori |
+| 2 | F2.jpg | Lo stesso bagno, finito | Stesso punto, stessa finestra |
+| 3 | F3.jpg | Bagno 3×2 m a 9.490 € | Tutto compreso |
+| 4 | ../carosello-E-prima-dopo/E4.jpg | Prezzo bloccato in contratto | Impianti certificati |
+| 5 | ../carosello-D-compreso/D6.jpg | Sopralluogo gratis + 5% | Buono con QR subito |
 
 ## Il buono con il QR, al sopralluogo
 
