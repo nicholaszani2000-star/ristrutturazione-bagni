@@ -26,9 +26,11 @@ cartella, i testi sono qui sotto, le impostazioni sono già decise.
 | Campagna | EasyBagno · Lead · Bagno 3x2 9.490€ · Gallarate | 120250803597600005 |
 | Gruppo di inserzioni | Gallarate 30 km · Lead sito · Advantage+ | 120250803598470005 |
 
-Il gruppo è già impostato: evento **Lead** del Pixel, raggio 30 km da
-Gallarate, età suggerita da 30 anni, esclusi i tre pubblici qui sotto,
-beneficiario e pagatore DSA BIODOMUS SRLS, posizionamenti automatici.
+Il gruppo è già impostato: evento **Lead** del Pixel (qualità
+dell'abbinamento 9,3 su 10), raggio 30 km da Gallarate solo per chi ci abita o
+ci passa spesso, Svizzera esclusa, età lasciata a Meta (Advantage+), esclusi
+chi ha già chiesto il sopralluogo o vi ha già chiamato, beneficiario e
+pagatore DSA BIODOMUS SRLS, posizionamenti automatici. Rivisto il 03/10.
 
 **Le 19 immagini sono già nella libreria dell'account** (Gestione inserzioni →
 Contenuti multimediali), con il nome "EasyBagno …": A, B e C nei tre formati,
@@ -48,9 +50,9 @@ Pagina Facebook. E per accendere la campagna serve il metodo di pagamento.
 | Strategia di offerta | Volume più alto (senza limite di costo) |
 | Luogo della conversione | Sito web |
 | Evento di conversione | **Lead** — Pixel "dati di easybagno". Dal 28/09/2026 Lead è **solo la richiesta di sopralluogo** (nome, telefono, comune). L'email per lo sconto è un evento diverso (CompleteRegistration) e non conta come risultato. |
-| Zona | Raggio **30 km da Gallarate** (Via Carlo Noè 45) |
+| Zona | Raggio **30 km da Gallarate** (Via Carlo Noè 45), solo chi **ci abita o ci passa spesso** (non chi è solo di passaggio, per esempio a Malpensa). **Svizzera esclusa**: il raggio arriva fino a Stabio e Mendrisio. Dentro il raggio ci sono anche Novara, Legnano e Saronno: da confermare se li servite |
 | Età | da 30 anni in su (come suggerimento, con il pubblico Advantage+ attivo) |
-| Escludi | "EasyBagno · Richieste sopralluogo 180 giorni", "EasyBagno · Iscritti sconto 180 giorni" e "EasyBagno · Hanno cliccato un contatto 90 giorni": sono persone già arrivate, non si paga per riprenderle |
+| Escludi | "EasyBagno · Richieste sopralluogo 180 giorni" e "EasyBagno · Hanno cliccato un contatto 90 giorni": hanno già chiesto il sopralluogo o vi hanno già chiamato. **Gli iscritti allo sconto NON sono esclusi** (cambiato il 03/10): hanno lasciato solo l'email, sono i più vicini a chiedere il sopralluogo |
 | Posizionamenti | Advantage+ (automatici) |
 | DSA — beneficiario e pagatore | BIODOMUS SRLS |
 | Pulsante | **Richiedi preventivo** |
