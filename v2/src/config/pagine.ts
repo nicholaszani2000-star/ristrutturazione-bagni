@@ -29,7 +29,7 @@ export const PAGINE = {
     descrizione: `Ristrutturazione bagno chiavi in mano a ${SITE.zone.long}: bagno 3×2 m a ${migliaia(SITE.offer.price)} € tutto compreso, sopralluogo gratuito e prezzo bloccato.`,
     titoloSocial: `Ristrutturazione bagno a Gallarate, chiavi in mano`,
     descrizioneSocial: `Il tuo nuovo bagno, senza stress: bagno 3×2 m a ${migliaia(SITE.offer.price)} € tutto compreso. Sopralluogo gratuito a ${SITE.zone.long}.`,
-    aggiornata: "2026-09-28",
+    aggiornata: "2026-10-11",
   },
   privacy: {
     percorso: "/privacy/",

@@ -133,8 +133,9 @@ Aggiornato al 30/09/2026. Questo file NON va online: sta fuori da v2/.
   [ ] Orari Lun-Ven 8-18, sabato su appuntamento (li legge anche Google).
   [ ] Lista "cosa non e' compreso" e condizioni dello sconto 5%.
   [ ] Anni di garanzia: finche' manca, quella domanda non compare.
-  [ ] Comune delle foto prima/dopo, e altri comuni serviti oltre a
-      Gallarate, Busto Arsizio e Cassano Magnago.
+  [ ] Comune delle foto prima/dopo.
+  [x] Altri comuni serviti: Saronno, Legnano e Novara (confermati
+      l'11/10, aggiunti al sito e alla zona della campagna).
 
 
 6. LA CHIAVE SEGRETA DI SUPABASE

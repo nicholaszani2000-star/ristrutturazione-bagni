@@ -26,10 +26,11 @@ export const SITE = {
     short: "Gallarate (VA)",
     /**
      * Comuni nominati nel testo e nei dati strutturati. Solo zone servite
-     * davvero: tutti in provincia di Varese, che e' l'area dichiarata. Per
-     * aggiungerne uno, prima conferma col titolare che ci si lavora.
+     * davvero: Legnano, Saronno e Novara confermati dal titolare l'11/10/2026.
+     * Per aggiungerne uno, prima conferma col titolare che ci si lavora. La
+     * campagna Meta copre la stessa zona: 25 km da Gallarate piu' Novara.
      */
-    comuni: ["Gallarate", "Busto Arsizio", "Cassano Magnago"],
+    comuni: ["Gallarate", "Busto Arsizio", "Cassano Magnago", "Saronno", "Legnano", "Novara"],
     provincia: "provincia di Varese",
   },
 
@@ -173,7 +174,7 @@ export const SITE = {
     { icon: "cert", title: "Impianti certificati", text: "Dichiarazione di conformità DM 37/08 su idraulico ed elettrico, intestata a te." },
     { icon: "clock", title: "Data di fine per iscritto", text: "La consegna è nel preventivo, non una promessa a voce." },
     { icon: "users", title: "Un solo interlocutore", text: "Niente rimpalli fra idraulico, piastrellista ed elettricista: rispondiamo noi di tutto." },
-    { icon: "pin", title: "Impresa del posto", text: "Sede e partita IVA verificabili a Gallarate. Lavoriamo in città, a Busto Arsizio, a Cassano Magnago e nel resto della provincia di Varese, e ci trovi anche dopo la consegna." },
+    { icon: "pin", title: "Impresa del posto", text: "Sede e partita IVA verificabili a Gallarate. Lavoriamo in città, a Busto Arsizio, Cassano Magnago, Saronno, Legnano e Novara e nel resto della provincia di Varese, e ci trovi anche dopo la consegna." },
     { icon: "receipt", title: "Fattura per la detrazione", text: "Prepariamo la documentazione corretta per portare i lavori in detrazione." },
   ],
 
@@ -205,7 +206,7 @@ export const SITE = {
     { q: "Il prezzo può cambiare a lavori iniziati?", a: "No. Il prezzo che firmi è bloccato. L'unica eccezione sono i problemi nascosti che si scoprono solo demolendo: in quel caso ci fermiamo, ti mostriamo le foto e ti diamo il costo. Decidi tu prima che proseguiamo." },
     { q: "Posso scaricare la spesa?", a: "Sì. Nel 2026 i lavori di ristrutturazione del bagno sull'abitazione principale danno diritto alla detrazione IRPEF del 50%, recuperata in 10 anni. Sulla seconda casa è il 36%. Prepariamo la fattura e i documenti giusti. Per la tua situazione conferma sempre con il commercialista." },
     { q: "Che garanzia avete sui lavori?", a: "[DA CONFERMARE: anni di garanzia sulle opere e sui materiali posati.]" },
-    { q: "In quali zone lavorate?", a: "Lavoriamo a Gallarate e in provincia di Varese, per esempio a Busto Arsizio e Cassano Magnago. Se sei appena fuori zona chiamaci lo stesso: valutiamo caso per caso." },
+    { q: "In quali zone lavorate?", a: "Lavoriamo a Gallarate e in provincia di Varese, per esempio a Busto Arsizio, Cassano Magnago e Saronno, e anche a Legnano e Novara. Se sei appena fuori zona chiamaci lo stesso: valutiamo caso per caso." },
     { q: "Posso scegliere io piastrelle e sanitari?", a: "Sì. Il prezzo comprende la scelta dal nostro capitolato. Se preferisci materiali diversi ti diciamo subito la differenza di costo, prima di firmare." },
   ],
 
