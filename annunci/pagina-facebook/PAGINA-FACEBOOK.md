@@ -1,5 +1,8 @@
 # Pagina Facebook "Easybagno.it" — tutto da caricare
 
+La stessa cosa, comoda da telefono con i pulsanti "Salva" e "Copia":
+https://claude.ai/artifact/MDq12PKSnuG6DwQL8xq3Ke
+
 Testi e immagini pronti da copiare. Ci vogliono circa 20 minuti, da computer:
 **Meta Business Suite → Pagina Easybagno.it → Modifica Pagina** (oppure dalla
 Pagina stessa, "Modifica").
@@ -13,8 +16,8 @@ Due dati sono gli stessi del sito e vanno ancora confermati: l'email ufficiale
 
 | Cosa | File | Note |
 |---|---|---|
-| Immagine del profilo | `1-foto-profilo.png` | La goccia del logo, su bianco. Facebook la ritaglia a cerchio: la goccia sta tutta dentro. |
-| Immagine di copertina | `2-copertina.jpg` | 1640×924. Sul telefono si vede tutta, sul computer Facebook taglia un po' sopra e sotto: il testo è nella fascia centrale e resta visibile. |
+| Immagine del profilo | `foto-profilo.png` | Goccia del logo e scritta EasyBagno, bianche su fondo blu. Facebook la ritaglia a cerchio: stanno tutte e due dentro. |
+| Immagine di copertina | `copertina.jpg` | 1640×924. Sul telefono si vede tutta, sul computer Facebook taglia un po' sopra e sotto: il testo è nella fascia centrale e resta visibile. |
 
 ---
 
@@ -30,19 +33,21 @@ Impresa edile · Servizio di ristrutturazione · Appaltatore.
 **Bio / Presentazione** (max 101 caratteri, questa ne ha 99):
 
 ```
-Ristrutturazione bagni chiavi in mano a Gallarate e dintorni. Bagno 3×2 m a 9.490 € tutto compreso.
+Ristrutturazione bagno chiavi in mano a Gallarate e dintorni. Bagno 3×2 m a 9.490 € tutto compreso.
 ```
 
 **Dettagli / Descrizione:**
 
 ```
-Rifacciamo il tuo bagno chiavi in mano: demolizione, impianti idraulico ed elettrico certificati, piastrelle, sanitari, box doccia, mobile lavabo e termoarredo. Un solo referente dal sopralluogo alla consegna.
+Il tuo nuovo bagno, senza stress.
 
-Bagno 3×2 m a 9.490 € tutto compreso: il prezzo è scritto per intero nel preventivo, insieme alla data di fine lavori. Niente "a partire da", niente extra non approvati.
+Ristrutturiamo il bagno chiavi in mano: demolizione, impianti idraulico ed elettrico certificati, piastrelle, sanitari, box doccia, mobile lavabo e termoarredo. Un solo interlocutore e un solo prezzo, scritto per intero prima di iniziare. Tu dici come lo vuoi, al resto pensiamo noi.
 
-Sopralluogo gratuito e senza impegno. Lavoriamo a Gallarate, Busto Arsizio, Cassano Magnago, Legnano, Saronno, Varese, Novara e dintorni.
+Bagno 3×2 m chiavi in mano a 9.490 € tutto compreso, con la data di fine lavori scritta nel preventivo.
 
-EasyBagno è un marchio di BIODOMUS SRLS – P.IVA 04059520124.
+Sopralluogo gratuito e senza impegno a Gallarate, Busto Arsizio, Cassano Magnago, Legnano, Saronno, Varese, Novara e dintorni.
+
+EasyBagno è un marchio di BIODOMUS SRLS · P.IVA 04059520124
 ```
 
 **Contatti e indirizzo:**
@@ -84,20 +89,24 @@ Account collegati. Così gli annunci escono anche su Instagram.
 Pubblicali **in quest'ordine, uno dopo l'altro** (anche lo stesso giorno). Poi
 metti **in evidenza** il post 1 (i tre puntini → "Metti in evidenza").
 
-### Post 1 — Presentazione
-Immagine: `post-1-presentazione.jpg`
+### Post 1 — Il tuo nuovo bagno, senza stress
+Immagine: `primo-post.jpg` (la prima schermata del sito, sul vostro bagno vero)
 
 ```
-Piacere, siamo EasyBagno.
+Il tuo nuovo bagno, senza stress.
 
-Siamo un'impresa di Gallarate (BIODOMUS SRLS, Via Carlo Noè 45) e ristrutturiamo bagni chiavi in mano: demolizione, impianti, piastrelle, sanitari e consegna, con un solo referente dall'inizio alla fine.
+Siamo EasyBagno, un'impresa di Gallarate. Ristrutturiamo il bagno chiavi in mano: demolizione, impianti, piastrelle e sanitari, con un solo interlocutore e un solo prezzo, scritto per intero prima di iniziare. Tu dici come lo vuoi, al resto pensiamo noi.
 
-Il bagno 3×2 m costa 9.490 €, tutto compreso. Il prezzo è scritto per intero nel preventivo, insieme alla data di fine lavori.
+✓ Sopralluogo gratuito e senza impegno
+✓ 10–15 giorni lavorativi, con la data di fine in contratto
+✓ Impianti certificati a norma DM 37/08
+✓ Un solo referente, anche dopo la consegna
 
-Lavoriamo a Gallarate, Busto Arsizio, Cassano Magnago, Legnano, Saronno, Varese, Novara e dintorni.
+Bagno 3×2 m chiavi in mano: 9.490 € tutto compreso.
+Nella foto, un bagno che abbiamo rifatto noi.
 
+👉 Richiedi il sopralluogo su easybagno.it
 📞 349 239 1107 · WhatsApp 342 971 1646
-👉 Sopralluogo gratuito: easybagno.it
 ```
 
 ### Post 2 — Un nostro cantiere
