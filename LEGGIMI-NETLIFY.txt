@@ -134,8 +134,8 @@ Aggiornato al 30/09/2026. Questo file NON va online: sta fuori da v2/.
   [ ] Lista "cosa non e' compreso" e condizioni dello sconto 5%.
   [ ] Anni di garanzia: finche' manca, quella domanda non compare.
   [ ] Comune delle foto prima/dopo.
-  [x] Altri comuni serviti: Saronno, Legnano e Novara (confermati
-      l'11/10, aggiunti al sito e alla zona della campagna).
+  [x] Altri comuni serviti: Saronno e Legnano (confermati l'11/10,
+      aggiunti al sito). Novara tolta il 14/10 da sito e campagna.
 
 
 6. LA CHIAVE SEGRETA DI SUPABASE

@@ -24,14 +24,14 @@ cartella, i testi sono qui sotto, le impostazioni sono già decise.
 | Cosa | Nome | ID |
 |---|---|---|
 | Campagna | EasyBagno · Lead · Bagno 3x2 9.490€ · Gallarate | 120250803597600005 |
-| Gruppo di inserzioni | Gallarate 25 km + Novara · Lead sito · Advantage+ | 120250803598470005 |
+| Gruppo di inserzioni | Gallarate 25 km · Lead sito · Advantage+ | 120250803598470005 |
 
 Il gruppo è già impostato: evento **Lead** del Pixel (qualità
-dell'abbinamento 9,3 su 10), raggio 25 km da Gallarate più Novara città, solo
+dell'abbinamento 9,3 su 10), raggio 25 km da Gallarate, solo
 per chi ci abita o ci passa spesso, Svizzera esclusa, età lasciata a Meta
 (Advantage+), esclusi chi ha già chiesto il sopralluogo o vi ha già chiamato,
 beneficiario e pagatore DSA BIODOMUS SRLS, posizionamenti automatici.
-Rivisto l'11/10.
+Rivisto il 14/10.
 
 **Le 19 immagini sono già nella libreria dell'account** (Gestione inserzioni →
 Contenuti multimediali), con il nome "EasyBagno …": A, B e C nei tre formati,
@@ -51,7 +51,7 @@ Pagina Facebook. E per accendere la campagna serve il metodo di pagamento.
 | Strategia di offerta | Volume più alto (senza limite di costo) |
 | Luogo della conversione | Sito web |
 | Evento di conversione | **Lead** — Pixel "dati di easybagno". Dal 28/09/2026 Lead è **solo la richiesta di sopralluogo** (nome, telefono, comune). L'email per lo sconto è un evento diverso (CompleteRegistration) e non conta come risultato. |
-| Zona | Raggio **25 km da Gallarate** (Via Carlo Noè 45) più un cerchio di 4 km su **Novara** città, solo chi **ci abita o ci passa spesso** (non chi è solo di passaggio, per esempio a Malpensa). **Svizzera esclusa**. Dentro: Busto Arsizio, Cassano Magnago, Somma Lombardo, Tradate, Legnano, Saronno, Varese, Sesto Calende, Arona, Oleggio, Galliate, Magenta, Parabiago, Lainate, Rho, Garbagnate, Appiano Gentile, Olgiate Comasco, Novara. Fuori: Como, Cantù, Bollate, Cesano Maderno, Borgomanero, Trecate, Milano città (deciso l'11/10) |
+| Zona | Raggio **25 km da Gallarate** (Via Carlo Noè 45), solo chi **ci abita o ci passa spesso** (non chi è solo di passaggio, per esempio a Malpensa). **Svizzera esclusa**. Dentro: Busto Arsizio, Cassano Magnago, Somma Lombardo, Tradate, Legnano, Saronno, Varese, Sesto Calende, Arona, Oleggio, Galliate, Magenta, Parabiago, Lainate, Rho, Garbagnate, Appiano Gentile, Olgiate Comasco. Fuori: Novara (tolta il 14/10), Como, Cantù, Bollate, Cesano Maderno, Borgomanero, Trecate, Milano città |
 | Età | da 30 anni in su (come suggerimento, con il pubblico Advantage+ attivo) |
 | Escludi | "EasyBagno · Richieste sopralluogo 180 giorni" e "EasyBagno · Hanno cliccato un contatto 90 giorni": hanno già chiesto il sopralluogo o vi hanno già chiamato. **Gli iscritti allo sconto NON sono esclusi** (cambiato il 03/10): hanno lasciato solo l'email, sono i più vicini a chiedere il sopralluogo |
 | Posizionamenti | Advantage+ (automatici) |

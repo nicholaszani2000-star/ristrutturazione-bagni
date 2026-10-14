@@ -45,7 +45,7 @@ Ristrutturiamo il bagno chiavi in mano: demolizione, impianti idraulico ed elett
 
 Bagno 3×2 m chiavi in mano a 9.490 € tutto compreso, con la data di fine lavori scritta nel preventivo.
 
-Sopralluogo gratuito e senza impegno a Gallarate, Busto Arsizio, Cassano Magnago, Legnano, Saronno, Varese, Novara e dintorni.
+Sopralluogo gratuito e senza impegno a Gallarate, Busto Arsizio, Cassano Magnago, Legnano, Saronno, Varese e dintorni.
 
 EasyBagno è un marchio di BIODOMUS SRLS · P.IVA 04059520124
 ```
@@ -55,7 +55,7 @@ EasyBagno è un marchio di BIODOMUS SRLS · P.IVA 04059520124
 | Campo | Valore |
 |---|---|
 | Indirizzo | Via Carlo Noè 45, 21013 Gallarate (VA) |
-| Area di servizio | Gallarate, Busto Arsizio, Cassano Magnago, Legnano, Saronno, Varese, Novara |
+| Area di servizio | Gallarate, Busto Arsizio, Cassano Magnago, Legnano, Saronno, Varese |
 | Telefono | 349 239 1107 |
 | WhatsApp | 342 971 1646 (collegalo da *Impostazioni → WhatsApp*: arriva un codice al numero) |
 | Email | biodomus2025@libero.it |
